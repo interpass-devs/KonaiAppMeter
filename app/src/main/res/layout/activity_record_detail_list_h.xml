@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
+    android:background="@color/background"
+    tools:context=".RecordDetailListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="right"
+            android:layout_weight="1.5"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/ltv_back"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="뒤로" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeTextType="uniform"
+                android:text="세부내역" />
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/lbtn_menu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_menu"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8.5"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+
+                <!--            <FrameLayout-->
+                <!--                android:id="@+id/frame2"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="match_parent"/>-->
+                <!--            -->
+
+
+                <LinearLayout
+                    android:layout_weight="3.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/edit_backgroud_radius"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/dashline" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:textStyle="bold"
+                            android:text="합계금액"
+                            android:textColor="@color/white"
+                            android:layout_marginLeft="5dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/tv_total_charge"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:gravity="right"
+                            android:text="0원"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="2.5"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <Button
+                        android:id="@+id/gomain"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/cancel_btn_light_grey"
+                        android:padding="15sp"
+                        android:text="홈"
+                        android:textStyle="bold"/>
+
+                    <Button
+                        android:id="@+id/map_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/ok_btn_blue_round_bg"
+                        android:autoSizeTextType="uniform"
+                        android:padding="15sp"
+                        android:text="경로확인"
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@drawable/layout_edit_round_radius"
+                android:layout_margin="10dp"
+                android:padding="10dp">
+
+                <!--            <FrameLayout-->
+                <!--                android:id="@+id/frame1"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="match_parent"/>-->
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_pay_date_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="결제날짜"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/tv_pay_date"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:text="2021-00-00"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_dtlstarttime_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="출발시간"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/tv_dtlstarttime"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:text="2021-00-00"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_dtlendtime_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="도착시간"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/tv_dtlendtime"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:text="2021-00-00"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_dist_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="운행거리"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/tv_dist"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:text="2021-00-00"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/drv_pay_div_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="결제방법"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/drv_pay_div"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:text="2021-00-00"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_dtlpayment_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="운행요금"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/tv_dtlpayment"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:text="0원"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_add_charge_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="추가요금"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/tv_add_charge"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"
+                        android:text="0원"/>
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <include layout = "@layout/activity_menu"/>
+
+</android.support.v4.widget.DrawerLayout>
+
+
+
+

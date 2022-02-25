@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#023641" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:id="@+id/linearLayout21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginTop="0dip"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/imageView31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/activity_icon" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="5dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/line_title" />
+
+                <TextView
+                    android:id="@+id/TextViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="10dip"
+                    android:text="AM단말테스트"
+                    android:textSize="30dp"
+                    android:textColor="#00D5FF" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="fill_parent"
+                android:layout_height="10dip"
+                android:layout_marginBottom="20dip"
+                android:background="#ffff00"
+                android:orientation="horizontal" >
+
+            </LinearLayout>
+
+            <!-- 메뉴1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dip"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginRight="10dip"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:background="@drawable/bg_gray_contents"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/btnempty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text ="빈차 변경"
+                        />
+
+                    <Button
+                        android:id="@+id/btnboard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text= "승차 변경" />
+
+                    <Button
+                        android:id="@+id/btnappoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text= "예약등변경" />
+
+                    <Button
+                        android:id="@+id/btnconfig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text = "설정 메뉴" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginBottom="0dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/textinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="10dip"
+                    android:textSize="50dp"
+                    android:text="단말기상태값"
+                    android:textColor="#ffffff" />
+
+            </LinearLayout>
+
+            <!-- 메뉴2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dip"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginRight="10dip"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:background="@drawable/bg_gray_contents"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/btnfare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text = "인증11" />
+
+                    <Button
+                        android:id="@+id/btn14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text = "인증14" />
+
+                    <Button
+                        android:id="@+id/btnarrival"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text = "지불 전송" />
+
+                    <Button
+                        android:id="@+id/btncard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text = "수기결제" />
+
+                    <Button
+                        android:id="@+id/btncancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:background="#aaaaaa"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:gravity="center"
+                        android:text = "결제취소" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="vertical"
+        android:paddingRight="30dip" >
+
+        <TextView
+            android:id="@+id/textViewUserCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dip"
+            android:text=""
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/Btnhome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="#00000000"
+            android:src="@drawable/btn_gomain" />
+
+    </LinearLayout>
+
+</FrameLayout>

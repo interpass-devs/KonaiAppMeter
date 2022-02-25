@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="12"
+    android:background="@color/background_new">
+
+    <View
+        android:layout_weight="1"
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/background_new"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_weight="7.5">
+
+        <FrameLayout
+            android:id="@+id/frame1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_weight="3.5"
+        android:background="@color/background_new"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:layout_gravity="center"
+            android:weightSum="7"
+            android:orientation="vertical">
+
+<!--            <View-->
+<!--                android:id="@+id/view7"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="2" />-->
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/tv_conn_status"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="통신 상태 확인하기.."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#F6BE16"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:orientation="vertical">
+                <!-- android:background="@drawable/ok_btn_blue_round_bg" -->
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:layout_weight="2.7"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@drawable/yellow_gradi_btn"
+                    android:autoSizeTextType="uniform"
+                    android:padding="15sp"
+                    android:text="확인"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+                <LinearLayout
+                    android:id="@+id/auto_login_checkbox_layout"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+                    <CheckBox
+                        android:id="@+id/auto_login_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자동 로그인"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

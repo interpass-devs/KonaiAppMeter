@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Layout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+    <!-- android:background="@drawable/radius_batangshape" -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:orientation="horizontal"
+
+        android:layout_weight="2.3">
+        <!--    android:background="@drawable/radius_top" -->
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageView31"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/launcher_icon"
+                        android:layout_marginLeft="5dp"/>
+            <!-- android:src="@drawable/activity_icon" -->
+<!--   android:src="@mipmap/ic_appmeter_icon" -->
+                <TextView
+                    android:id="@+id/TextViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="10dip"
+                    android:text="AM설정메뉴"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="right"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/Btnhome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end"
+                android:background="@drawable/ic_menu"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"/>
+            <!-- android:src="@drawable/btn_gomain" -->
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_marginTop="5sp"
+            android:gravity="top"
+            android:layout_weight="3">
+<!--    android:background="@drawable/payment_subbtn2" -->
+            <!-- android:textColor="#ff820316" -->
+            <Button
+                android:id="@+id/Btnback"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
+                android:background="@drawable/unselected_btn"
+                android:text="이전"
+                android:textSize="20sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#999999"
+                android:textStyle="bold"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/Btnclose"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/unselected_btn"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
+                android:text="닫기"
+                android:textSize="20sp"
+                android:autoSizeTextType="uniform"
+                android:textColor="#999999"
+                android:textStyle="bold"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="10sp"
+            android:layout_weight="22">
+            <!--  android:background="@drawable/payment_subbtn2" -->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:id="@+id/layoutlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="10dip"
+                    android:orientation="horizontal" >
+                    <ListView
+                        android:id="@id/android:list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:cacheColorHint="#00000000"
+                        android:layout_weight="1" >
+                    </ListView>
+                </LinearLayout>
+
+
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/layoutinfoinput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/layoutinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="15dip"
+                        android:layout_marginLeft="0dip"
+                        android:layout_marginRight="0dip"
+                        android:layout_marginTop="10dip"
+                        android:orientation="vertical" >
+                        <TextView
+                                android:id="@+id/textinfo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:paddingLeft="10dip"
+                                android:textSize="25dp"
+                                android:text="AM설정information"
+                                android:textColor="#ffffff"
+                                android:scrollbars="vertical"/>
+                    </LinearLayout>
+
+
+
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/layoutinput"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@drawable/dlg_layout_radius"
+                            android:paddingTop="30dp"
+                            android:paddingBottom="15dp"
+                            android:layout_marginRight="5dp">
+
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/textinput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="값 입력"
+                                    android:textSize="25sp"
+                                    android:textColor="#ffffff"/>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="200dp"
+                                    android:orientation="horizontal">
+                                    <EditText
+                                        android:id="@+id/editinput"
+                                        android:layout_weight="1.2"
+                                        android:layout_width="0dp"
+                                        android:layout_height="70dp"
+                                        android:layout_gravity="center_vertical"
+                                        android:gravity="center_vertical"
+                                        android:ems="10"
+                                        android:focusable="false"
+                                        android:hint="ex) 220207"
+                                        android:maxLength="6"
+                                        android:inputType="number"
+                                        android:paddingLeft="20dp"
+                                        android:textSize="25sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:background="@drawable/dlg_edit_box"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginLeft="10dp"/>
+                                    <LinearLayout
+                                        android:layout_weight="1"
+                                        android:layout_width="0dp"
+                                        android:layout_height="150dp"
+                                        android:orientation="vertical"
+                                        android:gravity="center_vertical"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp">
+                                        <Button
+                                            android:id="@+id/Btninputsend"
+                                            android:layout_weight="1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="0dp"
+                                            android:text="전송"
+                                            android:textStyle="bold"
+                                            android:textSize="30sp"
+                                            android:textColor="@color/white"
+                                            android:background="@drawable/ok_btn_blue_round_bg"
+                                            android:layout_marginBottom="5dp"/>
+                                        <Button
+                                            android:id="@+id/Btninputcancel"
+                                            android:layout_weight="1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="0dp"
+                                            android:text="취소"
+                                            android:textColor="#999999"
+                                            android:textStyle="bold"
+                                            android:textSize="30sp"
+                                            android:background="@drawable/unselected_btn"
+                                            android:layout_marginTop="5dp"/>
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <!-- 계산기 -->
+                        <LinearLayout
+                            android:id="@+id/radio_button_layout"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="5dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/button_1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="2"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="3"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/button_4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="4"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="5"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="6"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/button_7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="7"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_8"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="8"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_9"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="9"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/button_clear"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="C"
+                                    android:textAlignment="center"
+                                    android:textColor="#811212"
+                                    android:textSize="40sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_0"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="0"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/button_back"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:button="@null"
+                                    android:text="←"
+                                    android:textAlignment="center"
+                                    android:textColor="#811212"
+                                    android:textSize="45sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/layoutinput"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginBottom="10dip"-->
+<!--                        android:layout_marginLeft="5dip"-->
+<!--                        android:layout_marginRight="5dip"-->
+<!--                        android:layout_marginTop="10dip"-->
+<!--                        android:orientation="vertical" >-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/textinput"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center_horizontal"-->
+<!--                            android:paddingLeft="10dip"-->
+<!--                            android:textSize="25dp"-->
+<!--                            android:text="값입력"-->
+<!--                            android:textColor="#000000" />-->
+
+<!--                        <EditText-->
+<!--                            android:id="@+id/editinput"-->
+<!--                            android:layout_width="250dp"-->
+<!--                            android:layout_height="60dp"-->
+<!--                            android:layout_marginTop="30dip"-->
+<!--                            android:layout_gravity="center_horizontal"-->
+<!--                            android:gravity="center"-->
+<!--                            android:ems="10"-->
+<!--                            android:textSize="30dp"-->
+<!--                            android:paddingLeft="10dip"-->
+<!--                            android:inputType="number"-->
+<!--                            android:background="@drawable/payment_subbtn2"/>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:layout_marginLeft="5sp"-->
+<!--                            android:layout_marginRight="5sp"-->
+<!--                            android:layout_marginTop="20sp"-->
+<!--                            android:gravity="top"-->
+<!--                            android:layout_weight="3">-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/Btninputsend"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_marginLeft="5sp"-->
+<!--                                android:layout_marginRight="5sp"-->
+<!--                                android:background="@drawable/payment_subbtn2"-->
+<!--                                android:text="전송"-->
+<!--                                android:textColor="#ff820316"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textSize="40sp"-->
+<!--                                android:layout_weight="1"/>-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/Btninputcancel"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:background="@drawable/payment_subbtn2"-->
+<!--                                android:layout_marginLeft="5sp"-->
+<!--                                android:layout_marginRight="5sp"-->
+<!--                                android:text="취소"-->
+<!--                                android:textColor="#ff820316"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textSize="40sp"-->
+<!--                                android:layout_weight="1"/>-->
+<!--                        </LinearLayout>-->
+<!--                    </LinearLayout>-->
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:orientation="vertical"
+                    android:paddingRight="30dip"
+                    android:layout_weight="22">
+
+                    <TextView
+                        android:id="@+id/textViewUserCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="13dip"
+                        android:text=""
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutnumbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="10dip"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:orientation="horizontal"
+                        android:background="#BDBDBD">
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginRight="5sp"
+                        android:layout_marginTop="10sp"
+                        android:gravity="bottom">
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            >
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_marginBottom="2sp"
+                                android:layout_weight="1">
+
+                                <Button
+                                    android:id="@+id/btn_1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5sp"
+                                    android:layout_marginRight="5sp"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:gravity="center"
+                                    android:textColor="#ff535356"
+                                    android:text="1"
+                                    android:autoSizeTextType="uniform"
+                                    android:textStyle="bold"
+                                    android:textSize="30sp"
+                                    android:layout_weight="1"/>
+
+                                <Button
+                                    android:id="@+id/btn_2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5sp"
+                                    android:layout_marginRight="5sp"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:textColor="#ff535356"
+                                    android:text="2"
+                                    android:autoSizeTextType="uniform"
+                                    android:textStyle="bold"
+                                    android:textSize="30sp"
+                                    android:layout_weight="1"/>
+
+                                <Button
+                                    android:id="@+id/btn_3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5sp"
+                                    android:layout_marginRight="5sp"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:textColor="#ff535356"
+                                    android:text="3"
+                                    android:autoSizeTextType="uniform"
+                                    android:textStyle="bold"
+                                    android:textSize="30sp"
+                                    android:layout_weight="1"/>
+
+
+                                <Button
+                                    android:id="@+id/btn_6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5sp"
+                                    android:layout_marginRight="5sp"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:textColor="#ff820316"
+                                    android:text="6"
+                                    android:autoSizeTextType="uniform"
+                                    android:textStyle="bold"
+                                    android:textSize="30sp"
+                                    android:layout_weight="1"/>
+
+                                <Button
+                                    android:id="@+id/btn_0"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5sp"
+                                    android:layout_marginRight="5sp"
+                                    android:background="@drawable/payment_subbtn2"
+                                    android:gravity="center_vertical|center_horizontal"
+                                    android:textColor="#ff820316"
+                                    android:text="0"
+                                    android:autoSizeTextType="uniform"
+                                    android:textStyle="bold"
+                                    android:textSize="30sp"
+                                    android:layout_weight="1"/>
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+
+</LinearLayout>

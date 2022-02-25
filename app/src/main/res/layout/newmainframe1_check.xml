@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:id="@+id/cover_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/getFrameLayoutSize"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+                <!-- 빈차화면 -->
+                <LinearLayout
+                    android:visibility="visible"
+                    android:id="@+id/emptylayouts_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/empty_bg_black">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:layout_weight="0"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginRight="10dp">
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/ic_location_btn"/>
+                            <TextView
+                                android:id="@+id/textView5new"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:gravity="center_vertical"
+                                android:text="운행거리"
+                                android:textColor="@color/white"
+                                android:autoSizeTextType="uniform" />
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="70dp"
+                            android:gravity="right"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="30dp">
+
+                            <TextView
+                                android:id="@+id/curemptydist"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:autoSizeTextType="uniform"
+                                android:gravity="right"
+                                android:text="0"
+                                android:textColor="@color/white" />
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:layout_marginRight="30dp"
+                                android:layout_toRightOf="@+id/curemptydist"
+                                android:gravity="bottom"
+                                android:text="km"
+                                android:textSize="30sp"
+                                android:textColor="@color/white"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <!-- 빈차요금 -->
+                    <LinearLayout
+                        android:layout_weight="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="130dp"
+                            android:gravity="right"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="30dp">
+
+                            <TextView
+                                android:id="@+id/textView6new"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:autoSizeTextType="uniform"
+                                android:gravity="right"
+                                android:text="0"
+                                android:textColor="@color/yellow" />
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="match_parent"
+                                android:gravity="bottom"
+                                android:layout_marginRight="30dp"
+                                android:layout_toRightOf="@+id/textView6new"
+                                android:text="원"
+                                android:textColor="@color/yellow"
+                                android:textSize="50sp"
+                                android:paddingBottom="25dp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <!-- 상세보기 버튼 -->
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:paddingRight="30dp">
+                        <TextView
+                            android:id="@+id/show_empty_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:background="@drawable/layout_line_round_radius_dark"
+                            android:gravity="center"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="5dp"
+                            android:text="상세보기"
+                            android:textSize="25sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 빈차 화면 end -->
+
+
+
+
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>

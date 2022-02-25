@@ -1,0 +1,18 @@
+
+<-- 변경사항 -->
+
+//todo: 20220209 찾기
+
+1. LocService.java
+2. layout_edit_round_radius_white_line.xml
+3. lbsmg.xml
+4. blutooth_blue.png
+5. bluetooth_green.png
+6. pointer.png
+7. activity_newmain_v.xml
+8. activity_newmain_h.xml
+9. MainActivity.java
+10. newmainframe2.xml
+11. newmainframe1.xml
+
+

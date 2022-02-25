@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_weight="2"
+        android:background="@drawable/radius_top"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/imageView31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/activity_icon" />
+
+        <TextView
+            android:id="@+id/et_curtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:gravity="center_vertical|left"
+            android:textSize="20sp"
+            android:text="@string/payment_drv_time"
+            android:autoSizeTextType="uniform"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:layout_weight="0.5"/>
+
+        <TextView
+            android:id="@+id/et_dist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:gravity="center_vertical|right"
+            android:textSize="20sp"
+            android:text="@string/payment_distance"
+            android:autoSizeTextType="uniform"
+            android:textStyle="bold"
+            android:layout_weight="0.5"/>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginBottom="5sp"
+        android:layout_marginRight="5sp"
+        android:background="@drawable/radius_shape"
+        android:orientation="vertical"
+        android:layout_weight="10">
+
+        <LinearLayout
+            android:id="@+id/layoutpay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/payment_pay"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/tv_mainpay"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:text="00"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    android:layout_weight="3"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:text="@string/payment_addpay"
+                    android:textStyle="bold"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/et_addpayment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:text="00"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    android:layout_weight="3"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="5sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight= "10sp"
+                android:background="#ffffffff"
+                >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:gravity="center_vertical"
+                android:layout_weight="1.3">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/payment_finpay"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/tv_finpayment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right|center_vertical"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:text="999999"
+                    android:textStyle="bold"
+                    android:layout_weight="3"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutadd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:layout_weight="0.8">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="추가 요금"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/et_addtmp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="00"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    android:hint="0"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:gravity="center_vertical"
+                android:layout_weight="0.7">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
