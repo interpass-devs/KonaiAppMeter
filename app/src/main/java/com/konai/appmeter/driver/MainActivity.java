@@ -366,6 +366,7 @@ public class MainActivity extends Activity {
     private LinearLayout menu_cancelPay;
     private Button menu_endDrv;
     private Button menu_endApp;
+    private TextView menu_title;
     private Button menu_update;
     private Button menu_reset_app;
     private Button menu_close;
@@ -4044,6 +4045,20 @@ public class MainActivity extends Activity {
             }
         });
 
+        menu_env_setting.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN){
+                    menu_env_setting.setBackgroundResource(R.drawable.shadow_menu);
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    menu_env_setting.setBackgroundResource(R.drawable.menu_borders);
+                }
+                return false;
+            }
+        });
+
         menu_env_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -4083,39 +4098,39 @@ public class MainActivity extends Activity {
             case "true":
                 menu_ble.setText("블루투스");
                 menu_ble_status.setText("ON");
-                menu_ble_status.setTextColor(Color.parseColor("#3F51B5"));
+                menu_ble_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
             case "1":
                 menu_ble.setText("시리얼 (아이나비)");
                 menu_ble_status.setText("ON");
-                menu_ble_status.setTextColor(Color.parseColor("#3F51B5"));
+                menu_ble_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
             case "2":
                 menu_ble.setText("시리얼 (아트뷰)");
                 menu_ble_status.setText("ON");
-                menu_ble_status.setTextColor(Color.parseColor("#3F51B5"));
+                menu_ble_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
             case "3":
                 menu_ble.setText("시리얼 (아틀란)");
                 menu_ble_status.setText("ON");
-                menu_ble_status.setTextColor(Color.parseColor("#3F51B5"));
+                menu_ble_status.setTextColor(Color.parseColor("#ffc700"));
         }
 
         switch (ori_Status){
             case "0":
                 menu_ori.setText("가로/세로");
                 menu_ori_status.setText("ON");
-                menu_ori_status.setTextColor(Color.parseColor("#636167"));
+                menu_ori_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
             case "1":
                 menu_ori.setText("가로");
                 menu_ori_status.setText("ON");
-                menu_ori_status.setTextColor(Color.parseColor("#3F51B5"));
+                menu_ori_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
             case "2":
                 menu_ori.setText("세로");
                 menu_ori_status.setText("ON");
-                menu_ori_status.setTextColor(Color.parseColor("#3F51B5"));
+                menu_ori_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
         }
 
@@ -4128,12 +4143,12 @@ public class MainActivity extends Activity {
             case "1":
                 menu_gubun.setText("개인");
                 menu_gubun_stauts.setText("ON");
-                menu_gubun_stauts.setTextColor(Color.parseColor("#3F51B5"));
+                menu_gubun_stauts.setTextColor(Color.parseColor("#ffc700"));
                 break;
             case "2":
                 menu_gubun.setText("법인");
                 menu_gubun_stauts.setText("ON");
-                menu_gubun_stauts.setTextColor(Color.parseColor("#3F51B5"));
+                menu_gubun_stauts.setTextColor(Color.parseColor("#ffc700"));
                 break;
         }
 
@@ -4146,12 +4161,12 @@ public class MainActivity extends Activity {
             case "1":
                 menu_auto_login.setText("자동로그인");
                 menu_auto_login_status.setText("ON");
-                menu_auto_login_status.setTextColor(Color.parseColor("#3F51B5"));
+                menu_auto_login_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
             case "2":
                 menu_auto_login.setText("자동로그인");
                 menu_auto_login_status.setText("OFF");
-                menu_auto_login_status.setTextColor(Color.parseColor("#636167"));
+                menu_auto_login_status.setTextColor(Color.parseColor("#ffc700"));
                 break;
         }
 
@@ -4186,10 +4201,10 @@ public class MainActivity extends Activity {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
 
-                    menu_getReceipt.setBackgroundResource(R.drawable.shadow_effect);
+                    menu_getReceipt.setBackgroundResource(R.drawable.shadow_menu);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_getReceipt.setBackgroundResource(R.drawable.non_shadow_effect);
+                    menu_getReceipt.setBackgroundResource(R.drawable.menu_borders);
                 }
                 return false;
             }
@@ -4218,10 +4233,10 @@ public class MainActivity extends Activity {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
 
-                    menu_cancelPay.setBackgroundResource(R.drawable.shadow_effect);
+                    menu_cancelPay.setBackgroundResource(R.drawable.shadow_menu);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_cancelPay.setBackgroundResource(R.drawable.non_shadow_effect);
+                    menu_cancelPay.setBackgroundResource(R.drawable.menu_borders);
                 }
                 return false;
             }
@@ -4387,10 +4402,10 @@ public class MainActivity extends Activity {
             public boolean onTouch(View v, MotionEvent event) {
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_cashReceipt.setBackgroundResource(R.drawable.shadow_effect);
+                    menu_cashReceipt.setBackgroundResource(R.drawable.shadow_menu);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    menu_cashReceipt.setBackgroundResource(R.drawable.non_shadow_effect);
+                    menu_cashReceipt.setBackgroundResource(R.drawable.menu_borders);
                 }
                 return false;
             }
@@ -4513,6 +4528,9 @@ public class MainActivity extends Activity {
 
         if(Info.APP_VERSION >= Info.SV_APP_VERSION) {
             menu_update.setVisibility(View.INVISIBLE);
+            menu_title.setVisibility(View.VISIBLE);
+        }else {
+            menu_title.setVisibility(View.GONE);
         }
 
         menu_update.setOnTouchListener(new View.OnTouchListener() {
@@ -4571,12 +4589,8 @@ public class MainActivity extends Activity {
                 final TextView msg = (TextView)dialogView.findViewById(R.id.title);  //msg
                 final TextView sub_msg = (TextView)dialogView.findViewById(R.id.title_2);
                 edit_password = (EditText)dialogView.findViewById(R.id.edit_user);  //password
-                final TextView won = (TextView)dialogView.findViewById(R.id.won);
                 final Button cancelBtn = (Button)dialogView.findViewById(R.id.btn_cancel);  //cancel_btn
                 final Button okayBtn = (Button)dialogView.findViewById(R.id.btn_ok);  //okay_btn
-//                password.setVisibility(View.VISIBLE);
-                won.setVisibility(View.GONE);
-//                edit_password.setHint("ex) 0207");  //todo: 20220209
                 edit_password.setGravity(Gravity.CENTER);
                 sub_msg.setVisibility(View.VISIBLE);
 
@@ -4664,7 +4678,7 @@ public class MainActivity extends Activity {
                     height = (int)(height * 0.7);
                 }else {
                     width = (int)(width * 0.9);
-                    height = (int)(height * 0.8);
+                    height = (int)(height * 1);
                 }
                 //todo: end
 
@@ -4741,6 +4755,7 @@ public class MainActivity extends Activity {
         menu_cancelPay = (LinearLayout)findViewById(R.id.menu_cancelpay);
         menu_endDrv = (Button)findViewById(R.id.menu_enddrv);
         menu_endApp = (Button)findViewById(R.id.menu_endapp);
+        menu_title = (TextView)findViewById(R.id.menu_title);
         menu_update = (Button)findViewById(R.id.menu_update);
         menu_reset_app = (Button)findViewById(R.id.reset_app_btn);
         menu_close = (Button)findViewById(R.id.menu_btnclose);
@@ -5520,19 +5535,17 @@ public class MainActivity extends Activity {
 //                PopupDlg.dismiss();
                 dlg.dismiss();
                 getReceiptInputDialog();
-
             }
         });
 
         btn_complete.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
-
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_complete.setBackgroundColor(Color.parseColor("#2e2e6a"));
+                    btn_complete.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_complete.setBackgroundColor(Color.parseColor("#2e2eae"));
+                    btn_complete.setBackgroundResource(R.drawable.yellow_gradi_btn);
                 }
                 return false;
             }
@@ -5541,17 +5554,11 @@ public class MainActivity extends Activity {
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 //                PopupDlg.dismiss();
                 dlg.dismiss();
             }
         });
-
-
     }
-
-
-
 
 
 
@@ -5708,26 +5715,23 @@ public class MainActivity extends Activity {
         dlg.setCancelable(false);
 
         DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dlg.getWindow().getAttributes());
 
-        if (Build.VERSION.SDK_INT <= 25){  //네비게이션
-            int w = dm.widthPixels;
-            int h = dm.heightPixels;
-            w = (int)(w * 0.7);
-            h = (int)(h * 0.7);
-            lp.width = w;
-            lp.height = h;
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+
+        if (Build.VERSION.SDK_INT <= 25){
             title.setTextSize(4.0f * setting.gTextDenst);
-
+            width = (int)(width * 0.8);
+            height = (int)(height * 0.7);
         }else {
-            int width = dm.widthPixels;
             width = (int)(width * 0.9);
-            lp.width = width;
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            title.setTextSize(1.0f * setting.gTextDenst);
+            height = (int)(height * 1);
         }
 
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dlg.getWindow().getAttributes());
+        lp.width = width;
+        lp.height = height;
         Window window = dlg.getWindow();
         window.setAttributes(lp);
 

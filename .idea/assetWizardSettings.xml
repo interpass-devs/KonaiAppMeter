@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/touch_app/baseline_touch_app_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/cancel/baseline_cancel_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,8 +33,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_touch" />
+                            <entry key="color" value="aaa7a7" />
+                            <entry key="outputName" value="ic_cancel" />
                             <entry key="sourceFile" value="C:\Users\Interpass\AndroidStudioProjects\KonaiAppMeter20210819_1117\app\src\main\res\drawable\ic_deal_list.svg" />
                           </map>
                         </option>

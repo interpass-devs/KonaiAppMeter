@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/layout_background_line_radius"
+    android:background="@drawable/empty_bg_black"
     android:paddingBottom="10dp">
 
 

@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="10dp"
         android:layout_weight="1"
-        android:background="@drawable/dlg_layout_radius"
+        android:background="@drawable/empty_bg_black"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="20dp">
@@ -33,19 +33,13 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1.5"
                     android:autoSizeTextType="uniform"
-                    android:fontFamily="@font/malgun"
+                    android:fontFamily="@font/malgunbd"
                     android:gravity="center"
                     android:padding="25dp"
-                    android:text="요금 입력"
-                    android:textColor="@color/white" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#77777C"
-                    android:orientation="vertical" />
+                    android:text="요 금 입 력"
+                    android:textColor="@color/yellow" />
             </LinearLayout>
 
             <TextView
@@ -67,9 +61,8 @@
 
                 <EditText
                     android:id="@+id/edit_user"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
                     android:background="@drawable/dlg_edit_box"
                     android:gravity="center_vertical|right"
                     android:hint="0"
@@ -82,20 +75,11 @@
                     android:paddingBottom="10dp"
                     android:textSize="40dp"
                     android:textColor="@color/black"
-                    android:textStyle="bold">
+                    android:textStyle="bold"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp">
                     <requestFocus />
                 </EditText>
-
-                <TextView
-                    android:id="@+id/won"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center"
-                    android:text="원"
-                    android:textColor="#ffffff"
-                    android:textSize="40dp"
-                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -112,7 +96,7 @@
                 android:id="@+id/btn_ok"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/yellow_gradi_btn"
@@ -130,7 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/grey_gradi_btn"
                 android:gravity="center"
@@ -163,39 +147,44 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="1"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="2"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="3"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -209,39 +198,44 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="4"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="5"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="6"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -255,39 +249,44 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="7"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_8"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="8"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_9"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="9"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -301,39 +300,45 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
-                android:text="C"
+                android:fontFamily="@font/malgunbd"
+                android:text="취소"
                 android:textAlignment="center"
-                android:textColor="#811212"
-                android:textSize="45sp"
-                android:textStyle="bold" />
+                android:textColor="@color/black"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_0"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/btn_back"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/payment_subbtn2"
+                android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
                 android:text="←"
                 android:textAlignment="center"
-                android:textColor="#811212"
+                android:textColor="@color/black"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -105,15 +105,12 @@ public class InfoActivity extends Activity {
         if(nTP == Configuration.ORIENTATION_PORTRAIT) {
             setContentView(R.layout.activity_info);  //세로
             set_frame_orient(0);
-
         }
         else
         {
-
             setContentView(R.layout.activity_info_h);  //가로   //todo: 20210902
             set_frame_orient(1);
         }
-
         tv_area_name.setText(AMBlestruct.AMLicense.taxinumber.substring(0,2));
         tv_base_cost.setText(CalFareBase.BASECOST+" 원");
         tv_base_drvdist.setText(CalFareBase.BASEDRVDIST+" m");
@@ -121,7 +118,6 @@ public class InfoActivity extends Activity {
         tv_interval_dist.setText(CalFareBase.INTERVAL_DIST+" m");
         tv_night_time_rate.setText((int) CalFareBase.INTERVAL_TIME+" 초");
 //        Log.d("check_night_rate>>",CalFareBase.mNightTimerate+"");
-
 
         tv_name.setText(AMBlestruct.AMLicense.drivername);
         tv_carno.setText(AMBlestruct.AMLicense.taxinumber);
@@ -133,9 +129,7 @@ public class InfoActivity extends Activity {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if(locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
         {
-
             tv_gps.setText("OFF");
-
         }
         else
             tv_gps.setText("ON");
@@ -145,22 +139,17 @@ public class InfoActivity extends Activity {
         BluetoothAdapter = bluetoothManager.getAdapter();
         if (!BluetoothAdapter.isEnabled())
         {
-
             tv_bluetooth.setText("OFF");
-
         }
         else
             tv_bluetooth.setText("ON");
 
         if(AMBlestruct.mBTConnected)
         {
-
             tv_obd.setText("연결됨");
-
         }
         else
             tv_obd.setText("연결안됨");
-
 
         tv_osver.setText(Build.VERSION.RELEASE + "\n" + Build.MODEL + "\n" + Build.MANUFACTURER);
 

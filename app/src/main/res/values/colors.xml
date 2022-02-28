@@ -25,7 +25,8 @@
     <color name="grey">#636167</color>
     <color name="grey_light">#7F7C83</color>
     <color name="btn_grey">#3c3c4a</color>
-    <color name="yellow">#ffc700</color>
+   <!-- <color name="yellow">#ffc700</color>-->
+    <color name="yellow">#CAA831</color>
 
     <color name="yellow_down">#B397833a</color>
     <color name="yellow_up">#B33c3c4a</color>
