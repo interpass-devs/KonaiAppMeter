@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_weight="0.8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/empty_bg_black"
+        android:padding="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/dlgTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="개인] 전화번호"
+                android:textColor="@color/yellow"
+                android:textSize="30dp"
+                android:gravity="center"/>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_numtype"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#ffffff"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"/>
+            <FrameLayout
+                android:visibility="visible"
+                android:id="@+id/framework"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/edit_receiptinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:gravity="center_vertical|right"
+                        android:inputType="number"
+                        android:textSize="30dp"
+                        android:textStyle="bold">
+                        <requestFocus />
+                    </EditText>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_receiptinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:gravity="center"
+                        android:text="카드를 인식 해주세요"
+                        android:textColorHint="#A0A1A5"
+                        android:textSize="30dp"
+                        android:textStyle="bold">
+                    </TextView>
+                </LinearLayout>
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_gradi_btn"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="취 소"
+                    android:textColor="#ffffff"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"/>
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/yellow_gradi_btn"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="확 인"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical">-->
+<!--        </LinearLayout>-->
+
+    </LinearLayout>
+
+
+
+
+
+
+    <!-- 키패드 -->
+    <LinearLayout
+        android:id="@+id/keypad"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/btn_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="1"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="2"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="3"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="4"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="5"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="6"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="7"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="8"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_9"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="9"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_clear"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="C"
+
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="40dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/btn_back"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_gradi_btn"
+                android:button="@null"
+                android:text="←"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="45dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
