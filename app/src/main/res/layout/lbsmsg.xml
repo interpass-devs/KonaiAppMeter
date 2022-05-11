@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mContainer"
     android:layout_width="300sp"
     android:layout_height="152sp"
@@ -189,9 +188,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="6"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:background="@drawable/edit_backgroud_radius_rightbottom">
 
-                    <TextView
+                    <com.konai.appmeter.driver.util.FontFitTextView
                         android:id="@+id/transfer_final_payment"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -205,15 +205,15 @@
                         android:textColor="#000000"
                         android:textStyle="bold"/>
 
-                    <TextView
+                    <com.konai.appmeter.driver.util.FontFitTextView
                         android:id="@+id/lbs_payment"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="5"
-                        android:autoSizeTextType="uniform"
+                        android:layout_marginRight="10dp"
+
                         android:gravity="right|center_vertical"
-                        android:paddingRight="10dp"
                         android:text="0"
                         android:textColor="#ffffff"
                         android:textStyle="bold" />
@@ -251,7 +251,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <!--android:background="@drawable/overlayempty_rect"-->
-                <Button
+                <com.konai.appmeter.driver.util.ButtonFitText
                     android:id="@+id/lbsbtn_empty"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -263,7 +263,7 @@
                     android:textColor="#000000"
                     android:textStyle="bold"/>
 
-                <Button
+                <com.konai.appmeter.driver.util.ButtonFitText
                     android:id="@+id/lbsbtn_drive"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -275,7 +275,7 @@
                     android:textColor="#999999"
                     android:textStyle="bold"/>
 
-                <Button
+                <com.konai.appmeter.driver.util.ButtonFitText
                     android:id="@+id/lbsbtn_reserv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

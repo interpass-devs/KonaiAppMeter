@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,11 +48,11 @@ public class DayReportActivity extends Activity {
 //        initializecontents(getResources().getConfiguration().orientation);
         initializecontents(setting.gOrient);
 
-        Info.init_SQLHelper(this);
+//20220415 ver157        Info.init_SQLHelper(this);
         String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
         String driveCount = Info.sqlite.todayDriveCount();
 
-        if(dayDrvRecordData[1].equals("null") == false)
+        if(dayDrvRecordData.length > 1 && dayDrvRecordData[1].equals("null") == false)
         {
             tv_TRDistance.setText((String.format("%.2f", (Double.parseDouble(dayDrvRecordData[0]) + Double.parseDouble(dayDrvRecordData[1])) / 1000)) + "km");
             tv_TRDirectPayCnt.setText(driveCount + " 건");
@@ -62,8 +61,10 @@ public class DayReportActivity extends Activity {
         }
         String[] payDiv = Info.sqlite.todayPaymentCount().split("/");
 
-        tv_TRCashPay.setText(payDiv[0] + " 건");
-        tv_TRCardPay.setText(payDiv[1] + " 건");
+        if(payDiv.length > 1) {
+            tv_TRCashPay.setText(payDiv[0] + " 건");
+            tv_TRCardPay.setText(payDiv[1] + " 건");
+        }
     }
 
     @Override
@@ -95,11 +96,11 @@ public class DayReportActivity extends Activity {
             initializecontents(Configuration.ORIENTATION_PORTRAIT);
         }
 
-        Info.init_SQLHelper(this);
+//20220415 ver157        Info.init_SQLHelper(this);
         String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
         String driveCount = Info.sqlite.todayDriveCount();
 
-        if(dayDrvRecordData[1].equals("null") == false)
+        if(dayDrvRecordData.length > 1 && dayDrvRecordData[1].equals("null") == false)
         {
             tv_TRDistance.setText((String.format("%.2f", (Double.parseDouble(dayDrvRecordData[0]) + Double.parseDouble(dayDrvRecordData[1])) / 1000)) + "km");
             tv_TRDirectPayCnt.setText(driveCount + " 건");
@@ -108,8 +109,10 @@ public class DayReportActivity extends Activity {
         }
         String[] payDiv = Info.sqlite.todayPaymentCount().split("/");
 
-        tv_TRCashPay.setText(payDiv[0] + " 건");
-        tv_TRCardPay.setText(payDiv[1] + " 건");
+        if(payDiv.length > 1) {
+            tv_TRCashPay.setText(payDiv[0] + " 건");
+            tv_TRCardPay.setText(payDiv[1] + " 건");
+        }
 
 //		Log.i("TAg", "---------- screenWidthDp : " + newConfig.screenWidthDp + ", screenHeightDp : " + newConfig.screenHeightDp);
     }

@@ -3,33 +3,28 @@ package com.konai.appmeter.driver.Dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-//import android.support.annotation.NonNull;
-//import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
-import com.konai.appmeter.driver.MemberCertActivity;
-import com.konai.appmeter.driver.RegisterDriverActivity;
 import com.konai.appmeter.driver.R;
+import com.konai.appmeter.driver.RegisterDriverActivity;
 import com.konai.appmeter.driver.setting.Info;
 
 import java.util.ArrayList;
+
+//import android.support.annotation.NonNull;
+//import android.support.v7.widget.RecyclerView;
 
 public class Dlg_Select_Driver extends Dialog {
 
@@ -85,11 +80,9 @@ public class Dlg_Select_Driver extends Dialog {
         }
         String driverMemberList[] = sqlite.selectMemberList();
 
-        Info.G_full_driver_num.clear();
         for (int i=0; i<driverMemberList.length; i++){
             splt = driverMemberList[i].split("#");
-            driverItem.add(new Driver_Item(splt[0], splt[2]));  //리사이클러뷰 데이터 splt[0]: 이름/ splt[1]: 운전자 자격증번호
-            Info.G_full_driver_num.add(splt[1]);
+            driverItem.add(new Driver_Item(splt[0], splt[1], splt[2]));  //리사이클러뷰 데이터 splt[0]: 이름/ splt[1]: 운전자 자격증번호
         }
         driverAdapter = new RecyclerDriverAdapter(context, driverItem);
         recycler = findViewById(R.id.recycler);
@@ -100,18 +93,17 @@ public class Dlg_Select_Driver extends Dialog {
             public void onItemClick(View v, int post , String type) {
 
                 //Log.d("check_pos", post+"");
-                ArrayList<String> dd =  Info.G_full_driver_num;
 
                 if(type.equals("e")){   //edit버튼
                     Intent i = new Intent(context, RegisterDriverActivity.class);
                     i.putExtra("clickEditBtn", "editBtn");
                     i.putExtra("name", driverItem.get(post).driver_name);
 //                    i.putExtra("license_num", (driverItem.get(post).driver_num));   // 4자리만 나옴..
-                    i.putExtra("license_num", Info.G_full_driver_num.get(post));
+                    i.putExtra("license_num", driverItem.get(post).driver_license);
                     i.putExtra("identi_num", driverItem.get(post).driver_num);
                     context.startActivity(i);
                 }else if (type.equals("d")){ //delete 버튼
-                    sqlite.deleteMember(Info.G_full_driver_num.get(post));
+                    sqlite.deleteMember(driverItem.get(post).driver_license);
                     driverAdapter.items.remove(post);
                     driverAdapter.notifyDataSetChanged();
                 }else {   //iteview 클릭
@@ -119,7 +111,7 @@ public class Dlg_Select_Driver extends Dialog {
                     Info.G_driver_name = driverItem.get(post).driver_name;
                     Info.G_driver_num = driverItem.get(post).driver_num;
                     // 수정
-                    Info.G_license_num = Info.G_full_driver_num.get(post);
+                    Info.G_license_num = driverItem.get(post).driver_license;
                 }
             }
         });

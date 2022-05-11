@@ -6,10 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -31,7 +27,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_appmeter_icon"
+        android:icon="@mipmap/ic_launcher_icon"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
@@ -87,10 +83,10 @@
             android:label="블루투스 기기 선택"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name=".setting.AMtestActivity"
+            android:name=".AMtestActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".setting.AMBleConfigActivity"
+            android:name=".AMBleConfigActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
@@ -137,6 +133,7 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
             </intent-filter>
         </receiver> <!-- 20210823 -->
         <!-- 20220127 -->

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_menu"
-    android:layout_width="280sp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
     android:layout_gravity="right"
@@ -17,22 +16,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             android:background="@drawable/yellow_gradi_btn_rec"
-            android:weightSum="8">
+            >
 
             <TextView
-                android:layout_weight="6"
+                android:layout_weight="7"
                 android:id="@+id/menu_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/malgunbd"
+
                 android:text="메뉴"
                 android:textColor="@color/black"
                 android:autoSizeTextType="uniform"
@@ -42,31 +36,28 @@
 
             <Button
                 android:visibility="gone"
-                android:layout_weight="6"
+                android:layout_weight="7"
                 android:id="@+id/menu_update"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/malgunbd"
+
                 android:text="업데이트"
                 android:textColor="@color/black"
                 android:autoSizeTextType="uniform"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:background="@drawable/yellow_gradi_btn_rec"/>
+                android:paddingLeft="20dp"/>
 
             <Button
                 android:id="@+id/menu_btnclose"
-                android:layout_weight="1.5"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:background="@drawable/ic_cancel"/>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ic_cancel" />
 
         </LinearLayout>
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,8 +76,8 @@
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
                 android:text=""
-                android:textColor="#000000"
-                android:textSize="10sp" />
+                android:textColor="@color/white"
+                android:textSize="10dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,10 +105,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|left"
                 android:text="정보"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -145,10 +136,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|left"
                 android:text="거래집계"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
 
             <View
@@ -172,7 +163,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginTop="20dp"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:text="당일 거래 내역" />
 
             <TextView
@@ -182,7 +173,7 @@
                 android:layout_weight="1"
                 android:layout_marginBottom="26dp"
                 android:layout_marginTop="26dp"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:text="통합 운행 정보" />
 
             <TextView
@@ -191,7 +182,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="20dp"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:text="거래 내역 조회" />
         </LinearLayout>
 
@@ -220,10 +211,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|left"
                 android:text="빈차등메뉴"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -251,10 +242,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|left"
                 android:text="설정상태"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -283,8 +274,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
-                    android:fontFamily="@font/malgun"
-                    android:textSize="20sp"
+
+                    android:textSize="20dp"
                     android:text="모뎀"
                     android:paddingLeft="5dp"/>
 
@@ -295,7 +286,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="OFF"
-                    android:textSize="20sp" />
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -311,8 +302,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
-                    android:fontFamily="@font/malgun"
-                    android:textSize="20sp"
+
+                    android:textSize="20dp"
                     android:text="블루투스"
                     android:textColor="@color/white"
                     android:paddingLeft="5dp"/>
@@ -322,8 +313,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="@font/malgun"
-                    android:textSize="20sp"
+
+                    android:textSize="20dp"
                     android:text="OFF"/>
             </LinearLayout>
 
@@ -341,8 +332,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:fontFamily="@font/malgun"
-                    android:textSize="20sp"
+
+                    android:textSize="20dp"
                     android:text="가로"
                     android:textColor="@color/white"
                     android:paddingLeft="5dp"/>
@@ -352,8 +343,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="@font/malgun"
-                    android:textSize="20sp"
+
+                    android:textSize="20dp"
                     android:text="OFF"/>
             </LinearLayout>
 
@@ -371,8 +362,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:fontFamily="@font/malgun"
-                    android:textSize="20sp"
+
+                    android:textSize="20dp"
                     android:text="개인"
                     android:textColor="@color/white"
                     android:paddingLeft="5dp"/>
@@ -382,8 +373,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/malgun"
+                    android:textSize="20dp"
+
                     android:text="OFF"/>
             </LinearLayout>
 
@@ -403,7 +394,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:text="자동로그인"
                     android:paddingLeft="5dp"/>
                 <TextView
@@ -412,7 +403,7 @@
                     android:layout_height="30dp"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:text="OFF"/>
             </LinearLayout>
 
@@ -430,8 +421,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:fontFamily="@font/malgun"
-                    android:textSize="20sp"
+
+                    android:textSize="20dp"
                     android:text="앱 설정변경"
                     android:textColor="@color/white"
                     android:paddingLeft="5dp"/>
@@ -444,7 +435,7 @@
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/grey_gradi_btn"
                     android:padding="3dp"
-                    android:fontFamily="@font/malgun"
+
                     android:text="초기화"
                     android:textColor="@color/white"
                     android:layout_marginTop="5dp"
@@ -483,10 +474,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|left"
                 android:text="수기결제"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -514,10 +505,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|left"
                 android:text="영수증출력"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -547,10 +538,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|left"
                 android:text="현금영수증"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -579,10 +570,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
-                android:gravity="center_vertical|right"
-                android:text="결제취소"
+                android:gravity="center_vertical|left"
+                android:text="카드결제취소"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="25dp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -594,7 +585,7 @@
             android:layout_height="70dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/red_gradi_btn"
-            android:fontFamily="@font/malgunbd"
+
             android:text="금일 영업 마감"
             android:textColor="#ffffff"
             android:textStyle="bold"
@@ -608,7 +599,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/grey_gradi_btn"
-            android:fontFamily="@font/malgunbd"
+
             android:text="앱 종료"
             android:textColor="#FFFFFF"
             android:autoSizeTextType="uniform"

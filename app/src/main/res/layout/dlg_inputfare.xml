@@ -33,11 +33,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:gravity="center"
-                    android:fontFamily="@font/malgunbd"
+
                     android:autoSizeTextType="uniform"
                     android:text="요 금 입 력"
                     android:textColor="@color/yellow"
-                    android:padding="25dp"/>
+                    android:padding="20dp"/>
             </LinearLayout>
 
             <TextView
@@ -67,7 +67,7 @@
                     android:layout_marginRight="15dp"
                     android:gravity="center_vertical|right"
                     android:hint="0"
-                    android:fontFamily="@font/malgunbd"
+
                     android:inputType="number"
                     android:textColor="@color/black"
                     android:textSize="40dp"
@@ -102,9 +102,9 @@
                 android:gravity="center"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:fontFamily="@font/malgunbd"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+
                 android:text="취 소"
                 android:textColor="#ffffff"
                 android:textSize="30dp"
@@ -120,9 +120,9 @@
                 android:gravity="center"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:fontFamily="@font/malgunbd"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+
                 android:text="확 인"
                 android:textColor="@color/black"
                 android:textSize="30dp"
@@ -157,7 +157,7 @@
                 android:text="1"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"/>
@@ -172,7 +172,7 @@
                 android:text="2"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"/>
@@ -187,7 +187,7 @@
                 android:text="3"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
         </LinearLayout>
@@ -208,7 +208,7 @@
                 android:text="4"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"/>
@@ -223,7 +223,7 @@
                 android:text="5"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"/>
@@ -238,7 +238,7 @@
                 android:text="6"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
         </LinearLayout>
@@ -259,7 +259,7 @@
                 android:text="7"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"/>
@@ -274,7 +274,7 @@
                 android:text="8"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"/>
@@ -289,7 +289,7 @@
                 android:text="9"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
         </LinearLayout>
@@ -307,11 +307,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/yellow_gradi_btn"
                 android:button="@null"
-                android:text="취소"
-                android:fontFamily="@font/malgunbd"
+                android:text="C"
+
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="45dp"
                 android:textStyle="bold"
                 android:padding="10dp"
                 android:layout_marginRight="8dp"
@@ -327,7 +327,7 @@
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"/>
@@ -342,7 +342,7 @@
                 android:text="←"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="45sp"
+                android:textSize="45dp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
     </LinearLayout>

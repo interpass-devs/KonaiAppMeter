@@ -122,6 +122,10 @@ public class SQLiteControl {
     /** Drive TABLE QUERY **/
 
     public String[] select() {
+
+        if(Info.USEDBRUNDATA == false)
+            return new String[1];
+
         sqlite = helper.getWritableDatabase();
         Cursor c = sqlite.query(helper.TABLE_NAME, null, null, null, null, null, helper.COL_1+" desc", null);   //todo: 20210902
 
@@ -159,6 +163,10 @@ public class SQLiteControl {
     }
 
     public String[] selectToday() {
+
+        if(Info.USEDBRUNDATA == false)
+            return new String[0];
+
         sqlite = helper.getWritableDatabase();
 
         Date time = new Date();
@@ -170,7 +178,7 @@ public class SQLiteControl {
                 helper.COL_6,helper.COL_7,helper.COL_8,helper.COL_9, helper.COL_10, helper.COL_11, helper.COL_12};
         String[] returnValue = new String[columnName.length];
 
-        //Log.e("getCount", c.getCount() + "");
+        Log.d("getCount", c.getCount() + "");
         String[] getData = new String[c.getCount()];
 
         int cntValue = 0;
@@ -205,6 +213,9 @@ public class SQLiteControl {
 
     //세부내역 데이터 (1 row : 리스트 아님)
     public String[] selectedRecordDetail(String drvCode){
+        if(Info.USEDBRUNDATA == false)
+            return new String[1];
+
         sqlite = helper.getWritableDatabase();
 
         Cursor c = sqlite.query(helper.TABLE_NAME, null, "drvCode = '" + drvCode + "'", null, null, null, null, null );
@@ -244,6 +255,8 @@ public class SQLiteControl {
 
     //운행코드 생성
     public String selectKey() {
+        if(Info.USEDBRUNDATA == false)
+            return "0";
         sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT IFNULL(MAX(drvCode), '0') FROM " + helper.TABLE_NAME;
         Cursor cursor = null;
@@ -266,6 +279,11 @@ public class SQLiteControl {
 
 
     public void setUpdateLocation(String key, int drvPay, int drvPayDivision, int addPay,  String xPos, String yPos, int distance, int seconds, int state) {
+        if(Info.USEDBRUNDATA == false)
+            return;
+
+        if(Info.USEDBLOCATIONDATA == false && state == 0)
+            return;
 
         String o_CoordsX = "";
         String o_CoordsY = "";
@@ -278,7 +296,7 @@ public class SQLiteControl {
 
         while (cursor.moveToNext()) {
             o_CoordsX += cursor.getString(0);
-            //Log.e("X좌표", o_CoordsX);
+            Log.d("X좌표", o_CoordsX);
             break;
         }
 
@@ -327,6 +345,9 @@ public class SQLiteControl {
     }
 
     public void insert(String drvCode, int drvDivision, int drvPay, int drvPayDivision, int addPay, String coordsX, String coordsY, int nmode) {
+        if(Info.USEDBRUNDATA == false)
+            return ;
+
         sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Date time = new Date();
@@ -353,6 +374,9 @@ public class SQLiteControl {
     /**  TOTAL TABLE QUERY **/
 
     public void insertTotalData() {
+        if(Info.USEDBRUNDATA == false)
+            return;
+
         sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Date time = new Date();
@@ -375,6 +399,8 @@ public class SQLiteControl {
     }
 
     public String getTotalKey() {
+        if(Info.USEDBRUNDATA == false)
+            return "0";
         sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -399,12 +425,15 @@ public class SQLiteControl {
 
     //당일 이력
     public String todayTotSelect() {
+        String data = "0/0/0/0/0";
+        if(Info.USEDBRUNDATA == false)
+            return data;
+
         sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String selectkey = "SELECT " + helper.tCOL_3 + ", " + helper.tCOL_4 + ", " + helper.tCOL_6 + ", " + helper.tCOL_7 + ", " + helper.tCOL_5 + " FROM " + helper.TOTAL_TABLE_NAME + " WHERE tDate = '" + transFormat.format(time) + "'";
         Cursor cursor = null;
-        String data = "";
 
         try {
             cursor = sqlite.rawQuery(selectkey, null);
@@ -426,13 +455,15 @@ public class SQLiteControl {
     }
 
     public String todayPaymentCount() {
+        String data = "0/0";
+        if(Info.USEDBRUNDATA == false)
+            return data;
         sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String cashCnt = "SELECT COUNT(" + helper.COL_4 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59' AND " + helper.COL_4 + " = 0";
         String cardCnt = "SELECT COUNT(" + helper.COL_4 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59' AND " + helper.COL_4 + " = 1";
         Cursor cursor = null;
-        String data = "";
 
         try {
             cursor = sqlite.rawQuery(cashCnt, null);
@@ -469,13 +500,15 @@ public class SQLiteControl {
     }
 
     public String todayDriveCount() {
+        String data = "0";
+        if(Info.USEDBRUNDATA == false)
+            return data;
         sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String drvCnt = "SELECT COUNT(" + helper.COL_1 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59'";
         //String drvCnt = "SELECT COUNT(" + helper.COL_1 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59' AND " + helper.COL_4 + " AND " + helper.COM_12 + " = 1";
         Cursor cursor = null;
-        String data = "";
 
         try {
             cursor = sqlite.rawQuery(drvCnt, null);
@@ -499,10 +532,12 @@ public class SQLiteControl {
 
     //종합거래 총 횟수
     public String totalDriveCount(){
+        String data = "0";
+        if(Info.USEDBRUNDATA == false)
+            return data;
         sqlite = helper.getWritableDatabase();
         String totalDrvCnt = "SELECT COUNT(" + helper.COL_1 + ") FROM " + helper.TABLE_NAME;
         Cursor cursor = null;
-        String data = "";
 
         try {
             cursor = sqlite.rawQuery(totalDrvCnt, null);
@@ -523,6 +558,10 @@ public class SQLiteControl {
 
 
     public String[] totSelect() {
+
+        if(Info.USEDBRUNDATA == false)
+            return new String[1];
+
         sqlite = helper.getWritableDatabase();
         Cursor c = sqlite.query(helper.TOTAL_TABLE_NAME, null, null, null, null, null, null, null);
 
@@ -560,6 +599,8 @@ public class SQLiteControl {
 
     public void setUpdateTotalData(int drvDiv, int payment, int distance, int seconds, int extra) {
 
+        if(Info.USEDBRUNDATA == false)
+            return;
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String sdate = transFormat.format(time);
@@ -664,12 +705,15 @@ public class SQLiteControl {
 
     public String _getLastDriveDate(String sKeycode)
     {
+        String data = "0";
+        if(Info.USEDBRUNDATA == false)
+            return data;
+
         sqlite = helper.getWritableDatabase();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String drvdate = "SELECT " + helper.COL_8 + " FROM " + helper.TABLE_NAME + " WHERE drvCode = '" + sKeycode + "'";
         //String drvCnt = "SELECT COUNT(" + helper.COL_1 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59' AND " + helper.COL_4 + " AND " + helper.COM_12 + " = 1";
         Cursor cursor = null;
-        String data = "";
 
         try {
             cursor = sqlite.rawQuery(drvdate, null);
@@ -692,50 +736,268 @@ public class SQLiteControl {
 
     }
 
-/*
-   public String selectTotalDrvData() {
+/////////////////////////
+    /**  TIMSDATA TABLE INSERT **/
+    public String insertTimsdata(String url, String sdata, int event, int iok) {
         sqlite = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
         Date time = new Date();
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String selectkey = "SELECT SUM("+ helper.COL_3 +") , SUM(" + helper.COL_10 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59'";
-        // + " WHERE sDate BETWEEN '" + transFormat.format(time) + "' AND '" + transFormat.format(time) + "'"
-        Cursor cursor = null;
-        String data = "";
+        SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyyMMddHHmmssSS");
+        String drvdate = stTransFormat.format(time);
+        values.put(helper.TIMSCOL_1, drvdate);
+        values.put(helper.TIMSCOL_2, url);
+        values.put(helper.TIMSCOL_3, iok);
+        values.put(helper.TIMSCOL_4, event);
+        values.put(helper.TIMSCOL_5, sdata);
 
-        try {
-            cursor = sqlite.rawQuery(selectkey, null);
-            while (cursor.moveToNext()) {
-                data += cursor.getString(0) + "/" + cursor.getString(1);
-                break;
-            }
-        } catch(Exception e) {
-            data = "0";
-            e.printStackTrace();
-        }
+        long n = 0;
+        n = sqlite.insert(helper.TIMS_TABLE_NAME, null, values);
         sqlite.close();
 
-        return data;
+//        Log.d("TimsTIMS3", "sqlindex " + drvdate + " " + event + " " + sdata.length());
+
+        return drvdate;
+
     }
 
-
-   public void updateDrvRecord(String drvCode, int drvDivision, int drvPay, int drvPayDivision, int addPay, String coordsX, String coordsY) {
+    /** TIMSDATA TABLE QUERY **/
+    public String[] selectTimsResenddata() {
         sqlite = helper.getWritableDatabase();
+        String selectkey = "SELECT " + helper.TIMSCOL_1 + "," + helper.TIMSCOL_2 + "," + helper.TIMSCOL_3 + "," + helper.TIMSCOL_4 + "," + helper.TIMSCOL_5
+                + " FROM " + helper.TIMS_TABLE_NAME + " ORDER BY " + helper.TIMSCOL_1 + " ASC LIMIT 1";
+        Cursor c = sqlite.rawQuery(selectkey, null);
 
-        ContentValues value = new ContentValues();
+        String[] returnValue = new String[5];
 
-        value.put("drvCode", drvCode);
-        value.put("drvDivision", drvDivision);
-        value.put("drvPay", drvPay);
-        value.put("drvPayDivision", drvPayDivision);
-        value.put("addPay", addPay);
-        value.put("coordsX", coordsX);
-        value.put("coordsY", coordsY);
+        int cntValue = 0;
+
+        returnValue[0] = "FAIL";
+
+        while (c.moveToNext()) {
+            returnValue[0] = c.getString(0);
+            returnValue[1] = c.getString(1);
+            returnValue[2] = c.getInt(2) + "";
+            returnValue[3] = c.getString(3) + "";
+            returnValue[4] = c.getString(4) + "";
+
+            break;
+        }//while..
+
+        c.close();
+        sqlite.close();
+
+        return returnValue;
     }
 
-    public void delete(String drvCode) {
+    public String[] selectLastTimsdata(){
         sqlite = helper.getWritableDatabase();
-        sqlite.delete(helper.TABLE_NAME, "drvCode=?", new String[]{drvCode});
-    }*/
+        String selectkey = "SELECT " + helper.TIMSCOL_1 + "," + helper.TIMSCOL_2 + "," + helper.TIMSCOL_3 + "," + helper.TIMSCOL_4 + "," + helper.TIMSCOL_5 +
+                " FROM " + helper.TIMS_TABLE_NAME + " ORDER BY " + helper.TIMSCOL_1 + " DESC LIMIT 1";
+        Cursor c = sqlite.rawQuery(selectkey, null);
+
+        String[] returnValue = new String[5];
+
+        int cntValue = 0;
+
+        returnValue[0] = "FAIL";
+
+        while (c.moveToNext()){
+
+            returnValue[0] = c.getString(0);
+            returnValue[1] = c.getString(1);
+            returnValue[2] = c.getInt(2) + "";
+            returnValue[3] = c.getInt(3) + "";
+            returnValue[4] = c.getString(4);
+
+            break;
+        }//while..
+        c.close();
+        sqlite.close();
+
+        return returnValue;
+    }
+
+    /** TIMSDATA TABLE UPDATE **/
+    public void updateTimsdata(String drvdate){
+
+        sqlite = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(helper.TIMSCOL_3, 1);
+
+        sqlite.update(helper.TIMS_TABLE_NAME, values, "drvdate=?", new String[]{drvdate});
+        sqlite.close();
+    }
+
+    /** TIMSDATA TABLE CLEAR **/
+    public void updateTimsdataClear(){
+
+        sqlite = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        Date time = new Date();
+        SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String drvdate = stTransFormat.format(time) + "";
+
+        values.put(helper.TIMSCOL_3, 1);
+
+        sqlite.update(helper.TIMS_TABLE_NAME, values, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
+
+        sqlite.close();
+    }
+
+    /** TIMSDATA TABLE DELETE **/
+    public void deleteTimsdata() {
+
+        Date time = new Date();
+        SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String drvdate = stTransFormat.format(time) + "";
+        sqlite = helper.getWritableDatabase();
+        sqlite.delete(helper.TIMS_TABLE_NAME, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
+        sqlite.close();
+    }
+
+    /** TIMSDATA TABLE DELETE WITH DATE**/
+    public void deleteTimsdata(String drvdate) {
+        sqlite = helper.getWritableDatabase();
+        sqlite.delete(helper.TIMS_TABLE_NAME, "drvdate = ?", new String[]{drvdate});
+        sqlite.close();
+    }
+//////////////////////
+
+/**  DGTDATA TABLE INSERT **/
+    public void insertDtgdata(String keycode, String sdata, int iok) {
+        sqlite = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Date time = new Date();
+        SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyyMMddHHmmssSS");
+        values.put(helper.DTGCOL_1, stTransFormat.format(time));
+        values.put(helper.DTGCOL_2, keycode);
+        values.put(helper.DTGCOL_3, iok);
+        values.put(helper.DTGCOL_4, sdata);
+
+        sqlite.insert(helper.DTG_TABLE_NAME, null, values);
+        sqlite.close();
+    }
+
+/** DTGDATA TABLE QUERY **/
+    public String[] selectDtgResenddata(){
+        sqlite = helper.getWritableDatabase();
+        String selectkey = "SELECT " + helper.DTGCOL_1 + "," + helper.DTGCOL_2 + "," + helper.DTGCOL_3 + "," + helper.DTGCOL_4 + " FROM "
+                + helper.DTG_TABLE_NAME + " WHERE " + helper.DTGCOL_3 + " = 0 ORDER BY " + helper.DTGCOL_1 + " ASC LIMIT 1";
+        Cursor c = sqlite.rawQuery(selectkey, null);
+
+        String[] returnValue = new String[4];
+
+        int cntValue = 0;
+
+        returnValue[0] = "FAIL";
+
+        while (c.moveToNext()){
+            returnValue[0] = c.getString(0);
+            returnValue[1] = c.getString(1);
+            returnValue[2] = c.getInt(2) + "";
+            returnValue[3] = c.getString(3);
+
+            break;
+        }//while..
+        c.close();
+        sqlite.close();
+
+//        Log.d("TimsDtg", returnValue[0] + " " + returnValue[1] + " " + returnValue[2]);
+        return returnValue;
+    }
+
+    public String[] selectLastDtgdata(){
+        sqlite = helper.getWritableDatabase();
+        String selectkey = "SELECT " + helper.DTGCOL_1 + "," + helper.DTGCOL_2 + "," + helper.DTGCOL_3 + "," + helper.DTGCOL_4 + " FROM "
+                + helper.DTG_TABLE_NAME + " ORDER BY " + helper.DTGCOL_1 + " DESC LIMIT 1";
+        Cursor c = sqlite.rawQuery(selectkey, null);
+
+        String[] returnValue = new String[4];
+
+        int cntValue = 0;
+
+        returnValue[0] = "FAIL";
+
+        while (c.moveToNext()){
+
+            returnValue[0] = c.getString(0);
+            returnValue[1] = c.getString(1);
+            returnValue[2] = c.getInt(2) + "";
+            returnValue[3] = c.getString(3);
+
+            break;
+        }//while..
+        c.close();
+        sqlite.close();
+
+        return returnValue;
+    }
+
+/** DTGDATA TABLE UPDATE **/
+    public void updateDtgdata(String drvdate){
+
+        sqlite = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(helper.DTGCOL_3, 1);
+
+        sqlite.update(helper.DTG_TABLE_NAME, values, "drvdate=?", new String[]{drvdate});
+        sqlite.close();
+    }
+
+/** DTGDATA TABLE CLEAR **/
+    public void updateDtgdataClear(){
+
+        sqlite = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        Date time = new Date();
+        SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String drvdate = stTransFormat.format(time) + "";
+
+        values.put(helper.DTGCOL_3, 1);
+
+            sqlite.update(helper.DTG_TABLE_NAME, values, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
+
+        sqlite.close();
+    }
+
+/** DTGDATA TABLE DELETE **/
+    public void deleteDtgdata() {
+        Date time = new Date();
+        SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String drvdate = stTransFormat.format(time) + "";
+        sqlite = helper.getWritableDatabase();
+        sqlite.delete(helper.DTG_TABLE_NAME, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-1 months'))", new String[]{drvdate});
+        sqlite.close();
+    }
+
+    public void selecttest(){
+        Date time = new Date();
+        SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String drvdate = stTransFormat.format(time) + "";
+        sqlite = helper.getWritableDatabase();
+        String selectkey = "SELECT strftime('%Y%m%d%H%M%S', datetime('" + drvdate + "', '-1 days')) as strtime";
+//        String selectkey = "SELECT strftime('%Y%m%d%H%M%S', datetime(" + drvdate + ", '-1 days')) as strtime";
+        Cursor c = sqlite.rawQuery(selectkey, null);
+
+        String sreturn = "";
+
+        int cntValue = 0;
+
+        while (c.moveToNext()){
+
+            sreturn = c.getString(0);
+
+            break;
+        }//while..
+        c.close();
+        sqlite.close();
+
+//        Log.d("TimsDtg", "-------" + sreturn + " " + drvdate);
+
+
+    }
 
     public void closeDB() {
         sqlite.close();

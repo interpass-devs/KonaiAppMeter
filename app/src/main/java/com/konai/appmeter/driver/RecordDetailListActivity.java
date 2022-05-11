@@ -6,18 +6,16 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-//import android.support.annotation.Nullable;
-//import android.support.v4.widget.DrawerLayout;
-import androidx.annotation.Nullable;
-import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.konai.appmeter.driver.Adapter.ListItem;
+
+import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.VO.RecordVO;
@@ -25,11 +23,10 @@ import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
+//import android.support.annotation.Nullable;
+//import android.support.v4.widget.DrawerLayout;
 
 public class RecordDetailListActivity extends Activity {
     //DB SQLite
@@ -544,8 +541,8 @@ public class RecordDetailListActivity extends Activity {
             public void onClick(View v) {
                 /**
                 if (Info.REPORTREADY){
-                    if (Info.REPORTREADY){Info._displayLOG(true, "이전상태 빈차 - 대기 변경", "");}
-                    Info._displayLOG(true, "앱종료 버튼, 앱종료 ", "");
+                    if (Info.REPORTREADY){Info._displayLOG(Info.LOGDISPLAY, "이전상태 빈차 - 대기 변경", "");}
+                    Info._displayLOG(Info.LOGDISPLAY, "앱종료 버튼, 앱종료 ", "");
                 }
 
                 if (m_Service != null){

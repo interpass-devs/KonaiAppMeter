@@ -17,6 +17,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:gravity="center"
+
         android:text="홍길동"
         android:textColor="#000000"
         android:textSize="18sp"/>
@@ -28,6 +29,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:gravity="center"
+
         android:text="1234"
         android:textColor="#000000"
         android:textSize="18sp"/>
@@ -44,6 +46,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+
             android:text="수정"
             android:textColor="#ffffff"
             android:textSize="15sp"
@@ -53,10 +56,29 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+
             android:text="삭제"
             android:textSize="15sp"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:background="@drawable/dlg_delete_btn"/>
+<!--        <Button-->
+<!--            android:id="@+id/edit_btn"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="수정"-->
+<!--            android:textColor="#ffffff"-->
+<!--            android:textSize="15sp"-->
+<!--            android:background="@drawable/dlg_edit_btn"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/delete_btn"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="삭제"-->
+<!--            android:textSize="15sp"-->
+<!--            android:textColor="#ffffff"-->
+<!--            android:background="@drawable/dlg_delete_btn"/>-->
     </LinearLayout>
 
 </LinearLayout>

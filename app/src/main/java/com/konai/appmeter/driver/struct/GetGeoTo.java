@@ -181,7 +181,7 @@ public class GetGeoTo {
 
         bearing3 = bearingP1toP2(longitude2, latitude2, val[0], val[1]);
 
-        Info._displayLOG(true, "bearing " + bearing1 + " " + bearing2 + " " + bearing3 + " " + (360 - bearing3), "");
+        Info._displayLOG(Info.LOGDISPLAY, "bearing " + bearing1 + " " + bearing2 + " " + bearing3 + " " + (360 - bearing3), "");
 
         return val;
 

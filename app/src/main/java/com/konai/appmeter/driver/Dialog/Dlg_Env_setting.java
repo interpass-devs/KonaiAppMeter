@@ -2,27 +2,18 @@ package com.konai.appmeter.driver.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.setting;
-
-import static android.content.Context.WINDOW_SERVICE;
-
-import androidx.annotation.NonNull;
 
 public class Dlg_Env_setting extends Dialog {
 
@@ -69,32 +60,6 @@ public class Dlg_Env_setting extends Dialog {
         }else {
             setContentView(R.layout.dlg_env_setting_layout);
         }
-
-
-//
-//        if (setting.gOrient == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE){
-//            Log.d("check_ori", "가로");
-//            setContentView(R.layout.dlg_env_setting_layout_land);
-//        }else {
-//            Log.d("check_ori", "세로");
-//            setContentView(R.layout.dlg_env_setting_layout);
-//        }
-
-
-//        WindowManager m_WindowManager;
-//        DisplayMetrics m_matrix = new DisplayMetrics();
-//        m_WindowManager = (WindowManager) getContext().getSystemService(WINDOW_SERVICE);
-//        m_WindowManager.getDefaultDisplay().getMetrics(m_matrix);
-//        DisplayMetrics matrix = new DisplayMetrics();
-//        m_WindowManager.getDefaultDisplay().getMetrics(matrix);
-//        Log.d("metrix>>>>>>", "" + m_matrix.widthPixels + " " + m_matrix.heightPixels + "\ndenst " );  // 758 480   //1080 2050
-//
-//        if (m_matrix.widthPixels >= 750  && m_matrix.heightPixels >= 460){
-//            setContentView(R.layout.dlg_env_setting_layout_land);
-//        }else {
-//            setContentView(R.layout.dlg_env_setting_layout);
-//        }
-
 
         modem_normal = (RadioButton)findViewById(R.id.modem_normal);
         modem_woorinet = (RadioButton)findViewById(R.id.modem_woorinet);

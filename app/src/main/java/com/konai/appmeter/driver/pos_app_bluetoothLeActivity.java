@@ -16,12 +16,10 @@
 
 package com.konai.appmeter.driver;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-//import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
@@ -44,15 +42,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import androidx.core.app.ActivityCompat;
-
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import android.bluetooth.BluetoothManager;
 
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
@@ -65,7 +61,7 @@ public class pos_app_bluetoothLeActivity extends ListActivity {
     private BluetoothLeScanner mLEScanner;
     private ScanSettings settings;
     private List<ScanFilter> filters;
-    setting setting = new setting();
+//20220407 tra..sh    setting setting = new setting();
 
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after 10 seconds.
@@ -121,6 +117,10 @@ public class pos_app_bluetoothLeActivity extends ListActivity {
             return;
         }
 
+        if(setting.BLESCANNING_MODE == true) //20220407
+            Info.m_Service.stopScanBLE();
+
+        setting.BLESCANNING_MODE = true; //20220407
     }
 
     @Override
@@ -173,6 +173,8 @@ public class pos_app_bluetoothLeActivity extends ListActivity {
 
     // BLE 스캔중지
     private void stopScanBLE() {
+        if(mBluetoothAdapter.isEnabled() == false) //20220407
+            return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBluetoothAdapter.getBluetoothLeScanner().stopScan(mScanCallback);
         } else {
@@ -216,16 +218,16 @@ public class pos_app_bluetoothLeActivity extends ListActivity {
         if (!mBluetoothAdapter.isEnabled()) {
             if (!mBluetoothAdapter.isEnabled()) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
+//20220325 tra..sh                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+//                    // TODO: Consider calling
+//                    //    ActivityCompat#requestPermissions
+//                    // here to request the missing permissions, and then overriding
+//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                    //                                          int[] grantResults)
+//                    // to handle the case where the user grants the permission. See the documentation
+//                    // for ActivityCompat#requestPermissions for more details.
+//                    return;
+//                }
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
@@ -244,6 +246,15 @@ public class pos_app_bluetoothLeActivity extends ListActivity {
 
         scanLeDevice(false); //20210310
         scanLeDevice(true);
+    }
+
+//20220407
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        setting.BLESCANNING_MODE = false; //20220407
+
     }
 
     @Override
@@ -477,7 +488,7 @@ public class pos_app_bluetoothLeActivity extends ListActivity {
                                             setting.BLUETOOTH_DEVICE_ADDRESS = device.getAddress();
                                             setting.BLUETOOTH_DEVICE_NAME = device.getName();
 
-                                            Info.m_Service.connectAM();
+//20220407                                            Info.m_Service.connectAM();
 
                                             stopScanBLE(); //20210126
 

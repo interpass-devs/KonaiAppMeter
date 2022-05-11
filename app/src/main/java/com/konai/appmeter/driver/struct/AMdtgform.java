@@ -1,7 +1,5 @@
 package com.konai.appmeter.driver.struct;
 
-import java.text.SimpleDateFormat;
-
 public class AMdtgform {
 
     public long igpstime;

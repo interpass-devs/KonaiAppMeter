@@ -55,7 +55,6 @@
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:orientation="horizontal">
-
                     <TextView
                         android:id="@+id/tv_receiptinfo"
                         android:layout_width="match_parent"
@@ -63,10 +62,10 @@
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="3dp"
                         android:gravity="center"
+                        android:inputType="none"
                         android:text="카드를 인식 해주세요"
                         android:textSize="30dp"
                         android:textStyle="bold">
-
                     </TextView>
 
                 </LinearLayout>

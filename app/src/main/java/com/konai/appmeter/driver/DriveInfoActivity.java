@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.R;
 
 public class DriveInfoActivity extends Activity {
 
@@ -71,12 +70,11 @@ public class DriveInfoActivity extends Activity {
 //        initializecontents(getResources().getConfiguration().orientation);
         initializecontents(setting.gOrient);
 
-        Info.init_SQLHelper(this);
+//20220415 ver157        Info.init_SQLHelper(this);
 
         String[] values = Info.sqlite.totSelect();
 
-
-
+        if(values.length > 1)
         for(int i=0; i<values.length; i++) {
 
             Log.e("getData_total", values.length + "");
@@ -137,10 +135,10 @@ public class DriveInfoActivity extends Activity {
             initializecontents(Configuration.ORIENTATION_PORTRAIT);
         }
 
-        Info.init_SQLHelper(this);
+//20220415 ver157        Info.init_SQLHelper(this);
 
         String[] values = Info.sqlite.totSelect();
-
+        if(values.length > 1)
         for(int i=0; i<values.length; i++) {
 
             Log.d("total_cnt", values.length+"");

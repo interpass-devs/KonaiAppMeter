@@ -9,6 +9,7 @@
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/edit_backgroud_radius.xml" value="0.3065" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/edit_backgroud_radius_bottomright.xml" value="0.193" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/edit_backgroud_radius_rightbottom.xml" value="0.263" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/edit_background.xml" value="0.2695" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/empty_bg.xml" value="0.263" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/empty_bg_black.xml" value="0.1805" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/empty_bg_grey.xml" value="0.2675" />
@@ -18,11 +19,15 @@
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/ic_bluetooth_green.xml" value="0.232" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/ic_bluetooth_green_touch_down.xml" value="0.293" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/ic_cancel.xml" value="0.2755" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/ic_menu.xml" value="0.2235" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/ic_touch.xml" value="0.2185" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/layout_edit_round_radius.xml" value="0.2235" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/layout_edit_round_radius_white_line.xml" value="0.219" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/layout_line_round_radius_dark.xml" value="0.263" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/layout_line_round_radius_dark_pink.xml" value="0.2415" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/layout_line_round_radius_dark_yellow.xml" value="0.1805" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/layout_line_round_radius_white_recyler.xml" value="0.2695" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/layout_round_radius_white.xml" value="0.2695" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/menu_borders.xml" value="0.22" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/menu_borders_bottom.xml" value="0.2755" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/ok_btn_blue_round_clicked_bg.xml" value="0.1805" />
@@ -45,13 +50,17 @@
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/activity_new_main.xml" value="0.253125" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/activity_newmain_h.xml" value="0.25" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/activity_newmain_v.xml" value="0.22" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/activity_register_driver.xml" value="0.26458333333333334" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/activity_register_driver_h.xml" value="0.26458333333333334" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/activity_splash.xml" value="0.25677083333333334" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/activity_timsinfo.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/ambleconfig.xml" value="0.24322916666666666" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/ambleconfig_horizontal.xml" value="0.25" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/amtest.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_basic.xml" value="0.21510416666666668" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_env_setting_layout.xml" value="0.5" />
-        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_inputfare.xml" value="0.25" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_inptcreceipt_info.xml" value="0.3515625" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_inputfare.xml" value="0.33" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_inputfare_h.xml" value="0.25" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_res_payment.xml" value="0.24895833333333334" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/dlg_select_driver.xml" value="0.18125" />
@@ -69,11 +78,26 @@
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/newmainframe3.xml" value="0.25" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/newmainframetop.xml" value="0.2947916666666667" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/layout/recycler_select_driver.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2235" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2755" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main_20220211/main/res/layout/activity_menu.xml" value="0.20625" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main_20220211/main/res/layout/dlg_inputfare.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main_20220211/main/res/layout/dlg_inputfare_h.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main_20220211/main/res/layout/dlg_res_payment.xml" value="0.3515625" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main_20220211/main/res/layout/newmainframe2.xml" value="0.2708333333333333" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main_20220211/main/res/layout/newmainframe2_copy.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/drawable/radius_btn_bottom_right_grey_gradi.xml" value="0.2085" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/drawable/radius_btn_bottom_right_yellow_gradi.xml" value="0.2085" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/drawable/yellow_gradi_btn.xml" value="0.2085" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout-land/ambleconfig_horizontal.xml" value="0.3837837837837838" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/ambleconfig.xml" value="0.25" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/ambleconfig_horizontal.xml" value="0.22" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/ambleconfig_horizontal_original.xml" value="0.28854166666666664" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/ambleconfig_original.xml" value="0.221875" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/layout_keyboard.xml" value="0.1875" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/lbsmsg2.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/newmainframe1.xml" value="0.25833333333333336" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20220504/app/src/main/res/layout/newmainframe2.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/Interpass/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/auto_complete_list.xml" value="0.23229166666666667" />
       </map>
     </option>

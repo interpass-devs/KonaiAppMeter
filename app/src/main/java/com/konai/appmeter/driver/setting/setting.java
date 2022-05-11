@@ -1,7 +1,6 @@
 package com.konai.appmeter.driver.setting;
 
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 
 import java.util.UUID;
 
@@ -44,9 +43,12 @@ public class setting {
     public int VERSION_CODE = 0;
     public int SERVER_VERSION_CODE = 0;
 
-    public String BASEDOMAIN = "https://acc.psweb.kr/drvlogs/";
+    public static String BASEDOMAIN = "https://acc.psweb.kr/drvlogs/";
+    public static String FILESERVERDOMAIN = "https://postaxis.psweb.kr/";
+    public static String FILESERVERAPK= FILESERVERDOMAIN + "posapk/";
+    public static String FILESERVERSUBURB = FILESERVERDOMAIN + "resources/pos_web/suburbs/";
 
-    public static String UPFILENAME = "appmeter_l.apk"; //"appmeter.apk";
+    public static String UPFILENAME = "appmeter.apk"; //"appmeter.apk";
 
     //20210823
     public final static String BROADCAST_TMSG = "com.konai.appmeter.driver.TMSG";
@@ -57,6 +59,7 @@ public class setting {
 
     /////////////////////////
     //bluetooth 20200711
+    public static boolean BLESCANNING_MODE = false; //20220407
     public static final long SCAN_PERIOD = 15000;
     public static final String AM100 = "AM100";
     public static boolean BLUETOOTH_FINDEND = false; //20210520

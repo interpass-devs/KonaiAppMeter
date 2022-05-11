@@ -27,112 +27,123 @@
                 android:id="@+id/emptylayouts_new"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:weightSum="2"
                 android:orientation="vertical"
                 android:background="@drawable/empty_bg_black">
                 <LinearLayout
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginRight="20dp"
                     android:orientation="horizontal">
+
                     <LinearLayout
-                        android:visibility="gone"
-                        android:layout_weight="0"
+                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginRight="10dp">
+                        android:layout_marginRight="3dp">
                         <ImageView
+                            android:visibility="visible"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:src="@drawable/ic_location_btn"/>
-                        <TextView
+                        <com.konai.appmeter.driver.util.FontFitTextView
+                            android:visibility="visible"
                             android:id="@+id/textView5new"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:gravity="center_vertical"
                             android:text="운행거리"
-                            android:textColor="@color/white"
-                            android:autoSizeTextType="uniform" />
+                            android:textColor="@color/white" />
                     </LinearLayout>
-                    <RelativeLayout
-                        android:layout_weight="1"
+
+                    <LinearLayout
+                        android:layout_weight="1.3"
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:gravity="right"
+                        android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_marginTop="30dp">
-                        <TextView
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="3dp">
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/curemptydist"
-                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:autoSizeTextType="uniform"
-                            android:gravity="right"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center_vertical|right"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:text="0"
                             android:textColor="@color/white" />
-                        <TextView
-                            android:layout_width="50dp"
-                            android:layout_height="60dp"
-                            android:layout_marginRight="30dp"
-                            android:layout_toRightOf="@+id/curemptydist"
-                            android:gravity="center_vertical"
+
+                        <com.konai.appmeter.driver.util.FontFitTextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.4"
+                            android:gravity="center_vertical|right"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="8dp"
                             android:text="km"
-                            android:textSize="30sp"
                             android:textColor="@color/white"
-                            android:paddingTop="10dp"/>
-                    </RelativeLayout>
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
                 </LinearLayout>
-                <!-- 빈차요금 -->
+
                 <LinearLayout
-                    android:layout_weight="2"
+                    android:layout_weight="0.25"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:orientation="horizontal">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="130dp"
-                        android:gravity="right"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="30dp">
 
-                        <TextView
+                </LinearLayout>
+
+                <!-- 빈차요금 -->
+                <LinearLayout
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/textView6new"
-                            android:layout_width="match_parent"
+                            android:layout_weight="5"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:autoSizeTextType="uniform"
-                            android:gravity="right"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="15dp"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center_vertical|right"
                             android:text="0"
+                            android:textStyle="bold"
                             android:textColor="@color/yellow" />
                         <TextView
-                            android:layout_width="50dp"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:gravity="bottom"
-                            android:layout_marginRight="30dp"
-                            android:layout_toRightOf="@+id/textView6new"
+                            android:gravity="center"
+                            android:paddingTop="18dp"
+                            android:paddingBottom="10dp"
+                            android:layout_marginRight="5dp"
                             android:text="원"
                             android:textColor="@color/yellow"
-                            android:textSize="50sp"
-                            android:paddingBottom="25dp"/>
-                    </RelativeLayout>
+                            android:textSize="50dp"
+/>
                 </LinearLayout>
                 <!-- 상세보기 버튼 -->
                 <LinearLayout
-                    android:layout_weight="1"
+                    android:layout_weight="0.6"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:orientation="horizontal"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:paddingRight="30dp">
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="20dp">
                     <TextView
                         android:id="@+id/show_empty_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical|right"
                         android:background="@drawable/layout_line_round_radius_dark"
                         android:gravity="center"
                         android:paddingLeft="15dp"
@@ -140,7 +151,7 @@
                         android:paddingRight="15dp"
                         android:paddingBottom="5dp"
                         android:text="상세보기"
-                        android:textSize="25sp" />
+                        android:textSize="25dp" />
                 </LinearLayout>
             </LinearLayout>
             <!-- 빈차 화면 end -->
@@ -176,27 +187,27 @@
                             android:layout_width="50dp"
                             android:layout_height="60dp"
                             android:src="@drawable/ic_location_btn"/>
-                        <TextView
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/textView5"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:gravity="center_vertical"
-                            android:fontFamily="@font/malgun"
                             android:text="운행거리"
                             android:textColor="@color/white"
-                            android:textSize="24sp"/>
+                            android:textSize="30sp"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_weight="1.7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
-                        <TextView
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/ntv_daytotdist"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:gravity="center_vertical|right"
-                            android:fontFamily="@font/malgunbd"
                             android:textSize="30sp"
                             android:text="0.00 Km"
                             android:textColor="@color/white"
@@ -223,126 +234,150 @@
                             android:layout_width="50dp"
                             android:layout_height="60dp"
                             android:src="@drawable/ic_total_deal_btn"/>
-                        <TextView
+
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/textView6"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:gravity="center_vertical"
-                            android:fontFamily="@font/malgun"
-                            android:text="총거래"
+                            android:text="총 거래 "
                             android:textColor="@color/white"
-                            android:textSize="20sp"/>
+                            android:textSize="30sp"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_weight="1.7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
-                        <TextView
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/ntv_daytotdrvcnt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:gravity="center_vertical|right"
-                            android:fontFamily="@font/malgunbd"
-                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            android:textSize="30dp"
                             android:text="0 회"
                             android:textColor="@color/white"
                             android:layout_marginRight="15dp"/>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.7"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="@drawable/edit_backgroud_radius"
-                    android:padding="10dp">
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:weightSum="2.0">
                     <LinearLayout
-                        android:layout_weight="1.2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_weight="0.7"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal">
                         <LinearLayout
-                            android:layout_weight="0.6"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_weight="1.3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:orientation="horizontal">
                             <ImageView
                                 android:id="@+id/imageView3"
                                 android:layout_width="50dp"
-                                android:layout_height="60dp"
+                                android:layout_height="50dp"
                                 android:src="@drawable/ic_total_income_btn"/>
-                            <TextView
+                            <com.konai.appmeter.driver.util.FontFitTextView
                                 android:id="@+id/textView7"
                                 android:layout_width="match_parent"
-                                android:layout_height="60dp"
+                                android:layout_height="50dp"
                                 android:gravity="center_vertical"
-                                android:fontFamily="@font/malgun"
-                                android:text="총수입"
+                                android:text="총 수입 "
                                 android:textColor="@color/white"
-                                android:textSize="20sp"/>
+                                android:textSize="30sp"/>
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_weight="0.7"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:orientation="vertical"
-                            android:paddingLeft="20dp">
                             <TextView
-                                android:id="@+id/hide_report"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/malgun"
-                                android:text="거래집계"
-                                android:textStyle="bold"
-                                android:textColor="@color/dark_grey"
-                                android:background="@drawable/yellow_gradi_btn"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:layout_marginBottom="10dp"/>
-                            <TextView
-                                android:id="@+id/hide_empty_icon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/malgun"
-                                android:text="돌아가기"
-                                android:textStyle="bold"
-                                android:textColor="@color/colorAccent"
-                                android:background="@drawable/layout_line_round_radius_dark_pink"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"/>
-                        </LinearLayout>
+                                android:id="@+id/resettfare"
+                                android:layout_weight="1.7"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical|right"
+                                android:paddingTop="7dp"
+                                android:textSize="25dp"
+                                android:text="->금액마감"
+                                android:textColor="#8C8991"
+                                android:layout_marginRight="15dp"/>
+
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="2.5"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/resettfare"
-                            android:layout_weight="0.5"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:gravity="center_vertical|right"
-                            android:fontFamily="@font/malgun"
-                            android:textSize="24sp"
-                            android:text="금액마감"
-                            android:textColor="#8C8991"
-                            android:layout_marginRight="15dp"/>
+                        android:layout_weight="1.3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal">
 
-                        <TextView
+                        <LinearLayout
+                            android:layout_weight="1.3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:gravity="top"
+                                    android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/hide_report"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="거래집계"
+                                    android:textStyle="bold"
+                                    android:textSize="20dp"
+                                    android:textColor="@color/dark_grey"
+                                    android:background="@drawable/yellow_gradi_btn"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:gravity="bottom"
+                                    android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/hide_empty_icon"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="돌아가기"
+                                    android:textStyle="bold"
+                                    android:textSize="20dp"
+                                    android:textColor="@color/colorAccent"
+                                    android:background="@drawable/layout_line_round_radius_dark_pink"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"/>
+                                </LinearLayout>
+
+                        </LinearLayout>
+
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/ntv_daytotpay"
-                            android:layout_weight="1.5"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_weight="1.7"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:gravity="center_vertical|right"
-                            android:fontFamily="@font/malgunbd"
                             android:textSize="38sp"
                             android:text="0.00 원"
                             android:textColor="@color/yellow"
@@ -358,16 +393,18 @@
 
             <!-- 주행화면 -->
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/drivelayouts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:weightSum="2.0"
                 android:orientation="vertical"
                 android:background="@drawable/empty_bg_black">
                 <LinearLayout
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.4"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginRight="20dp"
                     android:orientation="horizontal">
                     <LinearLayout
                         android:visibility="gone"
@@ -395,13 +432,14 @@
                             android:textStyle="bold"/>
                     </LinearLayout>
 
+<!--20220303 tra..sh start-->
                     <LinearLayout
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:paddingLeft="30dp">
+                        android:paddingLeft="15dp">
                         <com.konai.appmeter.driver.struct.CircleProgressBar
                             android:id="@+id/progressremain1"
                             android:layout_width="43dp"
@@ -416,7 +454,7 @@
                             app:progress_stroke_width="8dp"
                             app:progress_shader="sweep"
                             app:progress_style="solid_line"
-                            app:progress_text_color="#3C52CF"/>
+                            app:progress_text_color="#ffaaaaaa"/>
                         <ProgressBar
                             android:id="@+id/progressremain2"
                             android:layout_marginLeft="5dp"
@@ -428,113 +466,141 @@
                             android:layout_width="match_parent"
                             android:layout_height="8dp" />
                     </LinearLayout>
+<!--20220303 tra..sh end-->
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_weight="1.3"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="right"
                         android:orientation="horizontal">
-                        <TextView
+
+                        <com.konai.appmeter.driver.util.FontFitTextView
                             android:id="@+id/ntv_boardkm"
-                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:autoSizeTextType="uniform"
-                            android:fontFamily="@font/malgun"
-                            android:gravity="right"
-                            android:paddingRight="20dp"
-                            android:paddingTop="30dp"
-                            android:paddingBottom="20dp"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center_vertical|right"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:text="0"
                             android:textColor="@color/white" />
-                    </RelativeLayout>
+
+                        <com.konai.appmeter.driver.util.FontFitTextView
+                            android:layout_weight="0.4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical|right"
+                            android:text="km"
+                            android:textColor="@color/white"
+                            android:textSize="30sp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="8dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 할증 30 % -->
+                <LinearLayout
+                    android:layout_weight="0.25"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/ntv_gpstext"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="left"
+                        android:paddingBottom="2dp"
+                        android:layout_weight="0.0"
+                        android:background="@drawable/radius_extra_button"
+                        android:text="OBD"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="#000000" />
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/ntv_callfare"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left|bottom"
+                        android:autoSizeTextType="uniform"
+                        android:text="+1000"
+                        android:paddingLeft="30dp"
+                        />
+                    <com.konai.appmeter.driver.util.FontFitTextView
+                        android:id="@+id/ntv_status"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:paddingTop="5dp"
+                        android:gravity="right|bottom"
+                        android:text="+ 할증 30%"
+                        android:textColor="#E91E63"
+
+                        android:paddingLeft="15dp"
+
+                        android:background="@color/black" />
+                </LinearLayout>
+
+                    <!-- 주행요금 -->
+                <LinearLayout
+                        android:id="@+id/nowfare_layout"
+                        android:layout_weight="0.8"
+                        android:weightSum="6"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                    android:paddingLeft="30dp"
+                    android:layout_marginRight="20dp"
+                        android:gravity="center_vertical|right"
+                        android:orientation="horizontal">
+<!--
+                        <TextView
+                            android:id="@+id/ntv_nowfare"
+                            android:layout_weight="5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:autoSizeTextType="uniform"
+                            android:gravity="center_vertical|right"
+                            android:text="13,800"
+                            android:textColor="@color/yellow"
+
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"/>
+-->
+                        <com.konai.appmeter.driver.util.FontFitTextView
+                            android:id="@+id/ntv_nowfare"
+                            android:layout_weight="5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:textSize="10sp"
+
+                            android:gravity="center_vertical|right"
+                            android:text="13,800"
+                            android:textColor="@color/yellow"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical|right"
+                            android:text="원"
+                            android:textColor="@color/yellow"
+                            android:paddingTop="4dp"
+                            android:textSize="50dp"
+
+                            />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
+                    android:layout_weight="0.05"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:orientation="vertical">
-                    <!-- 할증 30 % -->
-                    <LinearLayout
-                        android:layout_weight="0.5"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:orientation="horizontal">
-                        <Button
-                            android:id="@+id/ntv_gpstext"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_gravity="left"
-                            android:paddingBottom="2dp"
-                            android:layout_weight="0.0"
-                            android:background="@drawable/radius_extra_button"
-                            android:text="OBD"
-                            android:autoSizeTextType="uniform"
-                            android:textColor="#000000" />
-                        <TextView
-                            android:layout_weight="1"
-                            android:id="@+id/ntv_callfare"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:gravity="left|bottom"
-                            android:autoSizeTextType="uniform"
-                            android:text="+1000"
-                            android:paddingLeft="30dp"
-                            android:fontFamily="@font/malgunsl"/>
-                        <Button
-                            android:id="@+id/ntv_status"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:gravity="right|bottom"
-                            android:autoSizeTextType="uniform"
-                            android:text="+ 할증 30%"
-                            android:textColor="#E91E63"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="30dp"
-                            android:fontFamily="@font/malgunbd"
-                            android:background="@color/black"
-                            android:layout_marginRight="10dp"/>
-                    </LinearLayout>
-                    <!-- 주행요금 -->
-                    <LinearLayout
-                        android:id="@+id/nowfare_layout"
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:gravity="right">
-                        <TextView
-                            android:id="@+id/ntv_nowfare"
-                            android:layout_weight="4.5"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:autoSizeTextType="uniform"
-                            android:gravity="center|right"
-                            android:text="13,800"
-                            android:textColor="@color/yellow"
-                            android:fontFamily="@font/malgunbd"
-                            android:paddingTop="25dp"
-                            android:paddingBottom="25dp"/>
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center|right"
-                            android:text="원"
-                            android:textColor="@color/yellow"
-                            android:textSize="50sp"
-                            android:fontFamily="@font/malgunsl"
-                            android:layout_marginRight="30dp"/>
-                    </LinearLayout>
                 </LinearLayout>
-
 
                 <!-- 할증켜짐/ 시외꺼짐 버튼 -->
                 <LinearLayout
@@ -545,7 +611,8 @@
                     android:layout_gravity="right"
                     android:gravity="right"
                     android:paddingLeft="40dp"
-                    android:paddingRight="40dp">
+                    android:paddingRight="40dp"
+                    android:paddingTop="20dp">
                     <Button
                         android:id="@+id/nbtn_extra"
                         android:layout_weight="1"
@@ -555,7 +622,7 @@
                         android:background="@drawable/layout_line_round_radius_dark"
                         android:gravity="center"
                         android:text="할증 꺼짐"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         android:textColor="@color/white"
                         android:layout_marginRight="5dp"
                         android:padding="8dp"/>
@@ -568,7 +635,7 @@
                         android:background="@drawable/layout_line_round_radius_dark"
                         android:gravity="center"
                         android:text="시외 꺼짐"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         android:textColor="@color/white"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -582,7 +649,7 @@
                         android:background="@drawable/layout_line_round_radius_dark"
                         android:gravity="center"
                         android:text="복합 꺼짐"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         android:textColor="@color/white"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -597,13 +664,13 @@
 
             <!-- 결제화면 -->
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/paymentlayouts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="@drawable/empty_bg_grey"
-
+                android:weightSum="5.5"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:paddingLeft="30dp"
@@ -622,11 +689,11 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
                         android:text="운행거리"
+                        android:textStyle="bold"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
+                        android:paddingTop="5dp"
                         android:paddingRight="20dp"/>
                     <TextView
                         android:id="@+id/ntv_resdistance"
@@ -634,12 +701,22 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:fontFamily="@font/malgunbd"
-                        android:text="0 km"
+                        android:textStyle="bold"
+                        android:text="0"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
-                        android:paddingLeft="20dp"/>
+
+                        android:paddingRight="5dp"/>
+                    <com.konai.appmeter.driver.util.FontFitTextView
+                        android:id="@+id/textView111"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
+                        android:paddingTop="5dp"
+                        android:gravity="center|right"
+
+                        android:text="km"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
                 <!-- 운행요금 -->
                 <LinearLayout
@@ -655,11 +732,11 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
+                        android:textStyle="bold"
                         android:text="운행요금"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
+                        android:paddingTop="5dp"
                         android:paddingRight="20dp"/>
                     <TextView
                         android:id="@+id/ntv_respayment"
@@ -667,12 +744,22 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:fontFamily="@font/malgunbd"
-                        android:text="0 원"
+                        android:textStyle="bold"
+                        android:text="0"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
-                        android:paddingLeft="20dp"/>
+
+                        android:paddingRight="5dp"/>
+                    <TextView
+                        android:id="@+id/textView121"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
+                        android:autoSizeTextType="uniform"
+                        android:paddingTop="5dp"
+                        android:gravity="center|right"
+                        android:text="원"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
                 <!-- 호출요금 -->
                 <LinearLayout
@@ -688,11 +775,11 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
+                        android:textStyle="bold"
                         android:text="호출요금"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
+                        android:paddingTop="5dp"
                         android:paddingRight="20dp"/>
                     <TextView
                         android:id="@+id/ntv_rescallpay"
@@ -700,12 +787,22 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:fontFamily="@font/malgunbd"
-                        android:text="0 원"
+                        android:textStyle="bold"
+                        android:text="0"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
-                        android:paddingLeft="20dp"/>
+
+                        android:paddingRight="5dp"/>
+                    <TextView
+                        android:id="@+id/textView151"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
+                        android:autoSizeTextType="uniform"
+                        android:paddingTop="5dp"
+                        android:gravity="center|right"
+                        android:text="원"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
                 <!-- 추가요금 -->
                 <LinearLayout
@@ -721,32 +818,32 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
+                        android:textStyle="bold"
                         android:text="추가요금"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
+                        android:paddingTop="5dp"
                         android:paddingRight="20dp"/>
                     <TextView
                         android:id="@+id/nedt_addpayment"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:fontFamily="@font/malgunbd"
+                        android:textStyle="bold"
                         android:gravity="center|right"
                         android:text="0"
                         android:textColor="@color/colorAccent"
                         android:autoSizeTextType="uniform"
-                        android:paddingTop="10dp"
-                        android:paddingRight="10dp"/>
+
+                        android:paddingRight="5dp"/>
                     <TextView
                         android:id="@+id/textView14"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.35"
+                        android:layout_weight="0.3"
                         android:autoSizeTextType="uniform"
-                        android:gravity="right"
-                        android:textStyle="bold"
+                        android:paddingTop="5dp"
+                        android:gravity="center|right"
                         android:text="원"
                         android:textColor="@color/white"/>
                 </LinearLayout>
@@ -760,16 +857,17 @@
                     android:layout_marginBottom="15dp"/>
                 <TextView
                     android:visibility="gone"
+                    android:layout_weight="2"
                     android:id="@+id/pay_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="결제요금"
-                    android:textColor="#ffc700"
-                    android:textSize="55sp"
-                    android:fontFamily="@font/malgun"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|bottom"
+                    android:text=""
+                    android:textColor="@color/yellow"
+                    android:textSize="40sp"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"/>
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp"/>
                 <!-- 합계 / 수기결제-->
                 <LinearLayout
                     android:visibility="visible"
@@ -778,28 +876,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/ntv_restotpayment_title"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|left"
-                        android:fontFamily="@font/malgun"
-                        android:text="합계"
-                        android:textColor="@color/white"
-                        android:autoSizeTextType="uniform"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"/>
-                    <TextView
+                    <com.konai.appmeter.driver.util.FontFitTextView
                         android:id="@+id/ntv_restotpayment"
-                        android:layout_weight="1.5"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:fontFamily="@font/malgunbd"
+                        android:gravity="center_vertical|right"
                         android:text="13,800 원"
+                        android:textStyle="bold"
                         android:textColor="@color/yellow"
-                        android:autoSizeTextType="uniform"/>
+                        android:paddingTop="1dp"
+                        android:paddingBottom="5dp" />
                 </LinearLayout>
             </LinearLayout>
             <!-- 결제화면 end -->
@@ -874,7 +960,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
+
                         android:text="운행거리"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"/>
@@ -884,7 +970,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:fontFamily="@font/malgunbd"
+
                         android:text="0 km"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"/>
@@ -901,7 +987,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
+
                         android:text="운행요금"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"/>
@@ -911,7 +997,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:fontFamily="@font/malgunbd"
+
                         android:text="0 원"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"/>
@@ -928,7 +1014,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
+
                         android:text="호출요금"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"/>
@@ -938,7 +1024,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:fontFamily="@font/malgunbd"
+
                         android:text="0 원"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"/>
@@ -955,7 +1041,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
+
                         android:text="추가요금"
                         android:textColor="@color/white"
                         android:autoSizeTextType="uniform"/>
@@ -965,7 +1051,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:fontFamily="@font/malgunbd"
+
                         android:gravity="center|right"
                         android:text="0 원"
                         android:textColor="@color/colorAccent"
@@ -988,20 +1074,16 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|left"
-                        android:fontFamily="@font/malgun"
                         android:text="합계"
-                        android:textColor="@color/white"
-                        android:autoSizeTextType="uniform"/>
+                        android:textColor="@color/white" />
                     <TextView
                         android:id="@+id/ntv_finendpay"
                         android:layout_weight="1.5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center|right"
-                        android:fontFamily="@font/malgunbd"
                         android:text="13,800 원"
-                        android:textColor="@color/yellow"
-                        android:autoSizeTextType="uniform"/>
+                        android:textColor="@color/yellow" />
                 </LinearLayout>
             </LinearLayout>
             <!-- 결제화면 end -->

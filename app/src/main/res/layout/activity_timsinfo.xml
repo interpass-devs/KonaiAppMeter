@@ -4,7 +4,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/background_new"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="10dp">
@@ -36,21 +36,21 @@
                 android:id="@+id/textView9"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
+                android:layout_weight="6.8"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+
                 android:autoSizeTextType="uniform"
-                android:text="TIMS전송" />
+                android:text="TIMS전송"
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/dbtn_menu"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_menus"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:background="@drawable/ic_menu"
                 android:scaleType="fitXY" />
         </LinearLayout>
 
@@ -103,9 +103,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="488dp"
                     android:layout_weight="4"
-                    android:background="@drawable/layout_edit_round_radius"
+                    android:background="@drawable/empty_bg_black"
                     android:orientation="vertical"
-                    android:weightSum="10">
+                    android:weightSum="10"
+                    android:padding="10dp">
 
 
                     <LinearLayout

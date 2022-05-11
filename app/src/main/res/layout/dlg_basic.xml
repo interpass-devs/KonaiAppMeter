@@ -38,7 +38,7 @@
         android:gravity="center"
         android:text="환경설정 초기화를 진행하시겠습니까?"
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="30dp"
         android:padding="5dp"
         android:layout_marginTop="10dp"/>
 
@@ -72,27 +72,27 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="15dp">
-        <Button
+        <com.konai.appmeter.driver.util.ButtonFitText
             android:id="@+id/cancel_btn"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="취소"
             android:textColor="@color/white"
-            android:autoSizeTextType="uniform"
             android:background="@drawable/cancel_btn_dark"
             android:layout_marginRight="5dp"
+            android:textSize="30dp"
             android:padding="10dp"/>
-        <Button
+        <com.konai.appmeter.driver.util.ButtonFitText
             android:id="@+id/okay_btn"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="확인"
             android:textColor="@color/black"
-            android:autoSizeTextType="uniform"
             android:background="@drawable/yellow_gradi_btn"
             android:layout_marginLeft="5dp"
+            android:textSize="30dp"
             android:padding="10dp"/>
     </LinearLayout>
 

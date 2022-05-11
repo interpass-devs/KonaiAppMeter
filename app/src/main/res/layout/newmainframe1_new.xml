@@ -184,7 +184,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="60dp"
                                 android:gravity="center_vertical"
-                                android:fontFamily="@font/malgunsl"
+
                                 android:text="운행거리"
                                 android:textColor="@color/white"
                                 android:textSize="24sp"/>
@@ -199,7 +199,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical|right"
-                                android:fontFamily="@font/malgunbd"
+
                                 android:textSize="30sp"
                                 android:text="0.00 Km"
                                 android:textColor="@color/white"
@@ -231,7 +231,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="60dp"
                                 android:gravity="center_vertical"
-                                android:fontFamily="@font/malgunsl"
+
                                 android:text="총거래"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"/>
@@ -246,7 +246,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical|right"
-                                android:fontFamily="@font/malgunbd"
+
                                 android:textSize="30sp"
                                 android:text="0 회"
                                 android:textColor="@color/white"
@@ -280,7 +280,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="60dp"
                                     android:gravity="center_vertical"
-                                    android:fontFamily="@font/malgunsl"
+
                                     android:text="총수입"
                                     android:textColor="@color/white"
                                     android:textSize="20sp"/>
@@ -296,7 +296,7 @@
                                     android:id="@+id/hide_report"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/malgun"
+
                                     android:text="거래집계"
                                     android:textStyle="bold"
                                     android:textColor="@color/dark_grey"
@@ -310,7 +310,7 @@
                                     android:id="@+id/hide_empty_icon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/malgun"
+
                                     android:text="돌아가기"
                                     android:textStyle="bold"
                                     android:textColor="@color/colorAccent"
@@ -333,7 +333,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:gravity="center_vertical|right"
-                                android:fontFamily="@font/malgun"
+
                                 android:textSize="24sp"
                                 android:text="금액마감"
                                 android:textColor="#8C8991"
@@ -345,7 +345,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:gravity="center_vertical|right"
-                                android:fontFamily="@font/malgunbd"
+
                                 android:textSize="38sp"
                                 android:text="0.00 원"
                                 android:textColor="@color/yellow"
@@ -400,7 +400,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:visibility="invisible"
+                            android:visibility="visible"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -445,7 +445,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginRight="10dp"
                                 android:autoSizeTextType="uniform"
-                                android:fontFamily="@font/malgunsl"
+
                                 android:gravity="right"
                                 android:paddingRight="20dp"
                                 android:paddingTop="30dp"
@@ -487,7 +487,7 @@
                                 android:autoSizeTextType="uniform"
                                 android:text="+1000"
                                 android:paddingLeft="30dp"
-                                android:fontFamily="@font/malgunsl"/>
+                                />
                             <Button
                                 android:id="@+id/ntv_status"
                                 android:layout_weight="1"
@@ -501,7 +501,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="15dp"
                                 android:paddingRight="30dp"
-                                android:fontFamily="@font/malgunbd"
+
                                 android:background="@color/black"
                                 android:layout_marginRight="10dp"/>
                         </LinearLayout>
@@ -522,7 +522,7 @@
                                 android:gravity="center|right"
                                 android:text="13,800"
                                 android:textColor="@color/yellow"
-                                android:fontFamily="@font/malgunbd"
+
                                 android:paddingTop="25dp"
                                 android:paddingBottom="25dp"/>
 
@@ -534,7 +534,7 @@
                                 android:text="원"
                                 android:textColor="@color/yellow"
                                 android:textSize="50sp"
-                                android:fontFamily="@font/malgunsl"
+
                                 android:layout_marginRight="30dp"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -628,7 +628,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="운행거리"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -638,7 +638,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="0 km"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -657,7 +657,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="운행요금"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -667,7 +667,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="0 원"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -686,7 +686,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="호출요금"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -696,7 +696,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="0 원"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -715,7 +715,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="추가요금"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -724,7 +724,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:fontFamily="@font/malgunbd"
+
                             android:gravity="center|right"
                             android:text="0"
                             android:textColor="@color/colorAccent"
@@ -758,7 +758,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="합계"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -768,7 +768,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="13,800 원"
                             android:textColor="@color/yellow"
                             android:autoSizeTextType="uniform"/>
@@ -807,7 +807,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="운행거리"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -817,7 +817,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="0 km"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -834,7 +834,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="운행요금"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -844,7 +844,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="0 원"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -861,7 +861,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="호출요금"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -871,7 +871,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="0 원"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -888,7 +888,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="추가요금"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -898,7 +898,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:fontFamily="@font/malgunbd"
+
                             android:gravity="center|right"
                             android:text="0 원"
                             android:textColor="@color/colorAccent"
@@ -921,7 +921,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|left"
-                            android:fontFamily="@font/malgun"
+
                             android:text="합계"
                             android:textColor="@color/white"
                             android:autoSizeTextType="uniform"/>
@@ -931,7 +931,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center|right"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="13,800 원"
                             android:textColor="@color/yellow"
                             android:autoSizeTextType="uniform"/>

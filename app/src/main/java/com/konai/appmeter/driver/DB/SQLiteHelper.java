@@ -1,15 +1,14 @@
 package com.konai.appmeter.driver.DB;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class SQLiteHelper extends SQLiteOpenHelper  {
 
     private static final String DB_RECORD = "DrvRecord.db";
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 10;
+//릴리즈버전 7
     /**
      * 1. 날짜 YYMMDD
      * 2. 운행시작시간
@@ -126,6 +125,57 @@ public class SQLiteHelper extends SQLiteOpenHelper  {
             + mCOL_4 + " text"
             + ")";
 
+////////////////////
+//20220415
+    /**
+     * tims전송 정보
+     * 1. 날짜
+     * 2. 운행관리코드
+     * 3. 전송여부.
+     * 4. 전송내용.(uridata)
+     * **/
+    public static final String TIMS_TABLE_NAME = "TIMSDATA";
+
+    public static final String TIMSCOL_1 = "drvdate";
+    public static final String TIMSCOL_2 = "url";
+    public static final String TIMSCOL_3 = "sendyn";
+    public static final String TIMSCOL_4 = "event";
+    public static final String TIMSCOL_5 = "contents";
+
+    private static final String DATABASE_CREATE_TIMSDATA = "create table "
+            + TIMS_TABLE_NAME
+            + "("
+            + TIMSCOL_1 + " text primary key,"
+            + TIMSCOL_2 + " text,"
+            + TIMSCOL_3 + " integer,"
+            + TIMSCOL_4 + " integer,"
+            + TIMSCOL_5 + " text"
+            + ")";
+
+//20220415
+    /**
+     * dtg전송 정보
+     * 1. 날짜
+     * 2. 운행관리코드
+     * 3. 전송여부.
+     * 4. 전송내용.(uridata)
+     * **/
+    public static final String DTG_TABLE_NAME = "DTGDATA";
+
+    public static final String DTGCOL_1 = "drvdate";
+    public static final String DTGCOL_2 = "keycode";
+    public static final String DTGCOL_3 = "sendyn";
+    public static final String DTGCOL_4 = "contents";
+
+    private static final String DATABASE_CREATE_DTGDATA = "create table "
+            + DTG_TABLE_NAME
+            + "("
+            + DTGCOL_1 + " text primary key,"
+            + DTGCOL_2 + " text,"
+            + DTGCOL_3 + " integer,"
+            + DTGCOL_4 + " text"
+            + ")";
+/////////////////
 
     public SQLiteHelper(Context context) {
         super(context, DB_RECORD, null, DB_VERSION);
@@ -136,6 +186,9 @@ public class SQLiteHelper extends SQLiteOpenHelper  {
         db.execSQL(DATABASE_CREATE_DRVRECORD);
         db.execSQL(TOT_DATABASE_CREATE_DRVRECORD);
         db.execSQL(DATABASE_CREATE_MEMBER);
+
+        db.execSQL(DATABASE_CREATE_TIMSDATA);
+        db.execSQL(DATABASE_CREATE_DTGDATA);
     }
 
 
@@ -144,6 +197,8 @@ public class SQLiteHelper extends SQLiteOpenHelper  {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TOTAL_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MEMBER_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TIMS_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DTG_TABLE_NAME);
         onCreate(db);
     }
 

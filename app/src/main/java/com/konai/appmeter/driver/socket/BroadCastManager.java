@@ -22,7 +22,7 @@ public class BroadCastManager extends BroadcastReceiver {
 		mContext = context;
 		if (action.equals("android.intent.action.BOOT_COMPLETED"))
 
-		if(false)
+//		if(false)
 		{
 
 			Log.e("BroadCastManager", "");

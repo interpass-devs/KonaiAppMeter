@@ -14,17 +14,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.konai.appmeter.driver.Adapter.ListAdapter;
 import com.konai.appmeter.driver.Adapter.ListItem;
+import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.VO.RecordVO;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.DB.SQLiteControl;
-import com.konai.appmeter.driver.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

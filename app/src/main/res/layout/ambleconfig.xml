@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="26.8"
     android:background="@color/background">
 
     <LinearLayout
@@ -65,31 +66,33 @@
             android:layout_marginTop="5sp"
             android:gravity="top"
             android:layout_weight="2.5">
-
-            <Button
+<!--20220407 tra..sh -->
+            <com.konai.appmeter.driver.util.ButtonFitText
                 android:id="@+id/Btnback"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5sp"
                 android:layout_marginRight="5sp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/grey_gradi_btn"
                 android:text="이전"
                 android:autoSizeTextType="uniform"
-                android:textColor="#999999"
+                android:textColor="@color/white"
                 android:textStyle="bold"
+                android:padding="5dp"
                 android:layout_weight="1"/>
 
-            <Button
+            <com.konai.appmeter.driver.util.ButtonFitText
                 android:id="@+id/Btnclose"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/grey_gradi_btn"
                 android:layout_marginLeft="5sp"
                 android:layout_marginRight="5sp"
                 android:text="닫기"
                 android:autoSizeTextType="uniform"
-                android:textColor="#999999"
+                android:textColor="@color/white"
                 android:textStyle="bold"
+                android:padding="5dp"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -106,14 +109,15 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                >
 
                 <LinearLayout
                     android:id="@+id/layoutlist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="10dip"
+                    android:layout_marginBottom="20dip"
                     android:layout_marginLeft="5dip"
                     android:layout_marginRight="5dip"
                     android:layout_marginTop="10dip"
@@ -164,7 +168,9 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="22"
+                        android:weightSum="2.2"
                         android:orientation="vertical">
                         <LinearLayout
                             android:id="@+id/layoutinput"
@@ -175,48 +181,74 @@
                             android:layout_marginBottom="10dip"
                             android:layout_marginLeft="5dip"
                             android:layout_marginRight="5dip"
-                            android:layout_marginTop="10dip"
+                            android:layout_marginTop="5dip"
                             android:orientation="vertical"
                             android:background="@drawable/dlg_layout_radius"
-                            android:paddingTop="20dp"
+                            android:paddingTop="15dp"
                             android:paddingBottom="20dp">
 
-                            <TextView
-                                android:id="@+id/textinput"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:paddingLeft="10dip"
-                                android:textSize="25dp"
-                                android:text="값입력"
-                                android:textColor="@color/white" />
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textinput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="3"
+                                    android:gravity="center"
+                                    android:paddingLeft="20dp"
+                                    android:text="날짜입력(6자리)"
+                                    android:textColor="@color/white"
+                                    android:textSize="25dp" />
+
+                                <TextView
+                                    android:id="@+id/m_keyboard"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:layout_gravity="center_vertical"
+                                    android:textSize="18dp"
+                                    android:text="영문"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/action_up"
+                                    android:background="@drawable/empty_bg_black"
+                                    android:layout_marginRight="10dp"/>
+                            </LinearLayout>
+
 
                             <EditText
+                                android:layout_weight="1.5"
                                 android:id="@+id/editinput"
                                 android:layout_width="250dp"
-                                android:layout_height="60dp"
-                                android:layout_marginTop="30dip"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="15dip"
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
                                 android:ems="10"
-                                android:maxLength="6"
                                 android:focusable="false"
                                 android:textSize="30dp"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
                                 android:paddingLeft="20dp"
                                 android:inputType="number"
-                                android:background="@drawable/dlg_edit_box"/>
+                                android:background="@drawable/dlg_edit_box">
+                                <requestFocus/>
+                            </EditText>
 
                             <LinearLayout
+                                android:layout_weight="2"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:orientation="horizontal"
                                 android:layout_marginLeft="5sp"
                                 android:layout_marginRight="5sp"
-                                android:layout_marginTop="20sp"
-                                android:gravity="top"
-                                android:layout_weight="3">
+                                android:layout_marginTop="20dp"
+                                android:gravity="top">
 
                                 <Button
                                     android:id="@+id/Btninputsend"
@@ -224,24 +256,24 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="5sp"
                                     android:layout_marginRight="5sp"
-                                    android:background="@drawable/ok_btn_blue_round_bg"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:text="전송"
-                                    android:textColor="@color/white"
+                                    android:textColor="@color/black"
                                     android:textStyle="bold"
-                                    android:textSize="40sp"
+                                    android:textSize="35dp"
                                     android:layout_weight="1"/>
 
                                 <Button
                                     android:id="@+id/Btninputcancel"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:background="@drawable/unselected_btn"
+                                    android:background="@drawable/grey_gradi_btn"
                                     android:layout_marginLeft="5sp"
                                     android:layout_marginRight="5sp"
                                     android:text="취소"
-                                    android:textColor="#999999"
+                                    android:textColor="@color/white"
                                     android:textStyle="bold"
-                                    android:textSize="40sp"
+                                    android:textSize="35dp"
                                     android:layout_weight="1"/>
 
                             </LinearLayout>
@@ -249,10 +281,47 @@
                         </LinearLayout>
 
 
+                        <!-- 영문 키패드 new -->
+<!--                        <com.konai.appmeter.driver.MyKeyboard-->
+<!--                            android:id="@+id/keyboard"-->
+<!--                            android:layout_weight="1.2"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:visibility="gone"/>-->
+<!--                        &lt;!&ndash; 영문 키패드 new end.....&ndash;&gt;-->
 
+
+
+
+                        <!-- 영문 키패드 -->
                         <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/customkeyboardviewLayout"
+                            android:layout_weight="1.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:orientation="vertical">
+                            <com.konai.appmeter.driver.CustomKeyboardView
+                                android:id="@+id/customkeyboardview"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="1dp"/>
+                        </LinearLayout>
+                        <!-- 영문 키패드 end -->
+                        <!--
+                        android:keyBackground="@drawable/yellow_gradi_btn"
+                        android:keyTextColor="@color/black"
+                        -->
+
+
+
+
+                        <!-- 숫자 키패드 -->
+                        <LinearLayout
+                            android:visibility="visible"
                             android:id="@+id/radio_button_layout"
-                            android:layout_weight="1"
+                            android:layout_weight="1.2"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:orientation="vertical">
@@ -267,12 +336,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:gravity="center"
+                                    android:layout_margin="3dp"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="1"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -280,12 +351,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
+                                    android:gravity="center"
                                     android:text="2"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -293,12 +366,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="3"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
@@ -313,12 +388,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="4"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -326,12 +403,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="5"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -339,12 +418,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="6"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
@@ -359,12 +440,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:gravity="center"
+                                    android:layout_margin="3dp"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="7"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -372,12 +455,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="8"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -385,12 +470,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="9"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
@@ -405,12 +492,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="C"
                                     android:textAlignment="center"
                                     android:textColor="#811212"
-                                    android:textSize="40sp"
+                                    android:textSize="40dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -418,12 +507,14 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:layout_margin="3dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="0"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
-                                    android:textSize="45sp"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
 
                                 <RadioButton
@@ -431,15 +522,19 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:gravity="center"
+                                    android:layout_margin="3dp"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:button="@null"
                                     android:text="←"
                                     android:textAlignment="center"
-                                    android:textColor="#811212"
-                                    android:textSize="45sp"
+                                    android:textColor="@color/black"
+                                    android:textSize="45dp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
+                        <!-- 숫자 키패드 end -->
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -468,10 +563,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginBottom="10dip"
+                    android:layout_marginBottom="5dip"
                     android:layout_marginLeft="5dip"
                     android:layout_marginRight="5dip"
-                    android:layout_marginTop="10dip"
                     android:orientation="vertical" >
 
                     <LinearLayout
@@ -485,9 +579,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="5sp"
-                        android:layout_marginRight="5sp"
-                        android:layout_marginTop="10sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2.5"
                         android:gravity="bottom">
 
                         <TableLayout
@@ -505,7 +600,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="5sp"
                                     android:layout_marginRight="5sp"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:gravity="center"
                                     android:textColor="#ff535356"
                                     android:text="1"
@@ -519,7 +614,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="5sp"
                                     android:layout_marginRight="5sp"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:textColor="#ff535356"
                                     android:text="2"
                                     android:autoSizeTextType="uniform"
@@ -532,7 +627,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="5sp"
                                     android:layout_marginRight="5sp"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:textColor="#ff535356"
                                     android:text="3"
                                     android:autoSizeTextType="uniform"
@@ -545,7 +640,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="5sp"
                                     android:layout_marginRight="5sp"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:textColor="#ff820316"
                                     android:text="6"
                                     android:autoSizeTextType="uniform"
@@ -559,7 +654,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="5sp"
                                     android:layout_marginRight="5sp"
-                                    android:background="@drawable/payment_subbtn2"
+                                    android:background="@drawable/yellow_gradi_btn"
                                     android:gravity="center_vertical|center_horizontal"
                                     android:textColor="#ff820316"
                                     android:text="0"
@@ -567,7 +662,6 @@
                                     android:textStyle="bold"
                                     android:textSize="30sp"
                                     android:layout_weight="1"/>
-
                             </TableRow>
 
                         </TableLayout>

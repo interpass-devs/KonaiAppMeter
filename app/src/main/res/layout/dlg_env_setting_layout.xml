@@ -84,9 +84,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:fontFamily="@font/malgun"
+
             android:text="※ 연결 설정"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textColor="@color/yellow"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"/>
@@ -106,7 +106,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/grey_gradi_btn"
+                android:background="@drawable/edit_backgroud_radius"
                 android:layout_marginRight="10dp">
 
                 <RadioButton
@@ -128,12 +128,12 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:button="@null"
-                android:fontFamily="@font/malgunbd"
+
                 android:text="시리얼\n(아이\n나비)"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:textColor="@color/white"
                 android:padding="10dp"
-                android:background="@drawable/grey_gradi_btn"/>
+                android:background="@drawable/edit_backgroud_radius"/>
             <RadioButton
                 android:id="@+id/serial_artview"
                 android:layout_weight="1"
@@ -141,12 +141,12 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:button="@null"
-                android:fontFamily="@font/malgunbd"
+
                 android:text="시리얼\n(아트뷰)"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:textColor="@color/white"
                 android:padding="10dp"
-                android:background="@drawable/grey_gradi_btn"
+                android:background="@drawable/edit_backgroud_radius"
                 android:layout_marginLeft="10dp"/>
             <RadioButton
                 android:id="@+id/serial_atlan"
@@ -155,12 +155,12 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:button="@null"
-                android:fontFamily="@font/malgunbd"
+
                 android:text="시리얼\n(아틀란)"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:textColor="@color/white"
                 android:padding="10dp"
-                android:background="@drawable/grey_gradi_btn"
+                android:background="@drawable/edit_backgroud_radius"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
     </LinearLayout>
@@ -186,9 +186,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/malgun"
+
                 android:text="※ 해상도 설정"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textColor="@color/yellow"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
@@ -205,12 +205,12 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:button="@null"
-                    android:fontFamily="@font/malgunbd"
+
                     android:text="가로"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textColor="@color/white"
                     android:padding="10dp"
-                    android:background="@drawable/grey_gradi_btn"
+                    android:background="@drawable/edit_backgroud_radius"
                     android:layout_marginRight="10dp"/>
                 <RadioButton
                     android:id="@+id/ori_vertical"
@@ -219,12 +219,12 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:button="@null"
-                    android:fontFamily="@font/malgunbd"
+
                     android:text="세로"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textColor="@color/white"
                     android:padding="10dp"
-                    android:background="@drawable/grey_gradi_btn"
+                    android:background="@drawable/edit_backgroud_radius"
                     android:layout_marginRight="10dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -237,9 +237,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/malgun"
+
                 android:text="※ 소속 설정"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textColor="@color/yellow"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
@@ -256,12 +256,12 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:button="@null"
-                    android:fontFamily="@font/malgunbd"
+
                     android:text="개인"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textColor="@color/white"
                     android:padding="10dp"
-                    android:background="@drawable/grey_gradi_btn"
+                    android:background="@drawable/edit_backgroud_radius"
                     android:layout_marginRight="10dp"/>
                 <RadioButton
                     android:id="@+id/gubun_corporate"
@@ -270,12 +270,12 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:button="@null"
-                    android:fontFamily="@font/malgunbd"
+
                     android:text="법인"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textColor="@color/white"
                     android:padding="10dp"
-                    android:background="@drawable/grey_gradi_btn"
+                    android:background="@drawable/edit_backgroud_radius"
                     android:layout_marginRight="10dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -417,25 +417,25 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:fontFamily="@font/malgunbd"
+
             android:text="취소"
-            android:textSize="25sp"
+            android:textSize="25dp"
             android:textColor="@color/white"
             android:padding="10dp"
             android:layout_marginTop="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/grey_gradi_btn"/>
+            android:background="@drawable/edit_backgroud_radius"/>
         <Button
             android:id="@+id/ok_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:fontFamily="@font/malgunbd"
+
             android:text=" 확인"
-            android:textSize="25sp"
+            android:textSize="25dp"
             android:textColor="@color/black"
             android:padding="10dp"
             android:layout_marginTop="30dp"

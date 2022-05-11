@@ -6,18 +6,13 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.konai.appmeter.driver.setting.Info;
@@ -25,12 +20,8 @@ import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.struct.AMBlestruct;
 import com.konai.appmeter.driver.struct.CalFareBase;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class InfoActivity extends Activity {
 
@@ -111,7 +102,7 @@ public class InfoActivity extends Activity {
             setContentView(R.layout.activity_info_h);  //가로   //todo: 20210902
             set_frame_orient(1);
         }
-        tv_area_name.setText(AMBlestruct.AMLicense.taxinumber.substring(0,2));
+        tv_area_name.setText(Info.AREA_CODE); //20220318 tra..sh
         tv_base_cost.setText(CalFareBase.BASECOST+" 원");
         tv_base_drvdist.setText(CalFareBase.BASEDRVDIST+" m");
         tv_dist_cost.setText(CalFareBase.DISTCOST+" 원");
@@ -137,12 +128,12 @@ public class InfoActivity extends Activity {
         final BluetoothAdapter BluetoothAdapter;
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter = bluetoothManager.getAdapter();
-        if (!BluetoothAdapter.isEnabled())
+        if (BluetoothAdapter != null && BluetoothAdapter.isEnabled()) //20220318 tra..sh
         {
-            tv_bluetooth.setText("OFF");
+            tv_bluetooth.setText("ON");
         }
         else
-            tv_bluetooth.setText("ON");
+            tv_bluetooth.setText("OFF");
 
         if(AMBlestruct.mBTConnected)
         {
@@ -151,9 +142,10 @@ public class InfoActivity extends Activity {
         else
             tv_obd.setText("연결안됨");
 
-        tv_osver.setText(Build.VERSION.RELEASE + "\n" + Build.MODEL + "\n" + Build.MANUFACTURER);
+        tv_osver.setText(Build.VERSION.RELEASE + "\n" + Build.MODEL); //20220318 tra..sh + "\n" + Build.MANUFACTURER);
 
-        tv_maker.setText("Konai");
+        tv_maker.setText("ver " + Info.APP_VERSION + "/" + getBuildtime() + "/Konai"); //20220318 tra..sh
+
 //        tv_version.setText("ver " + Info.APP_VERSION + "/" + getBuildtime());
 
         btn_goMenu.setOnTouchListener(new View.OnTouchListener() {
@@ -180,10 +172,12 @@ public class InfoActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_tims.setBackgroundColor(Color.parseColor("#2e2e6a"));
+//                    btn_tims.setBackgroundColor(Color.parseColor("#2e2e6a"));
+                    btn_tims.setBackgroundResource(R.drawable.yellow_gradi_btn);
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    btn_tims.setBackgroundColor(Color.parseColor("#2e2eae"));
+//                    btn_tims.setBackgroundColor(Color.parseColor("#2e2eae"));
+                    btn_tims.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 return false;
             }
@@ -275,9 +269,10 @@ public class InfoActivity extends Activity {
 
     }
 
-//    private String getBuildtime() {
+    private String getBuildtime() {
 //        Date buildDate = new Date(BuildConfig.TIMESTAMP);
-//        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy.MM.dd");
-//        return transFormat.format(buildDate);
-//    }
+        Date buildDate = new Date();
+        SimpleDateFormat transFormat = new SimpleDateFormat("yy.MM.dd");
+        return transFormat.format(buildDate);
+    }
 }

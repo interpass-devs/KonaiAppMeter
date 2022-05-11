@@ -20,13 +20,14 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-//import android.support.annotation.IntDef;
 import androidx.annotation.IntDef;
 
 import com.konai.appmeter.driver.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+//import android.support.annotation.IntDef;
 
 public class CircleProgressBar extends View {
     public static final int LINE = 0;
@@ -145,7 +146,8 @@ public class CircleProgressBar extends View {
 
         mProgressStartColor = a.getColor(R.styleable.CircleProgressBar_progress_start_color, Color.parseColor(COLOR_FFF2A670));
         mProgressEndColor = a.getColor(R.styleable.CircleProgressBar_progress_end_color, Color.parseColor(COLOR_FFF2A670));
-        mProgressTextColor = a.getColor(R.styleable.CircleProgressBar_progress_text_color, Color.parseColor(COLOR_FFF2A670));
+//20220303        mProgressTextColor = a.getColor(R.styleable.CircleProgressBar_progress_text_color, Color.parseColor(COLOR_FFF2A670));
+        mProgressTextColor = a.getColor(R.styleable.CircleProgressBar_progress_text_color, Color.parseColor(COLOR_FFD3D3D5));
         mProgressBackgroundColor = a.getColor(R.styleable.CircleProgressBar_progress_background_color, Color.parseColor(COLOR_FFD3D3D5));
 
         mStartDegree = a.getInt(R.styleable.CircleProgressBar_progress_start_degree, DEFAULT_START_DEGREE);

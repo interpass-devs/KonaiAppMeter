@@ -36,12 +36,12 @@
                 android:id="@+id/textView9"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
+                android:layout_weight="6.8"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:autoSizeTextType="uniform"
-                android:fontFamily="@font/malgunbd"
+
                 android:text="정보내역"
                 android:textColor="@color/white"/>
 
@@ -49,10 +49,8 @@
                 android:id="@+id/dbtn_menu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_menus"
+                android:layout_weight="1.5"
+                android:background="@drawable/ic_menu"
                 android:scaleType="fitXY" />
         </LinearLayout>
 
@@ -106,7 +104,7 @@
                     android:layout_weight="4.3"
                     android:background="@drawable/empty_bg_black"
                     android:orientation="vertical"
-                    android:weightSum="17"
+                    android:weightSum="17.5"
                     android:padding="20dp">
 
 
@@ -344,8 +342,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="10dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -368,6 +365,11 @@
                             />
                     </LinearLayout>
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/dashline" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -530,7 +532,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.2"
                         android:orientation="horizontal">
 
                         <TextView
@@ -568,7 +570,7 @@
                         android:background="@drawable/yellow_gradi_btn"
                         android:autoSizeTextType="uniform"
                         android:padding="15dp"
-                        android:fontFamily="@font/malgunbd"
+
                         android:text="TIMS"
                         android:textColor="@color/black"
                         android:textStyle="bold"

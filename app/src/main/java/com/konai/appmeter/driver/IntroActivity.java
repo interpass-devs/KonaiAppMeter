@@ -2,26 +2,19 @@ package com.konai.appmeter.driver;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.konai.appmeter.driver.setting.Info;
-import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.BuildConfig;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.konai.appmeter.driver.setting.Info;
+import com.konai.appmeter.driver.setting.setting;
 
 import org.json.JSONObject;
 
@@ -83,6 +76,8 @@ public class IntroActivity extends Activity {
                         @Override
                         public void run() {
                             Intent intent = new Intent(getApplicationContext(), MemberCertActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();
                         }
@@ -258,7 +253,7 @@ public class IntroActivity extends Activity {
                 if(Info.REPORTREADY)
                 {
 
-                    Info._displayLOG(true, "업데이트버전 " + Info.SV_APP_VERSION, "");
+                    Info._displayLOG(Info.LOGDISPLAY, "업데이트버전 " + Info.SV_APP_VERSION, "");
 
                 }
             }

@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.socket.AMBluetoothLEManager;
 
 import org.apache.http.util.ByteArrayBuffer;
@@ -332,7 +331,7 @@ public class SerialPort_Device extends Thread {// extends Thread
             if(m_nRunPort == 11000)
             {
 
-                if(false) //Info.TESTMODE)
+                if(true) //Info.TESTMODE)
                 {
                     final StringBuilder stringBuilder = new StringBuilder(bytesRead);
                     for (byte byteChar : bytetmp)

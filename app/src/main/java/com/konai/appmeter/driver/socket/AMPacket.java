@@ -185,6 +185,16 @@ public class AMPacket {//
 
     }
 
+    public String GetAMBleCRC(byte[] v, int len) {
+        byte crc = 0;
+        for (int i = 1; i < len - 3; i++) {
+            crc += v[i];
+        }
+
+        return String.format("%02X", crc);
+
+    }
+
     // CODE부분 을 얻어온다.
     public String GetCheckCode(byte[] data) {
         String tmp = (char) data[1] + "";

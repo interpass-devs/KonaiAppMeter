@@ -16,8 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.konai.appmeter.driver.R;
-
 import java.util.Set;
 
 public class BleDeviceActivity extends Activity{

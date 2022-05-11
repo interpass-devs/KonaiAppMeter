@@ -1,14 +1,7 @@
 package com.konai.appmeter.driver;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +10,6 @@ import android.widget.TextView;
 
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.struct.AMBlestruct;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,12 +41,18 @@ public class TimsInfoActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+//20220503 tra..sh
+        if(Info.m_Service != null)
+            Info.m_Service._showhideLbsmsg(true);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+//20220503 tra..sh
+        if(Info.m_Service != null)
+            Info.m_Service._showhideLbsmsg(false);
 
     }
 
@@ -93,8 +91,8 @@ public class TimsInfoActivity extends Activity {
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy.MM.dd");
         tv_nowdate.setText(transFormat.format(time));
 
-        tv_driverok.setText("성공");
-        tv_carnook.setText("성공");
+        tv_driverok.setText(Info.mAuthdrvTIMS);
+        tv_carnook.setText(Info.mAuthVehTIMS);
         tv_eventdate.setText(Info.mEventTIMSdate);
         tv_eventtype.setText(Info.mEventTIMStype);
         tv_eventresult.setText(Info.mEventTIMSok);

@@ -65,20 +65,17 @@ public class AMBlestruct {
         public static String shacodetaxi = ""; //taxi sha 수신정보
         public static String shacodedriver = ""; //driver sha 송신정보.
         public static String phonenumber = "";
+        public static String drivernum = "0000"; //사원번호.
+
         public static String companynum = "0000000000"; // "1228227201";
-//        public static String timslicense = "140400151";
-//        public static String timstaxinum = "인천31바1936";
+
+        public static String timscode = "0000000019";
         public static String timslicense = "000000000"; //""020400773";
         public static String timstaxinum = "서울00아0000";
-        public static String timscode = "0000000019";
 
-//        public static String companynum = "3122783779";
-//        public static String timstaxinum = "충남51바1985";
-//        public static String timslicense = "071020365";
-
-//        public static String companynum = "1228227201";
-//        public static String timslicense = "020400773";
-//        public static String timstaxinum = "인천31바1936";
+        public static String companynumtmp = "3122783779";
+        public static String timstaxinumtmp = "충남51바1985";
+        public static String timslicensetmp = "071020365";
 
     }
 
@@ -94,6 +91,7 @@ public class AMBlestruct {
     public static class MeterState
     {
         public static final int EMPTY = 1;
+        public static final int EMPTYBYEMPTY = 111; //20220413
         public static final int DRIVE = 2;
         public static final int POWERONDRIVE = 22;
         public static final int PAY = 3;

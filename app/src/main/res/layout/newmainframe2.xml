@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_new"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -31,7 +30,7 @@
                     android:layout_height="match_parent"
                     android:weightSum="2"
                     android:orientation="vertical">
-                    <Button
+                    <com.konai.appmeter.driver.util.ButtonFitText
                         android:id="@+id/nbtn_drivestart"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -39,18 +38,16 @@
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/yellow_gradi_btn"
-                        android:fontFamily="@font/malgunbd"
-                        android:autoSizeTextType="uniform"
                         android:text="손님탑승"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:padding="20dp"/>
+                        android:textStyle="bold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginBottom="16dp"
                         android:layout_weight="1"
+                        android:weightSum="3"
                         android:orientation="horizontal">
                         <!--
                         android:paddingTop="10sp"
@@ -59,68 +56,65 @@
                             android:paddingRight="2sp"
                         -->
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_emptycar_e"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/yellow_gradi_btn"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="빈차"
                             android:textStyle="bold"
                             android:textColor="#000000"/>
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_drivecar_e"
-                            android:layout_width="wrap_content"
+                            android:visibility="gone"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="주행"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_manualpay_e"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="수기"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_reserv_e"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="호출"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -136,19 +130,13 @@
                     android:orientation="vertical"
                     android:weightSum="2">
                     <!-- 지불버튼 android:background="@drawable/ok_btn_blue_round_bg" -->
-                    <Button
+                    <com.konai.appmeter.driver.util.ButtonFitText
                         android:id="@+id/nbtn_driveend"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_weight="1"
-                        android:autoSizeTextType="uniform"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
                         android:background="@drawable/yellow_gradi_btn"
-                        android:fontFamily="@font/malgunbd"
                         android:text="지 불"
                         android:textStyle="bold"
                         android:textColor="@color/black"/>
@@ -158,88 +146,84 @@
                         android:layout_height="0dp"
                         android:layout_marginBottom="16dp"
                         android:layout_weight="1"
+                        android:weightSum="3"
                         android:orientation="horizontal">
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_emptycar_d"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="빈차"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_drivecar_d"
                             android:visibility="gone"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/yellow_gradi_btn"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="주행"
                             android:textColor="#000000"/>
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_reserv_d"
                             android:visibility="gone"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="호출"
                             android:textColor="@color/white"/>
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_complex_d"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="복합"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_surburb_d"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-                            android:autoSizeTextType="uniform"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="시외"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -275,18 +259,15 @@
                         android:layout_height="0dp"
                         android:layout_weight="0.75"
                         android:orientation="horizontal">
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_cashpayment"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/yellow_gradi_btn"
-                            android:fontFamily="@font/malgunbd"
                             android:text="현 금"
                             android:textStyle="bold"
-                            android:textColor="#000000"
-                            android:autoSizeTextType="uniform"
-                            android:padding="10sp" />
+                            android:textColor="#000000"/>
                         <!--                    <Button-->
                         <!--                        android:visibility="gone"-->
                         <!--                        android:id="@+id/nbtn_cardpayment"-->
@@ -311,7 +292,7 @@
                         android:layout_weight="0.75"
                         android:orientation="horizontal">
 
-                        <Button
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_addpayment"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -320,25 +301,23 @@
                             android:text="추가요금"
                             android:textStyle="bold"
                             android:textColor="@color/white"
-                            android:fontFamily="@font/malgunbd"
-                            android:autoSizeTextType="uniform"
-                            android:padding="5sp"/>
-                        <Button
+
+                            android:padding="5dp"/>
+                        <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_callpayment"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/grey_gradi_btn"
-                            android:fontFamily="@font/malgunbd"
+
                             android:text="호출요금"
                             android:textStyle="bold"
                             android:textColor="@color/white"
-                            android:autoSizeTextType="uniform"
-                            android:padding="5sp" />
+                            android:padding="5dp" />
                     </LinearLayout>
 
-                    <Button
+                    <com.konai.appmeter.driver.util.ButtonFitText
                         android:id="@+id/nbtn_cancelpayment"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -346,13 +325,12 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="0.5"
                         android:background="@drawable/grey_gradi_btn"
-                        android:autoSizeTextType="uniform"
-                        android:fontFamily="@font/malgunbd"
+
                         android:text="취 소"
                         android:textStyle="bold"
                         android:textColor="@color/white"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"/>
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"/>
                     <!-- android:background="@drawable/cancel_btn_light_grey" -->
                 </LinearLayout>
 
@@ -544,19 +522,19 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"
-            android:fontFamily="@font/malgunbd"
+            android:autoSizeTextType="uniform"
             android:text="수기결제"
             android:textColor="@color/grey_light"
-            android:textSize="40sp"/>
+            android:textSize="40dp"/>
         <TextView
             android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:fontFamily="@font/malgun"
+            android:autoSizeTextType="uniform"
             android:text="카드결제를 진행해주세요"
             android:textColor="@color/grey_light"
-            android:textSize="30sp"
+            android:textSize="30dp"
             android:layout_below="@+id/tv_title"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="100dp"/>

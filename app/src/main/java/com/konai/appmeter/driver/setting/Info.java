@@ -10,11 +10,11 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
+import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.MainActivity;
-import com.konai.appmeter.driver.struct.AMBlestruct;
-import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.service.LocService;
+import com.konai.appmeter.driver.struct.AMBlestruct;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,26 +28,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import com.konai.appmeter.driver.struct.gpspoint; //20210325
-
 public class Info {
     //20201211
     public static boolean TESTMODE = false; //true; //false;
+    public final static String TIMSKEY = "f4bbc1d0b067002e527e535338668b29164404fd18a4e5c331c70fcb9b07fd62";
     public static boolean TIMSUSE = false; //true; //false; //true; //send tims.
     public static boolean TIMSUSE_TEST = false; //send tims.
     public static boolean SENDDTG = false; //send DTG
     public static boolean USEDRIVESTATEPOWEROFF = false; //true; //false; //20210407 승차상태의 강제poweroff
-
+    public static boolean USEDBRUNDATA = true; //20220415
+    public static boolean USEDBLOCATIONDATA = false; //20220415
     public static String G_driver_name = "";
-    public static String G_driver_num = "";
-    public static String G_license_num = "";
-
-    public static ArrayList<String> G_full_driver_num = new ArrayList<>();
+    public static String G_driver_num = "0000"; //사원번호.
+    public static String G_license_num = ""; //자격번호.
 
 //20210318
     public static final boolean REPORTREADY = false; //false;
     private static String TAG = "driver: ";
-    public static final String APP_DATE = "2021.09.30"; //2.57
     public static final boolean LOGDISPLAY = false; //20220209
 
 /*
@@ -73,6 +70,9 @@ public class Info {
     public static String AREA_CODE = ""; //20211029
     public static double APP_VERSION = 0.0;
     public static double SV_APP_VERSION = 0.0;
+    public static double SV_APP_CVERSION = 0.0; //20220506 챠량별앱버전
+    public static double APP_SUBURBSVER = 0.1; //20220419
+    public static double SV_SUBURBSVER = 0.1; //20220419
 
     public static LocService m_Service = null;
 
@@ -110,8 +110,9 @@ public class Info {
 ///////////////////
     public static SQLiteHelper mSQLiteHelper;
     public static SQLiteControl sqlite;
-    public static String g_nowKeyCode = "";
-    public static String g_lastKeyCode = "";
+    public static String g_nowKeyCode = "00000000"; //20220411
+    public static String g_lastKeyCode = "00000000"; //20220411
+    public static String g_cashKeyCode = "00000000"; //20220411 tra..sh
     public static boolean g_state_done = false; //20210512 get_state_pref read done?
 
 //20210607
@@ -133,7 +134,11 @@ public class Info {
     public static int mBTOnOffCheck = 0; //20210329 for bluetooth restarting > (10초)
     public static boolean bBTRestarting = true;
 
+//20220413
+    public static boolean mAM100FirstOK = false;
 //2021019
+    public static String mAuthVehTIMS = "";
+    public static String mAuthdrvTIMS = "";
     public static String mEventTIMSdate;
     public static String mEventTIMStype;
     public static String mEventTIMSok;
@@ -152,8 +157,9 @@ public class Info {
     public static void _displayLOG(boolean bflag, String p1, String p2)
     {
 
-        if(LOGDISPLAY)
+        if(bflag) //20220502추가
             Log.d(TAG, p2 + p1);
+
     }
 //////////////
 
@@ -185,13 +191,13 @@ public class Info {
         mSQLiteHelper = new SQLiteHelper(context);
         sqlite = new SQLiteControl(mSQLiteHelper);
 
-        makeDriveCode();
+//20220411 tra..sh        makeDriveCode();
 
     }
 
     public static void makeDriveCode() {
         String lKeyCode;
-        String skeytmp = sqlite.selectKey();
+        String skeytmp = g_nowKeyCode; //20220411 tra..sh sqlite.selectKey();
         g_lastKeyCode = g_nowKeyCode;
 
         if(skeytmp == null || skeytmp == "null" || skeytmp == "") {
@@ -236,12 +242,14 @@ public class Info {
 
         if (location != null) {
 
-            Log.d("check_runmode", runmode+"");
 
             sqlite.insert(Info.g_nowKeyCode, 0, 0, 0, 0, location.getLatitude() + "", location.getLongitude() + "", runmode);
 
         } else
             sqlite.insert(Info.g_nowKeyCode, 0, 0, 0, 0, "", "", runmode);
+
+        Log.d("check_runmode", runmode+" " + sqlite._getLastDriveDate(Info.g_nowKeyCode));
+
     }
 
 
@@ -264,7 +272,7 @@ public class Info {
 
     public static void end_rundata(Location location, int Payment, int PayDiv, int PayAdd, int distance, int seconds ) {
 
-        Log.e("end_rundata", "end_rundata");
+        Log.e("check_runmode", "end_rundata");
 
 
         if (location != null) {
@@ -358,34 +366,62 @@ public class Info {
         //Location Detail Log
     //        Log.d("File1", "saving Savedata" + sfile + " : " + sdata + " / spd : " + ((int)(mddspeed * 3.6) + ""));
 
-
-
-
-
         File saveFile = null;
-        if( Build.VERSION.SDK_INT < 29) saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + path);
-        else saveFile = gMainactivity.getExternalFilesDir("/" + path);
+//20220503 tra..sh        if( Build.VERSION.SDK_INT < 29) saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + path);
+///        else saveFile = gMainactivity.getExternalFilesDir("/" + path);
+
+        saveFile = gMainactivity.getExternalFilesDir("/" + path);
 
         try {
             BufferedWriter buf = new BufferedWriter(new FileWriter(saveFile + "/" + sfile, true));
-
+            Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS 영업정보저장", saveFile + " " + Build.VERSION.SDK_INT);
             buf.append(sdata);
             buf.newLine();
             buf.flush();
             buf.close();
         } catch (IOException e) {
             e.printStackTrace();
+            Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS 영업정보저장실패", e.toString() + " " + Build.VERSION.SDK_INT);
         }
 
     }
 //////////////
 
-//20210803
-    public static void deletefile(String sfile, String path ) {
+    public static String ReadTextFile(String sfile, String path) {
 
         File saveFile = null;
-        if( Build.VERSION.SDK_INT < 29) saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + path);
-        else saveFile = gMainactivity.getExternalFilesDir("/" + path);
+//20220503 tra..sh        if (Build.VERSION.SDK_INT < 29)
+//            saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + path);
+//        else saveFile = gMainactivity.getExternalFilesDir("/" + path);
+
+        saveFile = gMainactivity.getExternalFilesDir("/" + path);
+
+        StringBuffer strBuffer = new StringBuffer();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(saveFile + "/" + sfile));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                strBuffer.append(line + "\n");
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS 영업정보읽기", e.toString() + " " + Build.VERSION.SDK_INT);
+            return "noFile";
+        }
+        return strBuffer.toString();
+    }
+
+//20210803
+    public static void Deletefile(String sfile, String path ) {
+
+        File saveFile = null;
+//20220503 tra..sh        if( Build.VERSION.SDK_INT < 29)
+//            saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + path);
+//        else saveFile = gMainactivity.getExternalFilesDir("/" + path);
+
+        saveFile = gMainactivity.getExternalFilesDir("/" + path);
 
         try {
 
