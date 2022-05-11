@@ -252,12 +252,6 @@ public class AMBleConfigActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 
-				//me: 방법 1)
-//				keyboard.setVisibility(View.VISIBLE);
-//				radio_button_layout.setVisibility(View.GONE);
-
-
-				//me: 방법 2)
 				if (OnClick){
 					mCustomKeyboard.setText("숫자");
 					radio_button_layout.setVisibility(View.GONE);
