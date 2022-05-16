@@ -25,5 +25,11 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
-    
+
+
+
+    <style name="SwitchButtonStyle">
+        <item name="colorPrimary">@color/yellow</item>
+    </style>
+
 </resources>

@@ -3,7 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/drawable/empty_bg_black.xml" value="0.227" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout-land/activity_setting.xml" value="0.33" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout-land/activity_setting_h.xml" value="0.3945945945945946" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout-land/ambleconfig_horizontal.xml" value="0.40540540540540543" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_info.xml" value="0.3697916666666667" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_input_numframe.xml" value="0.2078125" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_main.xml" value="0.25833333333333336" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_menu.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_new_main.xml" value="0.25833333333333336" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_newmain_v.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_record_detail_list_h.xml" value="0.25833333333333336" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_record_detail_list_v.xml" value="0.25833333333333336" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_setting.xml" value="0.265625" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/activity_setting_menu.xml" value="0.22760416666666666" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/dlg_basic.xml" value="0.2875" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/dlg_env_setting_layout.xml" value="0.5" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/dlg_inptcreceipt_info_v.xml" value="0.2875" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/newmainframe1.xml" value="0.23697916666666666" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/newmainframe1_new.xml" value="0.23697916666666666" />
+        <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter/KonaiAppMeter20220504/app/src/main/res/layout/newmainframe2.xml" value="0.24895833333333334" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/dlg_delete_btn.xml" value="0.2385" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/dlg_edit_box.xml" value="0.3065" />
         <entry key="..\:/Users/Interpass/AndroidStudioProjects/KonaiAppMeter20211231/KonaiAppMeter20211231/app/src/main/res/drawable/dlg_edit_btn.xml" value="0.2385" />

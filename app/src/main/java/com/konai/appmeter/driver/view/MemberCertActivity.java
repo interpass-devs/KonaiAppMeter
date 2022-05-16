@@ -1,7 +1,7 @@
 //20211216 tra..sh
 //20211220 tra..sh
 //20211229 tra..sh
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.Manifest;
 import android.app.Activity;
@@ -48,13 +48,13 @@ import androidx.core.widget.TextViewCompat;
 
 import com.konai.appmeter.driver.Dialog.Dlg_Env_setting;
 import com.konai.appmeter.driver.Dialog.Dlg_Select_Driver;
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.socket.UDPClientUtil;
 import com.konai.appmeter.driver.struct.AMBlestruct;
 import com.konai.appmeter.driver.struct.CalFareBase;
-import com.konai.appmeter.driver.util.ConnectionHtml;
 
 import org.json.JSONObject;
 
@@ -66,7 +66,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.concurrent.ExecutionException;
 
 //import android.support.annotation.NonNull;
 //import android.support.v4.content.FileProvider;
@@ -297,7 +296,6 @@ public class MemberCertActivity extends Activity {
                 setting.gGubun = 0;  //기본설정
             }
 
-
             if (autoLoginVal.equals("1")) {  //자동로그인(O)
                 setting.gAutoLogin = 1;
             } else if (autoLoginVal.equals("2")) {  //자동로그인(X)
@@ -305,8 +303,6 @@ public class MemberCertActivity extends Activity {
             } else {
                 setting.gAutoLogin = 0;
             }
-
-
             Suburbs.mSuburbOK = true; //시외
         }
 
@@ -319,16 +315,12 @@ public class MemberCertActivity extends Activity {
                     String getBlueStatus = dlg_env_setting.return_blueValue();
                     String getOriStatus = dlg_env_setting.return_oriValue();
                     String getGubunStatus = dlg_env_setting.return_gubunValue();
-                    //todo: 20220124
-//                    String getModemStatus = dlg_env_setting.return_modemValue();
-//                    Log.d("final_value", getBlueStatus+", "+getOriStatus+", "+getGubunStatus+", "+getModemStatus);
                     dlg_env_setting.dismiss();
 
                     //todo: 블루투스 상태저장 및 변경
                     editor.putString("ble_Status", getBlueStatus);
                     editor.putString("ori_Status", getOriStatus);
                     editor.putString("gubun_Status", getGubunStatus);
-//                    editor.putString("modem_Status", getModemStatus);
                     //todo: end
                     editor.commit();
 
@@ -350,7 +342,7 @@ public class MemberCertActivity extends Activity {
                             setting.gSerialUnit = 3;
                     }//switch..
 
-///////////////////
+
                     switch (getOriStatus) {
                         case "1":
                             setting.gOrient = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
@@ -1395,7 +1387,9 @@ public class MemberCertActivity extends Activity {
 
             dialog.show();
 
-        } else if (iTP == 2) {
+        }
+
+        else if (iTP == 2) {
 
             final LinearLayout dialogView;
             dialogView = (LinearLayout) View.inflate(context, R.layout.dlg_basic, null);
@@ -1467,9 +1461,8 @@ public class MemberCertActivity extends Activity {
             dialog.show();
 
         }
+
     }
-////////////todo: end
-////////////todo: end
 
     //20210823 getphonenum
     public String getPhonenum() {

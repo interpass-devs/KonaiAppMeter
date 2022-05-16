@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.Info;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraUpdate;

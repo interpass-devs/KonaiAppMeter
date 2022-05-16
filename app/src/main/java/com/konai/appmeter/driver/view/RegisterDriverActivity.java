@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.Dialog.Dlg_Num_Type;
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.setting;
 
 //import android.support.annotation.NonNull;
@@ -114,6 +115,7 @@ public class RegisterDriverActivity extends Activity {
 
                 int width = dm.widthPixels;
                 int height = dm.heightPixels;
+
                 if (setting.gOrient == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
                     width = (int) (width * 0.9);
                 }

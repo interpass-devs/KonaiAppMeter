@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,10 +18,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.VO.RecordVO;
 import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
+import com.konai.appmeter.driver.view.DayReportActivity;
+import com.konai.appmeter.driver.view.DriveInfoActivity;
+import com.konai.appmeter.driver.view.InfoActivity;
+import com.konai.appmeter.driver.view.MainActivity;
+import com.konai.appmeter.driver.view.PayListActivity;
 
 import java.util.ArrayList;
 

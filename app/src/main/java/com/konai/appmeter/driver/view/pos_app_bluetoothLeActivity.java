@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -42,6 +42,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
 

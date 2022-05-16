@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.konai.appmeter.driver"
     android:installLocation="preferExternal">
+
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -33,34 +35,30 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar"
         android:usesCleartextTraffic="true">
-
         <!-- NAVER MAP API KEY -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="i647zj0aeb" /> <!-- android:value="33wc7t5p4g" -->
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
         <activity
-            android:name=".RegisterDriverActivity"
+            android:name=".view.RegisterDriverActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout"
             android:theme="@style/activityDialogTheme" /> <!-- android:theme="@android:style/Theme.Dialog" -->
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden|adjustResize"> <!-- 02220207 -->
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".view.SplashActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-         <!--   <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
         <activity
             android:name=".IntroActivity"
@@ -69,60 +67,62 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".BleDeviceActivity"
+            android:name=".view.BleDeviceActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout"
             android:label="블루투스 기기 선택"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name=".pos_app_bluetoothLeActivity"
+            android:name=".view.pos_app_bluetoothLeActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout"
             android:label="블루투스 기기 선택"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name=".AMtestActivity"
+            android:name=".view.AMtestActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".AMBleConfigActivity"
+            android:name=".view.AMBleConfigActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".MapActivity"
+            android:name=".view.MapActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".RecordListActivity"
+            android:name=".view.RecordListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".RecordDetailListActivity"
+            android:name=".view.RecordDetailListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".PayListActivity"
+            android:name=".view.PayListActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".PaymentActivity"
+            android:name=".view.PaymentActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize" />
         <activity
-            android:name=".MemberCertActivity"
+            android:name=".view.MemberCertActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
-            android:launchMode="singleTask"> <!-- 20210823 -->
-            >
+            android:launchMode="singleTask">
         </activity>
         <activity
-            android:name=".DriveInfoActivity"
+            android:name=".view.DriveInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".DayReportActivity"
+            android:name=".view.DayReportActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".InfoActivity"
+            android:name=".view.InfoActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
-            android:name=".TimsInfoActivity"
+            android:name=".view.TimsInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout" />
-
+        <activity
+            android:name=".view.SettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout" />
         <service
             android:name=".service.LocService"
             android:enabled="true"
@@ -133,9 +133,8 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-
             </intent-filter>
-        </receiver> <!-- 20210823 -->
+        </receiver>
         <!-- 20220127 -->
         <!-- android:name="android.support.v4.content.FileProvider" -->
         <provider

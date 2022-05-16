@@ -11,6 +11,7 @@ public class setting {
     public static boolean gUseBLE = true; //false;
     public static Integer gSerialUnit = 0;  // 0=default, 1=아이나비, 2=아트뷰, 3=아틀란
     public static Integer gGubun = 0;  //0=default, 1=개인, 2=법인   //todo: 20211230
+    public static boolean gAppCotrol = true;  //앱 자동실행       //todo: 2022-05-12
     public static Integer gAutoLogin = 0;  //0=default, 1=자동로그인(O), 2=자동로그인(X)
     public static Integer gModem = 0; //0=default, 1=일반, 2=우리넷, 3=에이엠
     public static boolean gUserAction = false;
@@ -49,8 +50,6 @@ public class setting {
     public static String FILESERVERSUBURB = FILESERVERDOMAIN + "resources/pos_web/suburbs/";
 
     public static String UPFILENAME = "appmeter.apk"; //"appmeter.apk";
-
-    //20210823
     public final static String BROADCAST_TMSG = "com.konai.appmeter.driver.TMSG";
     public final static String BROADCAST_FMSG = "com.konai.appmeter.driver.FMSG";
     public static final String APPMETER_FMRUN = "com.konai.appmeter.driver.FMRUN";

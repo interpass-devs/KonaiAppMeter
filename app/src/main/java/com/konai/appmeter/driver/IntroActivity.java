@@ -15,6 +15,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
+import com.konai.appmeter.driver.view.MemberCertActivity;
 
 import org.json.JSONObject;
 
@@ -81,7 +82,7 @@ public class IntroActivity extends Activity {
                             startActivity(intent);
                             finish();
                         }
-                    }, 2000); //20220207
+                    }, 2000);
                 }
 
             }

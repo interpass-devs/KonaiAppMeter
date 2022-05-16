@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+
+import com.konai.appmeter.driver.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

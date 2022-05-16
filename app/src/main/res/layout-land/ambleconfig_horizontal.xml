@@ -530,7 +530,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_marginLeft="5dp">
-                            <com.konai.appmeter.driver.CustomKeyboardView
+                            <com.konai.appmeter.driver.view.CustomKeyboardView
                                 android:id="@+id/customkeyboardview"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"/>

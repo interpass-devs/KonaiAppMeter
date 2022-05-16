@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.struct.AMBlestruct;
+import com.konai.appmeter.driver.view.AMBleConfigActivity;
 
 public class AMtestActivity extends Activity
 {

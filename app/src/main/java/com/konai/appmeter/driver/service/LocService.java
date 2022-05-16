@@ -46,7 +46,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
-import com.konai.appmeter.driver.MainActivity;
+import com.konai.appmeter.driver.view.MainActivity;
 import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.VO.TIMS_UnitVO;
 import com.konai.appmeter.driver.setting.Info;
@@ -65,11 +65,6 @@ import com.konai.appmeter.driver.util.FontFitTextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -108,11 +103,10 @@ public class LocService extends Service implements LocationListener {
     private double mBegoreCallat = 0.0;
     private long mtasktimer = 0;
 
-    /////20210310
     private BluetoothAdapter mBluetoothAdapter = null;
     private Handler mHandler;
     private String mDrvnum = "";
-    ///////////////////////////
+
 //overlaywindow
     private int m_lbsLastState = 0; // 0: 아무것도 아닌상태, 1:빈차, 2:주행 3:예약
 

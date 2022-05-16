@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import androidx.annotation.NonNull;
+
+import com.konai.appmeter.driver.IntroActivity;
+import com.konai.appmeter.driver.R;
 
 public class SplashActivity extends Activity {
 

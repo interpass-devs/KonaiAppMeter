@@ -184,11 +184,6 @@ public class Dlg_Env_setting extends Dialog {
                         modemValue = "3";
                         break;
 
-//                    case R.id.ok_btn:      //확인
-//                        break;
-//
-//                    case R.id.cancel_btn:  //취소
-//                        break;
                 }//switch..
             }//onclick..
         };

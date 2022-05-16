@@ -235,8 +235,8 @@
             android:weightSum="4"
             android:orientation="vertical">
 
+            <!-- android:id="@+id/btn_cancel" -->
             <Button
-                android:id="@+id/btn_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="8sp"
@@ -253,8 +253,8 @@
                 android:textSize="40sp"
                 android:textStyle="bold" />
 
+            <!-- android:id="@+id/btn_cancel" -->
             <Button
-                android:id="@+id/btn_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="8sp"

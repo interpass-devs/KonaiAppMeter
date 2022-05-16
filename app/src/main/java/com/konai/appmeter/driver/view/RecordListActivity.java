@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,9 +20,11 @@ import com.konai.appmeter.driver.Adapter.ListAdapter;
 import com.konai.appmeter.driver.Adapter.ListItem;
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.VO.RecordVO;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
+import com.konai.appmeter.driver.view.RecordDetailListActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

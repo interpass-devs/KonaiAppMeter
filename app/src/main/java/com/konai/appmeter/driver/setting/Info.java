@@ -7,12 +7,11 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
-import com.konai.appmeter.driver.MainActivity;
+import com.konai.appmeter.driver.view.MainActivity;
 import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.struct.AMBlestruct;
 
@@ -24,7 +23,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 

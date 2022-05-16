@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -62,16 +62,14 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
-import com.konai.appmeter.driver.VO.TIMS_UnitVO;
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.Suburbs;
@@ -80,9 +78,7 @@ import com.konai.appmeter.driver.struct.AMBlestruct;
 import com.konai.appmeter.driver.struct.CalFareBase;
 import com.konai.appmeter.driver.struct.CircleProgressBar;
 import com.konai.appmeter.driver.struct.GetDecimalForm;
-import com.konai.appmeter.driver.tims.TimsDtg;
 import com.konai.appmeter.driver.util.ButtonFitText;
-import com.konai.appmeter.driver.util.ConnectionHtml;
 import com.konai.appmeter.driver.util.FontFitTextView;
 
 import org.apache.http.HttpResponse;
@@ -93,10 +89,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,11 +103,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 //import android.support.v4.app.ActivityCompat;
 //import android.support.v4.content.ContextCompat;
-//import android.support.v4.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MainActivity extends Activity {
     String logtag = "logtag_";
@@ -125,9 +118,9 @@ public class MainActivity extends Activity {
     private ObjectAnimator anim = null;
     AnimThread animthread;
     View viewframe2, viewframe1;
-    int index = 0; //todo: 20220128
-    ArrayList<String> list = new ArrayList<>(); //todo: 20220128
-    EditText edit_user, edit_password, editReceiptInfo; //todo: 20220128
+    int index = 0;
+    ArrayList<String> list = new ArrayList<>();
+    EditText edit_user, edit_password, editReceiptInfo;
     String pwVal;   //todo: 20220128
 
 
@@ -383,7 +376,7 @@ public class MainActivity extends Activity {
     private Boolean isClicked = true;
     private Boolean menuClicked = true;
     private TextView menu_ble, menu_ble_status, menu_ori, menu_ori_status, menu_gubun, menu_gubun_stauts, menu_auto_login, menu_auto_login_status, menu_modem, menu_modem_status;         //todo: 20211230
-    private LinearLayout menu_cashReceipt, menu_env_setting, submenu_env_setting;
+    private LinearLayout menu_cashReceipt, menu_env_setting, submenu_env_setting, menu_app_control_setting; //todo: 2022-05-12
 
 
     private TextView menu_todayRecord;
@@ -1084,8 +1077,8 @@ public class MainActivity extends Activity {
 
     }
 
-    //////////////
-//20210611
+
+
     public void save_totalfare_pref(int nfare, int diste, int distb)
     {
 //////////////////
@@ -1202,20 +1195,14 @@ public class MainActivity extends Activity {
                     display_Runstate();
 
                     if (m_Service.mCardmode == AMBlestruct.MeterState.NONE)
-                        //tv_cardment.setText((int)(mddspeed * 3.6) + "");
 
                         break;
 
                 case 2:
-                    //tv_cardment.setText("D " + m_tempval);
-
                     break;
 
                 case 3:
-//20201207                    if(m_Service.mCardmode == AMBlestruct.MeterState.NONE)
-                    //tv_cardment.setText((int)mddspeed + "");
-//20211103
-                    tv_curEmptyDist.setText(String.format("%.2f", memptydistance / 1000.0)); //20220303 km제거. tra..sh
+                    tv_curEmptyDist.setText(String.format("%.2f", memptydistance / 1000.0));
                     break;
 
                 case 10:
@@ -1225,8 +1212,6 @@ public class MainActivity extends Activity {
                         bInsertDB = true;
 
                         _setBoardDist(0);
-
-                        //Log.e("frame Change e", "4");
 
                         AMBlestruct.AMCardFare.msOpercode = Info.g_nowKeyCode;
                         AMBlestruct.AMCardFare.mbCard = true;
@@ -1257,66 +1242,21 @@ public class MainActivity extends Activity {
                 case 11:
                     if (mAddfare > 0) {
 
-                        LocService.CDrive_val.setmFareAdd(mAddfare); //20210823
-//                        LocService.CDrive_val.setmFareDiscount(0); //20210823
+                        LocService.CDrive_val.setmFareAdd(mAddfare);
 
                         bInsertDB = true;
 
-//20210615                        mddistance = 0;
-
-                        //Log.e("frame Change f", "4");
                         frameviewchange(4);
 
-                        AMBlestruct.AMCardFare.msOpercode = Info.g_nowKeyCode; // Info.g_lastKeyCode;
+                        AMBlestruct.AMCardFare.msOpercode = Info.g_nowKeyCode;
                         AMBlestruct.AMCardFare.mbCard = true;
                         AMBlestruct.AMCardFare.mstype = "01";
-//                        AMBlestruct.AMCardFare.mStarttime = getCurDateString();
-//                        AMBlestruct.AMCardFare.mEndtime = getCurDateString();
-                        AMBlestruct.AMCardFare.mFare = Info.PAYMENT_COST; //20210607 mnfare;
-                        AMBlestruct.AMCardFare.mFareDis = 0; //할인금액.
-                        AMBlestruct.AMCardFare.mCallCharge = Info.CALL_PAY; //20210909 호출요금.
-                        AMBlestruct.AMCardFare.mAddCharge = mAddfare; //추가요금.
-                        AMBlestruct.AMCardFare.mMoveDistance = Info.MOVEDIST; //승차거리
-
-                        //tv_nowaddfare.setText(mAddfare + "원");
-//20210823
-//20210909                        if(false)
-                        if (true) {
-
-                            m_Service.drive_state(AMBlestruct.MeterState.ADDPAY);
-
-                        } else {
-                            stopdriverstart();
-                            m_Service.drive_state(AMBlestruct.MeterState.PAY);
-                            m_Service.update_BLEmeterstate("01"); //?
-                        }
-/////////////////////
-
-                    } else {
-                        bInsertDB = true;
-
-                        LocService.CDrive_val.setmFareAdd(0); //20210823
-                        LocService.CDrive_val.setmFareDiscount(0); //20210823
-
-//20210615                        mddistance = 0;
-
-                        //Log.e("frame Change f", "4");
-                        frameviewchange(4);
-
-                        AMBlestruct.AMCardFare.msOpercode = Info.g_nowKeyCode; //20210611 Info.g_lastKeyCode;
-                        AMBlestruct.AMCardFare.mbCard = true;
-                        AMBlestruct.AMCardFare.mstype = "01";
-//                        AMBlestruct.AMCardFare.mStarttime = getCurDateString();
-//                        AMBlestruct.AMCardFare.mEndtime = getCurDateString();
-                        AMBlestruct.AMCardFare.mFare = Info.PAYMENT_COST; //20210607 mnfare;
+                        AMBlestruct.AMCardFare.mFare = Info.PAYMENT_COST;
                         AMBlestruct.AMCardFare.mFareDis = 0; //할인금액.
                         AMBlestruct.AMCardFare.mCallCharge = Info.CALL_PAY; //호출요금.
                         AMBlestruct.AMCardFare.mAddCharge = mAddfare; //추가요금.
                         AMBlestruct.AMCardFare.mMoveDistance = Info.MOVEDIST; //승차거리
 
-                        //tv_nowaddfare.setText(mAddfare + "원");
-//20210823
-//20210909                        if(false)
                         if (true) {
 
                             m_Service.drive_state(AMBlestruct.MeterState.ADDPAY);
@@ -1326,14 +1266,42 @@ public class MainActivity extends Activity {
                             m_Service.drive_state(AMBlestruct.MeterState.PAY);
                             m_Service.update_BLEmeterstate("01"); //?
                         }
-////////////
+
+
+                    } else {
+                        bInsertDB = true;
+
+                        LocService.CDrive_val.setmFareAdd(0);
+                        LocService.CDrive_val.setmFareDiscount(0);
+
+
+                        frameviewchange(4);
+
+                        AMBlestruct.AMCardFare.msOpercode = Info.g_nowKeyCode;
+                        AMBlestruct.AMCardFare.mbCard = true;
+                        AMBlestruct.AMCardFare.mstype = "01";
+                        AMBlestruct.AMCardFare.mFare = Info.PAYMENT_COST; //mnfare;
+                        AMBlestruct.AMCardFare.mFareDis = 0; //할인금액.
+                        AMBlestruct.AMCardFare.mCallCharge = Info.CALL_PAY; //호출요금.
+                        AMBlestruct.AMCardFare.mAddCharge = mAddfare; //추가요금.
+                        AMBlestruct.AMCardFare.mMoveDistance = Info.MOVEDIST; //승차거리
+
+                        if (true) {
+
+                            m_Service.drive_state(AMBlestruct.MeterState.ADDPAY);
+
+                        } else {
+                            stopdriverstart();
+                            m_Service.drive_state(AMBlestruct.MeterState.PAY);
+                            m_Service.update_BLEmeterstate("01"); //?
+                        }
                     }
 
                     btn_driveEnd.performClick();
 
                     break;
 
-                //20220107 //지불 by AM100
+                //지불 by AM100
                 case 12: {
                     Info.makeDriveCode();
                     Info.insert_rundata(mlocation, 1); //drive
@@ -1341,8 +1309,6 @@ public class MainActivity extends Activity {
 
                     Info.PAYMENT_COST = CalFareBase.BASECOST;
                     _setBoardDist(0);
-
-                    //Log.e("frame Change e", "4");
 
                     AMBlestruct.AMCardFare.msOpercode = Info.g_nowKeyCode;
                     AMBlestruct.AMCardFare.mbCard = true;
@@ -1358,16 +1324,15 @@ public class MainActivity extends Activity {
 
                     m_Service.drive_state(AMBlestruct.MeterState.DRIVE);
 
-                    frameviewchange(4); //20220107
+                    frameviewchange(4);
 
                     btn_driveEnd.performClick();
 
                 }
                 break;
-////////////////////////
 
-                case 51: //20211216
-//                    btn_connBLE.setBackgroundResource(R.drawable.ic_bluetooth_btn);
+
+                case 51:
                     btn_connBLE.setBackgroundResource(R.drawable.bluetooth_blue);
                     break;
 
@@ -1380,7 +1345,7 @@ public class MainActivity extends Activity {
                     SimpleDateFormat format2 = new SimpleDateFormat("a hh:mm");
                     Calendar time = Calendar.getInstance();
                     format1.format(time.getTime());
-//20201211
+
                     if (false) //Info.TESTMODE)
                     {
                         tv_nowDate.setText(mtestdate);
@@ -1388,11 +1353,10 @@ public class MainActivity extends Activity {
 
                     } else {
 
-//20220407                        if (mlocation != null && m_Service.mbDrivestart == true)
                         if (mlocation != null && m_Service != null && m_Service.mbDrivestart == true)
                         {
 
-                            if (mlocation.getAccuracy() < 0 || mlocation.getAccuracy() > 12) //20201215  ///-~ 0~12 높을수록 오차범위가 큼
+                            if (mlocation.getAccuracy() < 0 || mlocation.getAccuracy() > 12) //-~ 0~12 높을수록 오차범위가 큼
                             {
 
                                 tv_nowDate.setText("AM100수신...");
@@ -1405,7 +1369,6 @@ public class MainActivity extends Activity {
 
                         tv_nowTime.setText(format2.format(time.getTime()));
                     }
-
                     break;
 
                 case 98:
@@ -1427,17 +1390,10 @@ public class MainActivity extends Activity {
 
                 case 997: //for event tims.
                     save_TIMS_pref(7);
-
-//                    Toast.makeText(getApplicationContext(),
-///                            msg.obj.toString(), Toast.LENGTH_SHORT).show();
                     break;
 
                 case 998:
                     save_TIMS_pref(8);
-
-//                    Toast.makeText(getApplicationContext(),
-///                            msg.obj.toString(), Toast.LENGTH_SHORT).show();
-
                     break;
 
                 case 999:
@@ -1459,7 +1415,7 @@ public class MainActivity extends Activity {
             Log.d("pos_app_mainActivity", "pos_app_service_main onServiceConnected");
             LocService.ServiceBinder binder = (LocService.ServiceBinder) iBinder;
             m_Service = binder.getService();
-            m_Service.registerCallback(mCallback); //
+            m_Service.registerCallback(mCallback);
 
             Info.m_Service = m_Service;
 
@@ -1479,9 +1435,6 @@ public class MainActivity extends Activity {
         public void onServiceDisconnected(ComponentName componentName) {
             Log.d("pos_app_mainActivity", "pos_app_service_main onServiceDisconnected");
             m_Service = null;
-//			isBindService = false;
-///			mServiceMessenger = null;
-
             Info.m_Service = null;
 
         }
@@ -1490,54 +1443,25 @@ public class MainActivity extends Activity {
     public void display_Runstate() {
         String stemp = "";
 
-//20210611        if(bInsertDB == true) {
-//            if(msetDB) {
-//                Info.insert_rundata(mlocation, 2); //drive
-//                bInsertDB = false;
-//            }
-//        } else
-
         if (mnseconds % recCount == 0) {
 
             if (mlocation != null)
                 Info.update_runlocationdata(mlocation);
         }
 
-//        anim.pause();
         String pre_cnt = tv_remainfare.getText().toString();
         tv_remainfare.setText(mnremaindist + "");
-        // Log.d("mddspeed>", mddspeed+"");
-        //Log.d("mddspeed>", mddspeed+" mGPSspeed : " + (int)mGPSspeed * 3.6);
         String cur_cnt = tv_remainfare.getText().toString();
         int speed = (Integer.parseInt(cur_cnt)) - (Integer.parseInt(pre_cnt));
 
-//        anim.resume();
-//        AnimThread thread = new AnimThread();
-///        thread.start();
-        //todo: end
-
-//        tv_nowfare.setText(mnfare + "원");
-        // todo: 20210902
-//        mnfare = 1234567;
         long value = Long.parseLong(mnfare + "");
         DecimalFormat format = new DecimalFormat("###,###");
         tv_nowfare.setText(format.format(value));
-
-//        if(setting.gOrient != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-//            if (tv_nowfare.getText().toString().length() < 7) {
-//                tv_nowfare.setTextSize(12.0f * setting.gTextDenst);
-//            } else if (tv_nowfare.getText().toString().length() >= 7) {
-//                tv_nowfare.setTextSize(6.0f * setting.gTextDenst);
-//            } else {
-//            }
-//        }
-        //todo: end
 
 
         m_Service._setLbsPayment(mnremaindist + "", mnfare + "");
 
         if (Info.REPORTREADY) {
-
             Info._displayLOG(Info.LOGDISPLAY, "메인화면 요금표기", "");
             Info._displayLOG(Info.LOGDISPLAY, "빈차등 요금전송 " + mnfare + "원", "");
         }
@@ -1570,9 +1494,6 @@ public class MainActivity extends Activity {
         }
 
         mlocationtmp = mlocation;
-//20210607        PAYMENT_COST = mnfare; //20210607 + mAddfare;
-
-//        save_state(1, PAYMENT_COST, PAYMENT_COST, mddistance, mnremaindist);
 
         if (Info.USEDRIVESTATEPOWEROFF) {
             if (mlocation != null) {
@@ -1586,11 +1507,7 @@ public class MainActivity extends Activity {
             }
         }
 
-        //todo: 20210917
-        // anim.setRepeatMode(ObjectAnimator.RESTART);
 
-//20210917
-//20210928 TODO.
         if (false) {
             if (anim != null) {
                 int spd = (int) (mddspeed * 3.6 / 10);
@@ -1605,12 +1522,7 @@ public class MainActivity extends Activity {
                 factor = factor / 10;
                 factor = factor * 10;
 
-//            anim.cancel();
-//            anim = ObjectAnimator.ofFloat(iv_car_icon, "rotation", 0, 180);
-
                 anim.setDuration(factor);
-//            anim.start();
-
             }
         } else {
 
@@ -1624,11 +1536,7 @@ public class MainActivity extends Activity {
             } else
                 nProgress = (CalFareBase.INTERVAL_DIST - mnremaindist) * 1.0 / CalFareBase.INTERVAL_DIST * 100;
 
-//            Log.d("progress", " " + nProgress + " B" + CalFareBase.BASEDRVDIST + " R" + mnremaindist + " T" + mfaredist + " C" + mncurdist);
-
             progressremain1.setProgress((int) nProgress);
-
-//            ncurdist = mncurdist + 10;
 
             ncurdist = (int) mddspeed;
             if (ncurdist > 0)
@@ -1637,9 +1545,7 @@ public class MainActivity extends Activity {
             progressremain2.setProgress(ncurdist);
             displayHandler.removeMessages(90);
             displayHandler.sendEmptyMessageDelayed(90, 500);
-
         }
-
     }
 
     public void TimerStart() {
@@ -1656,31 +1562,18 @@ public class MainActivity extends Activity {
         timer.schedule(second, 0, 1000);
     }
 
-    //todo:  - 바퀴 이미지 스레드 돌리기
-    //todo: 20210917
+
     class AnimThread extends Thread {
         @Override
         public void run() {
 
-//            int index = 0;
-//            for (int i = 1; i<100; i++){
-//                index += 1;
-//
-//                try{
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    // anim.setDuration()  //변수값 파라미터로 전달..
 
                     anim.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-//                            super.onAnimationEnd(animation);
                             anim.start();
                         }
                     });
@@ -1689,7 +1582,6 @@ public class MainActivity extends Activity {
 
         }
     }
-    //todo: end
 
     /**
      * ***********************************************************************************************************************************
@@ -1713,13 +1605,10 @@ public class MainActivity extends Activity {
         }
 
 
-//        Log.d(logtag+"_app_version", "local: "+Info.APP_VERSION+",  server: "+Info.SV_APP_VERSION);
 
         Info.g_appmode = Info.APP_METER;
         Info.set_MainIntent(this, MainActivity.class);
-        Info.setMainActivity(MainActivity.this); //20210325
-//        setContentView(R.layout.activity_new_main);
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Info.setMainActivity(MainActivity.this);
 
         if (true) {
             if (setting.gOrient == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
@@ -1731,16 +1620,13 @@ public class MainActivity extends Activity {
 
             initializecontents(setting.gOrient);
         } else
-//            initializecontents(getResources().getConfiguration().orientation);
             initializecontents(setting.gOrient);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
         loadinit();
-//20220415 ver157        Info.init_SQLHelper(this);
 
-        AMBlestruct.mBTConnected = false; //20201207
+        AMBlestruct.mBTConnected = false;
 
         if (setting.gUseBLE == false)
             setting.BLUETOOTH_FINDEND = true;
@@ -1912,6 +1798,10 @@ public class MainActivity extends Activity {
         lbs_w = pref.getInt("lbs_w", 300);
         lbs_h = pref.getInt("lbs_h", 138);
 
+//        SharedPreferences pref1 = getSharedPreferences("env_setting", Activity.MODE_PRIVATE);
+//        String prefEnv = pref1.getString("app_control_Status",  String.valueOf(SettingActivity.MODE_PRIVATE));
+//        Log.d("prefEnv", prefEnv);
+
 
 //20210520
         SharedPreferences pref2 = getSharedPreferences("BLEINFO", Activity.MODE_PRIVATE); //160622
@@ -1942,39 +1832,14 @@ public class MainActivity extends Activity {
             case 1:
                 if (m_Service != null)
                     m_Service.set_payviewstate(false);
-//20210611
-/*
-                if(Info.sqlite != null)
-                {
-                    String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
-                    String driveCount = Info.sqlite.todayDriveCount();
-                    if(dayDrvRecordData[0].equals("") == true || driveCount.equals("0") == true) //20210506
-                    {
 
-                        ;
-
-                    }
-                    else if(dayDrvRecordData[1].equals("null") == false)
-                    {
-                        tv_todayTotalDist.setText((String.format("%.2f", (Double.parseDouble(dayDrvRecordData[0]) + Double.parseDouble(dayDrvRecordData[1])) / 1000)) + "km");
-                        tv_todayTotalDrvCnt.setText(driveCount + " 회");
-                        tv_todayTotalPayment.setText(dayDrvRecordData[4] + "원");
-                    }
-                }
-*/
-                //todo: 다시
-//                Info.init_SQLHelper(this);
                 String todayCnt = Info.sqlite.todayDriveCount();
                 Log.d("today_cnt", todayCnt);  //당일 총 거래횟수 나옴. (결제취소 된 것 까지나옴)
 
                 String totalCnt = Info.sqlite.totalDriveCount();
                 Log.d("total_cnt", totalCnt);
 
-//                mtcnt = Integer.parseInt(totalCnt);
-
-
-                tv_todayTotalDist.setText((String.format("%.2f", mtddistanceB / 1000.0)) + " km"); //20220303 tra..sh "km" to " km"
-
+                tv_todayTotalDist.setText((String.format("%.2f", mtddistanceB / 1000.0)) + " km");
                 tv_todayTotalDrvCnt.setText(mtcnt + " 회");
 
                 long value = Long.parseLong(mtfare + "");
@@ -1982,13 +1847,9 @@ public class MainActivity extends Activity {
                 tv_todayTotalPayment.setText(format.format(value) + " 원");
                 Log.d("tv_todayTotalPayment_2", (format.format(value)) + "");
 
-//                tv_todayTotalPayment.setText(mtfare + "원");
-
-/////////////////////
-
                 payExtraDefault();
-                emptyFrame1.setVisibility(View.INVISIBLE);   //todo: 20210917
-                emptyFrame1_new.setVisibility(View.VISIBLE); //todo: 20210917
+                emptyFrame1.setVisibility(View.INVISIBLE);
+                emptyFrame1_new.setVisibility(View.VISIBLE);
                 emptyFrame2.setVisibility(View.VISIBLE);
                 driveFrame1.setVisibility(View.INVISIBLE);
                 driveFrame2.setVisibility(View.INVISIBLE);
@@ -3264,7 +3125,7 @@ public class MainActivity extends Activity {
             }
         });
 
-/////////
+
         btn_callPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -3278,7 +3139,7 @@ public class MainActivity extends Activity {
             }
         });
 
-///////////////////////
+
 
         GlideDrawableImageViewTarget gifImages = new GlideDrawableImageViewTarget(iv_loadingGif);
         Glide.with(this).load(R.drawable.pay_loadings).into(gifImages);
@@ -3351,12 +3212,10 @@ public class MainActivity extends Activity {
         btn_payingCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//20210607
+
                 if(true)
                 {
-//                    btn_cashPay.performClick(); //20210823
-                    continue_board(); //20210823
-//20210823
+                    continue_board();
 
                     if(false) {
                         m_Service.mDrivemode = AMBlestruct.MeterState.EMPTY;
@@ -3366,7 +3225,7 @@ public class MainActivity extends Activity {
                         frameviewchange(1);
                     }
                 }
-//20210607                    continue_board();
+
             }
         });
 
@@ -3379,8 +3238,6 @@ public class MainActivity extends Activity {
                     btn_cancelpayment.setTextColor(Color.parseColor("#ffffff"));
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-//20220303 tra..sh                    btn_cancelpayment.setBackgroundColor(Color.parseColor("#999999"));
-//                    btn_cancelpayment.setTextColor(Color.parseColor("#000000"));
                     btn_cancelpayment.setBackgroundResource(R.drawable.grey_gradi_btn);
                     btn_cancelpayment.setTextColor(Color.parseColor("#ffffff"));
                 }
@@ -3391,23 +3248,18 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                btn_emptyCar_d.setEnabled(true); //20220411 tra..sh
+                btn_emptyCar_d.setEnabled(true);
 
                 tv_pay_card.setVisibility(View.GONE);
 
                 mAddfare = 0;
-                LocService.CDrive_val.setmFareAdd(0); //20210917
+                LocService.CDrive_val.setmFareAdd(0);
 
-//20210607
-//                if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY)
-                if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY || m_Service.mbDrivestart == false) //20220107
+                if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY || m_Service.mbDrivestart == false)
                 {
-//                    Info.end_rundata(mlocation, Info.PAYMENT_COST, 0, mAddfare, mddistance, mnseconds);
                     Info.sqlite.delete(Info.g_nowKeyCode); //20210611
                     frameviewchange(1);
                     m_Service.update_BLEmeterstate("20");
-//                    m_Service.mDrivemode = AMBlestruct.MeterState.EMPTY;
-//                    m_Service.mCardmode = AMBlestruct.MeterState.NONE;
                     m_Service.drive_state(AMBlestruct.MeterState.EMPTYBYEMPTY);
                 }
                 else
@@ -3541,8 +3393,11 @@ public class MainActivity extends Activity {
         btn_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//20210611
-//                emptyFrame1_new.setClickable(false)
+
+                if (Info.m_Service != null) {
+                    Info.m_Service._showhideLbsmsg(false);
+                }
+
                 viewframe1.setClickable(false);
 
                 if(m_Service.mbDrivestart == false)
@@ -3567,12 +3422,6 @@ public class MainActivity extends Activity {
 
 
 
-
-//        if (menu.isDrawerVisible()){
-//            Log.d("menu_open","open");
-//        }else {
-//            Log.d("menu_open","false");
-//        }
 
 
         btn_connBLE.setOnTouchListener(new View.OnTouchListener() {
@@ -3612,8 +3461,7 @@ public class MainActivity extends Activity {
             }
         });
 
-//20210823
-///////////////////
+
         btn_navi.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -3637,12 +3485,6 @@ public class MainActivity extends Activity {
             }
         });
 
-////////////////////////////
-
-        /************* MENU ****************/
-//20201207
-//20210310        menu_drvname.setText(AMBlestruct.AMLicense.drivername);
-//20210310        menu_carnum.setText(AMBlestruct.AMLicense.taxinumber);
 
         menu_home.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -3804,6 +3646,7 @@ public class MainActivity extends Activity {
         menu_drvHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //서브메뉴
 //                if(chkSubMenuUse) {
 //                    menu_submenu.setVisibility(View.GONE);
 //                    chkSubMenuUse = false;
@@ -3811,11 +3654,11 @@ public class MainActivity extends Activity {
 //                    menu_submenu.setVisibility(View.GONE);
 //                    chkSubMenuUse = true;
 //                }
-//20220107
+
                 menu.closeDrawer(drawerView);
 
                 show_drvhistory();
-////////
+
             }
         });
 
@@ -3833,21 +3676,55 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        //todo: 2022-05-12
         menu_env_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isClicked == true){
-                    submenu_env_setting.setVisibility(View.VISIBLE);
-                    isClicked = false;
-                }else {
-                    submenu_env_setting.setVisibility(View.GONE);
-                    isClicked = true;
-                }
+//                if (isClicked == true){
+//                    submenu_env_setting.setVisibility(View.VISIBLE);
+//                    isClicked = false;
+//                }else {
+//                    submenu_env_setting.setVisibility(View.GONE);
+//                    isClicked = true;
+//                }
 
+                //환경설정 화면으로 이동
+                menu.closeDrawer(drawerView);
+                Intent i = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(i);
             }
         });
+        //todo: end
 
-        //todo: 20211230
+
+
+
+        //todo: 2022-05-12
+        // 앱 자동실행 설정메뉴
+        menu_app_control_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (Info.m_Service != null) {
+                    Log.d("m_Service_Resume", "not null");
+                    Info.m_Service._showhideLbsmsg(false);
+                }else {
+                    Log.d("m_Service_Resume", "null");
+                }
+
+                menu.closeDrawer(drawerView);
+                Intent i = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(i);
+            }
+        });
+        //todo: end
+
+
+
+
+
+        //me:
         // 메뉴에 블루투스/ 해상도/ 자동로그인 상태 체크
         SharedPreferences pref = getSharedPreferences("env_setting", MODE_PRIVATE);
         final SharedPreferences.Editor editor = pref.edit();
@@ -3856,11 +3733,6 @@ public class MainActivity extends Activity {
         String gubun_Status = pref.getString("gubun_Status","");
         String auto_login_Status = pref.getString("auto_login_Status","");
         String modem_Status = pref.getString("modem_Status","");
-        Log.d("checkPrefData_ble", pref.getString("ble_Status",""));
-        Log.d("checkPrefData_ori", pref.getString("ori_Status",""));
-        Log.d("checkPrefData_ori", pref.getString("gubun_Status",""));
-        Log.d("checkPrefData_login", pref.getString("auto_login_Status",""));
-        Log.d("checkPrefData_modem", pref.getString("modem_Status",""));
 
         switch (ble_Status){
             case "0":
@@ -3944,30 +3816,7 @@ public class MainActivity extends Activity {
                 break;
         }
 
-//        switch (modem_Status){
-//            case "0":
-//                menu_modem.setText("모뎀설정");
-//                menu_modem_status.setText("OFF");
-//                menu_modem_status.setTextColor(Color.parseColor("#636167"));
-//                break;
-//            case "1":
-//                menu_modem.setText("일반모뎀");
-//                menu_modem_status.setText("ON");
-//                menu_modem_status.setTextColor(Color.parseColor("#3F51B5"));
-//                break;
-//            case "2":
-//                menu_modem.setText("rndis 우리넷");
-//                menu_modem_status.setText("ON");
-//                menu_modem_status.setTextColor(Color.parseColor("#3F51B5"));
-//                break;
-//            case "3":
-//                menu_modem.setText("rndis 에이엠");
-//                menu_modem_status.setText("ON");
-//                menu_modem_status.setTextColor(Color.parseColor("#3F51B5"));
-//                break;
-//        }
 
-        //todo: end
 
         menu_getReceipt.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -4017,7 +3866,6 @@ public class MainActivity extends Activity {
         });
 
 
-        //todo: 20211125
         // 결제취소 메뉴 클릭 시
         menu_cancelPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -4085,8 +3933,6 @@ public class MainActivity extends Activity {
                                         if (payDiv == 0) {  //현금
                                             Log.d("today_data_", "현금");
                                             AMBlestruct.AMCardFare.mstype = "05";
-//20220110                                        Toast.makeText(context, "현금결제는 취소가 불가능합니다.", Toast.LENGTH_SHORT).show();
-//                                        if(!AMBlestruct.AMCardResult.msOpercode.equals(""))
                                             {
                                                 m_Service.writeBLE("23");
                                             }
@@ -4094,11 +3940,8 @@ public class MainActivity extends Activity {
                                         } else if (payDiv == 1) {  //카드
                                             Log.d("today_data_", "카드");
 
-                                            //마지막 결제아이템 운행코드 가져오기
-//                                        after_cancel_pay(drvCode);  //카드결제 취소
 
                                             AMBlestruct.AMCardFare.mstype = "01";
-//                                        if(!AMBlestruct.AMCardResult.msOpercode.equals(""))
                                             {
                                                 m_Service.writeBLE("23");
                                             }
@@ -4107,8 +3950,6 @@ public class MainActivity extends Activity {
                                             //do nothing
                                             Log.d("today_data_", "모바일");
                                             AMBlestruct.AMCardFare.mstype = "06";
-//20220110                                        Toast.makeText(context, "모바일결제는 취소가 불가능합니다.", Toast.LENGTH_SHORT).show();
-//                                        if(!AMBlestruct.AMCardResult.msOpercode.equals(""))
                                             {
                                                 m_Service.writeBLE("23");
                                             }
@@ -4118,7 +3959,6 @@ public class MainActivity extends Activity {
 
 
                                         frameviewchange(1);
-//20220421                                    showEmptyIcon.performClick();
 
                                         m_Service.set_payviewstate(true); //20220421
 
@@ -4129,7 +3969,7 @@ public class MainActivity extends Activity {
                                 }
                             } else {
                                 Toast.makeText(MainActivity.this, "결제취소할 목록이 없습니다.", Toast.LENGTH_SHORT).show();
-                            } //if (todayData.length
+                            }
 
                             dlg.dismiss();
 
@@ -4137,10 +3977,7 @@ public class MainActivity extends Activity {
                         else
                         {
                             AMBlestruct.AMCardFare.mstype = "01";
-                                m_Service.writeBLE("23");
-
-//                            frameviewchange(1);
-//20220421                                    showEmptyIcon.performClick();
+                            m_Service.writeBLE("23");
 
                             m_Service.set_payviewstate(true); //20220421
 
@@ -4149,10 +3986,8 @@ public class MainActivity extends Activity {
                             dlg.dismiss();
 
                             set_basic_dlg("카드를 인식해주세요.", "닫기", "");  //todo: 2022-04-27
-
                         }
                     }
-
                 });
                 dlg.dismiss();
 
@@ -4161,7 +3996,6 @@ public class MainActivity extends Activity {
                 int height = dm.heightPixels;
 
                 if (Build.VERSION.SDK_INT <= 25) {
-//                    title.setTextSize(3.0f * setting.gTextDenst);
                     msg.setTextSize(3.0f * setting.gTextDenst);
                     cancelBtn.setTextSize(2.5f * setting.gTextDenst);
                     okayBtn.setTextSize(2.5f * setting.gTextDenst);
@@ -4182,16 +4016,9 @@ public class MainActivity extends Activity {
                 dlg.show();
 
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-//                menu.closeDrawer(drawerView);
-                //todo: end
             }
         });
 
-
-
-
-        //todo: 20210923
         // 현금영수증
         menu_cashReceipt.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -4230,19 +4057,14 @@ public class MainActivity extends Activity {
         menu_endDrv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//20220126
                 {
-//20220421
+
                     _todayreset();
                     exitprocess();
                 }
 
-//                menu_endApp.performClick();
-
                 if (false) {
                     if (Info.TIMSUSE) {
-//20210512 for timstest. no use after
                         if (Info.APPMETERRUNSTOP == 0) {
                             Info.APPMETERRUNSTOP = 1;
                             menu_endDrv.setBackgroundColor(Color.parseColor("#3c3c4a"));
@@ -4268,7 +4090,6 @@ public class MainActivity extends Activity {
 
                 }
 
-///////////20210906
                 if (false) //Info.TIMSUSE)
                 {
                     if (Info.APPMETERRUNSTOP == 0) {
@@ -4336,8 +4157,6 @@ public class MainActivity extends Activity {
         menu_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://test.psweb.kr/apk/posappmeter.apk"));
-///                startActivity(intent);
 
                 Uri uri = Uri.parse("market://details?id=com.konai.appmeter.driver");
 
@@ -4354,18 +4173,16 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(
                         Intent.ACTION_VIEW, uri);
                 startActivity(intent);
-
             }
         });
 
-        //todo: 20220128
-        //환경설정 초기화
+
+        //환경설정 초기화버튼
         menu_reset_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final LinearLayout dialogView;
 
-//20220318 tra..sh
                 if (list.size() != 0)
                     list.removeAll(list);
 
@@ -4459,7 +4276,7 @@ public class MainActivity extends Activity {
                 int width = dm.widthPixels;
                 int height = dm.heightPixels;
 
-                //todo://20211203
+
                 if (Build.VERSION.SDK_INT <= 25){
                     msg.setTextSize(3.0f * setting.gTextDenst);
                     cancelBtn.setTextSize(2.5f * setting.gTextDenst);
@@ -4470,7 +4287,7 @@ public class MainActivity extends Activity {
                     width = (int)(width * 0.9);
                     height = (int)(height * 1);
                 }
-                //todo: end
+
 
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(dlg.getWindow().getAttributes());
@@ -4482,7 +4299,7 @@ public class MainActivity extends Activity {
                 dlg.show();
             }
         });
-        //todo: 20220128 end...
+
 
         menu_close.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -4506,10 +4323,22 @@ public class MainActivity extends Activity {
 
             }
         });
-
     }
 
-    //todo: 2022-04-27
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+
+        Log.d("checkResult", requestCode+"");
+
+        if (intent == null) {
+            intent = new Intent();
+        }else {
+            Log.d("checkResult",intent.toString()+"= null");
+        }
+        super.startActivityForResult(intent, requestCode);
+    }
+
+
     private void set_basic_dlg(String msg, String ok, String cancel) {
         LayoutInflater flater = getLayoutInflater();
         final View dView;
@@ -4559,12 +4388,11 @@ public class MainActivity extends Activity {
         window.setAttributes(params);
         cancelcard_dg.show();
     }
-    //todo: end
+
+
 
     private void set_frame_orient(int tp)
     {
-
-/////////////////////
         menu = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.drawer_menu);
 
@@ -4576,6 +4404,7 @@ public class MainActivity extends Activity {
 
         menu_version.setText("ver " + Info.APP_VERSION + "(" + Info.AREA_CODE + ")"); //20220318 tra..sh
 
+        menu_app_control_setting = (LinearLayout)findViewById(R.id.menu_app_control_setting);  //todo: 2022-05-12
         menu_env_setting = (LinearLayout)findViewById(R.id.menu_env_setting);
         submenu_env_setting = (LinearLayout)findViewById(R.id.submenu_env_setting);
         menu_ble = (TextView)findViewById(R.id.menu_ble);
@@ -4608,49 +4437,28 @@ public class MainActivity extends Activity {
 
         menu_cashReceipt = (LinearLayout)findViewById(R.id.menu_cashreceipt); //20210923
 
-//20201207
-//20210310        menu_drvname = (TextView)findViewById(R.id.menu_drvname);
-//20210310        menu_carnum = (TextView)findViewById(R.id.menu_carnum);
-
-//////////////////////////
         LayoutInflater inflater = null;
 
-/*        View viewtop = null;
-        frametop = (FrameLayout) findViewById(R.id.frametop); // 1. 기반이 되는 FrameLayout
-        if (frametop.getChildCount() > 0) {
-            // FrameLayout에서 뷰 삭제.
-            frametop.removeViewAt(0);
-
-        }
-
-        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); // 2. inflater 생성
-        viewtop = inflater.inflate(R.layout.newmainframetop, frametop,true);
-*/
         btn_menu = (Button)findViewById(R.id.nbtn_menu);
         btn_connBLE = (Button) findViewById(R.id.nbtn_connectble);  //메인- 블루투스 아이콘
-//20210823
+
         btn_navi = (Button)findViewById(R.id.nbtn_navi);
         btn_navi.setVisibility(View.INVISIBLE);
         if(tp == 1) //for landscape
         {
-
             btn_navi.setVisibility(View.VISIBLE);
-
         }
-//////////////
+
         tv_nowDate = (TextView)findViewById(R.id.ntv_nowdate);
         tv_nowTime = (TextView)findViewById(R.id.ntv_nowtime);
 
-///////////////////////////
         viewframe1 = null;
         frame1 = (FrameLayout) findViewById(R.id.frame1); // 1. 기반이 되는 FrameLayout
         if (frame1.getChildCount() > 0) {
             // FrameLayout에서 뷰 삭제.
             frame1.removeViewAt(0);
-
         }
 
-//////////////////////////////
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); // 2. inflater 생성
         viewframe1 = inflater.inflate(R.layout.newmainframe1, frame1,true);
         /** Frame Layout **/
@@ -4669,10 +4477,9 @@ public class MainActivity extends Activity {
         tv_todayTotalPayment.setSizeRate(0.9);
         tv_todayreset = (TextView)viewframe1.findViewById(R.id.resettfare);       //금액마감
         tv_curEmptyDist = (FontFitTextView)viewframe1.findViewById(R.id.curemptydist);   //20211103
-        hideEmptyIcon = (TextView) viewframe1.findViewById(R.id.hide_empty_icon); //todo: 20211118 돌아가기 버튼
-        showEmptyIcon = (TextView)viewframe1.findViewById(R.id.show_empty_icon);  //todo: 20210917 셍세보기 버튼
+        hideEmptyIcon = (TextView) viewframe1.findViewById(R.id.hide_empty_icon); //me: 20211118 돌아가기 버튼
+        showEmptyIcon = (TextView)viewframe1.findViewById(R.id.show_empty_icon);  //me: 20210917 셍세보기 버튼
         hideReport = (TextView) viewframe1.findViewById(R.id.hide_report);       //거래집계 버튼
-//        showReport = (TextView)viewframe1.findViewById(R.id.show_report);
 
         /** 주행 **/
         tv_remainfare = (TextView)viewframe1.findViewById(R.id.ntv_remainfare);
@@ -4682,12 +4489,7 @@ public class MainActivity extends Activity {
         progressremain2 = viewframe1.findViewById(R.id.progressremain2);     //me: 20210928 차/말/바람개비
         tv_boardkm = (FontFitTextView)viewframe1.findViewById(R.id.ntv_boardkm);
         tv_nowfare = (FontFitTextView)viewframe1.findViewById(R.id.ntv_nowfare);
-        tv_nowfare.setSizeRate(0.9); //20220318 tra..sh
-//        String fontPath5 = "/system/fonts/DroidSans-Bold.ttf";
-//
-//        Typeface typeface = null;
-//        typeface = Typeface.createFromFile(fontPath5);
-//        tv_nowfare.setTypeface(typeface);
+        tv_nowfare.setSizeRate(0.9);
 
         textView33 = (TextView)viewframe1.findViewById(R.id.textView33);  //추가요금 텍스트
         nowfare_layout = (LinearLayout)viewframe1.findViewById(R.id.nowfare_layout);
@@ -4708,20 +4510,17 @@ public class MainActivity extends Activity {
         tv_resDistance = (TextView)viewframe1.findViewById(R.id.ntv_resdistance);
         tv_resPayment = (TextView)viewframe1.findViewById(R.id.ntv_respayment);
         view_line = (View)viewframe1.findViewById(R.id.view_line);
-        tv_restotpayment_layout = (LinearLayout)viewframe1.findViewById(R.id.ntv_restotpayment_layout);  //todo: 20220209
-//20220303        tv_restotpayment_title = (TextView)viewframe1.findViewById(R.id.ntv_restotpayment_title); //todo: 20220223
+        tv_restotpayment_layout = (LinearLayout)viewframe1.findViewById(R.id.ntv_restotpayment_layout);
         tv_restotpayment = (FontFitTextView)viewframe1.findViewById(R.id.ntv_restotpayment);
         tv_restotpayment.setSizeRate(0.9); //2022038 tra..sh
         edt_addpayment = (TextView)viewframe1.findViewById(R.id.nedt_addpayment);
         tv_rescallpay = (TextView)viewframe1.findViewById(R.id.ntv_rescallpay); //20210909
-        //todo: 20220209
+
         pay_title = (TextView)viewframe1.findViewById(R.id.pay_title);
         layout_pay_distance = (LinearLayout)viewframe1.findViewById(R.id.layout_pay_distance);
         layout_pay_driving_payment = (LinearLayout)viewframe1.findViewById(R.id.layout_pay_driving_payment);
         layout_pay_call_payment = (LinearLayout)viewframe1.findViewById(R.id.layout_pay_call_payment);
         layout_pay_add_payment = (LinearLayout)viewframe1.findViewById(R.id.layout_pay_add_payment);
-        //todo: 20220209 end....
-
 
         /** 결제 **/
         iv_loadingGif = (ImageView)viewframe1.findViewById(R.id.iv_loadinggif);
@@ -4733,7 +4532,6 @@ public class MainActivity extends Activity {
         tv_finEndPay = (TextView)viewframe1.findViewById(R.id.ntv_finendpay);  //
         tv_fincallpay = (TextView)viewframe1.findViewById(R.id.ntv_fincallpay); //20210909
 
-//////////////////////
         viewframe2 = null;
         frame2 = (FrameLayout) findViewById(R.id.frame2); // 1. 기반이 되는 FrameLayout
         if (frame2.getChildCount() > 0) {
@@ -4780,15 +4578,14 @@ public class MainActivity extends Activity {
         btn_endPayment = (Button)viewframe2.findViewById(R.id.nbtn_endpayment);
         btn_endPayment.setVisibility(View.GONE); //20210909
         btn_cancelpayment = (Button)viewframe2.findViewById(R.id.nbtn_cancelpayment);
-//20210909
-        layout_payment_type = (LinearLayout)viewframe2.findViewById(R.id.layout_payment_type);  //todo: 20220209
-        layout_add_payment = (LinearLayout)viewframe2.findViewById(R.id.layout_add_payment);   //todo: 20220209
-        tv_pay_card = (RelativeLayout) viewframe2.findViewById(R.id.tv_pay_card);   //todo: 20220209
-        tv_title = (TextView)viewframe2.findViewById(R.id.tv_title);         //todo: 20220209
-        tv_msg = (TextView)viewframe2.findViewById(R.id.tv_msg);           //todo: 20220209
+
+        layout_payment_type = (LinearLayout)viewframe2.findViewById(R.id.layout_payment_type);
+        layout_add_payment = (LinearLayout)viewframe2.findViewById(R.id.layout_add_payment);
+        tv_pay_card = (RelativeLayout) viewframe2.findViewById(R.id.tv_pay_card);
+        tv_title = (TextView)viewframe2.findViewById(R.id.tv_title);
+        tv_msg = (TextView)viewframe2.findViewById(R.id.tv_msg);
         btn_cashPayment = (ButtonFitText)viewframe2.findViewById(R.id.nbtn_cashpayment);  //현금버튼
         btn_cashPayment.setSizeRate(0.6);
-//        btn_cardPayment = (Button)viewframe2.findViewById(R.id.nbtn_cardpayment);  //카드버튼
         btn_addPayment = (ButtonFitText)viewframe2.findViewById(R.id.nbtn_addpayment); //추가요금 버튼
         btn_callPayment = (Button)viewframe2.findViewById(R.id.nbtn_callpayment); //호출요금 버튼
 
@@ -4805,7 +4602,6 @@ public class MainActivity extends Activity {
         btn_drive_ep.setVisibility(View.INVISIBLE); //20210909
         btn_reserv_ep = (Button)viewframe2.findViewById(R.id.nbtn_reserv_ep);
         btn_reserv_ep.setVisibility(View.INVISIBLE); //20210909
-////////////////
 
         //세로
         if(tp == 0)
@@ -4827,53 +4623,31 @@ public class MainActivity extends Activity {
             tv_todayTotalDist.setTextSize(5.0f * setting.gTextDenst);
             tv_todayTotalDrvCnt.setTextSize(5.0f * setting.gTextDenst);
             tv_todayTotalPayment.setTextSize(5.0f * setting.gTextDenst);
-//20220315 tra..sh            tv_curEmptyDist.setTextSize(5.0f * setting.gTextDenst);
 
-//20220315 tra..sh
             //todo: 20211201
             FontFitTextView textView5 = (FontFitTextView) viewframe1.findViewById(R.id.textView5);
             FontFitTextView textView6 = (FontFitTextView)viewframe1.findViewById(R.id.textView6);
             textView6.setCalTextby("운행거리");
             FontFitTextView textView7 = (FontFitTextView)viewframe1.findViewById(R.id.textView7);
             textView7.setCalTextby("운행거리");
-
-//            if (Build.VERSION_CODES.N >= Build.VERSION.SDK_INT){
-//                textView5.setTextSize(3.0f * setting.gTextDenst);
-//                textView6.setTextSize(3.0f * setting.gTextDenst);
-//                textView7.setTextSize(3.0f * setting.gTextDenst);
-//            }
-//////////
-
             TextView textView5new = (TextView)viewframe1.findViewById(R.id.textView5new);
             textView5new.setTextSize(3.0f * setting.gTextDenst);
-//            TextView textView7new = (TextView)viewframe1.findViewById(R.id.textView7new);
-//            textView7new.setTextSize(3.0f * setting.gTextDenst);
             FontFitTextView textView6new = (FontFitTextView)viewframe1.findViewById(R.id.textView6new);
-//20220315 tra..sh            textView6new.setTextSize(10.0f * setting.gTextDenst);
 
             /** 주행 **/
             tv_remainfare.setTextSize(5.0f * setting.gTextDenst);
-            tv_callfare.setTextSize(5.0f * setting.gTextDenst); //20210917
+            tv_callfare.setTextSize(5.0f * setting.gTextDenst);
             tv_boardkm.setTextSize(5.0f * setting.gTextDenst);
-//            tv_nowfare.setTextSize(6.0f * setting.gTextDenst);
-           // btn_extra.setTextSize(3.0f * setting.gTextDenst);
-           // btn_suburb.setTextSize(3.0f * setting.gTextDenst);
             btn_complex.setTextSize(3.0f * setting.gTextDenst);
-           // btn_status.setTextSize(3.0f * setting.gTextDenst);
 
             /** 요금계산 **/
-//            tv_resDistance.setTextSize(6.0f * setting.gTextDenst);
-//            tv_resPayment.setTextSize(6.0f * setting.gTextDenst);
-            tv_title.setTextSize(50);  //todo: 20220209
-            tv_msg.setTextSize(30);    //todo: 20220209
-            pay_title.setTextSize(65);                          //todo: 20220209
-//20220315 tra..sh            tv_restotpayment.setTextSize(6.0f * setting.gTextDenst);  //todo: 20220223
-            if (Build.VERSION.SDK_INT >= 26) //20210823 8.0
+            tv_title.setTextSize(50);
+            tv_msg.setTextSize(30);
+            pay_title.setTextSize(65);
+            if (Build.VERSION.SDK_INT >= 26)
             {
-                pay_title.setTextSize(55);  //todo: 20220209
-//20220315 tra..sh                tv_restotpayment.setTextSize(1.0f * setting.gTextDenst); //todo: 20220223
+                pay_title.setTextSize(55);
                 edt_addpayment.setTextSize(1.5f * setting.gTextDenst);
-                ;
             }
             else
                 edt_addpayment.setTextSize(6.0f * setting.gTextDenst);
@@ -4883,13 +4657,10 @@ public class MainActivity extends Activity {
 
             TextView textView11 = (TextView)viewframe1.findViewById(R.id.textView11);
             textView11.setTextSize(3.0f * setting.gTextDenst);
-//20220311 tra..sh
-//            FontFitTextView textView111 = (FontFitTextView)viewframe1.findViewById(R.id.textView111);
-//            textView111.setTextSize(3.0f * setting.gTextDenst);
 
             textView12 = (TextView)viewframe1.findViewById(R.id.textView12);
             textView12.setTextSize(3.0f * setting.gTextDenst);
-//20220311 tra..sh
+
             TextView textView121 = (TextView)viewframe1.findViewById(R.id.textView121);
             textView121.setTextSize(3.0f * setting.gTextDenst);
 
@@ -4901,7 +4672,7 @@ public class MainActivity extends Activity {
 
             TextView textView15 = (TextView)viewframe1.findViewById(R.id.textView15);
             textView15.setTextSize(3.0f * setting.gTextDenst);
-//20220311 tra..sh
+
             TextView textView151 = (TextView)viewframe1.findViewById(R.id.textView151);
             textView151.setTextSize(3.0f * setting.gTextDenst);
 
@@ -4928,24 +4699,12 @@ public class MainActivity extends Activity {
 
             if (Build.VERSION.SDK_INT <= 25){  //네비게이션 해상도 (가로)
 
-                Log.d("navi","navigation");
-
-
-//20220315 tra..sh                textView6new.setTextSize(8.0f * setting.gTextDenst);
-//20220315 tra..sh                tv_curEmptyDist.setTextSize(3.5f * setting.gTextDenst);  //상세보기- 운행거리 0.00km
+                    //상세보기- 운행거리 0.00km
                 textView5new.setTextSize(2.5f * setting.gTextDenst);  //상세보기- 운행거리
                 showEmptyIcon.setTextSize(2.5f * setting.gTextDenst); //상세보기
                 tv_todayTotalDist.setTextSize(5.0f * setting.gTextDenst);  //돌아가기- 운행거리 0.00km
-//20220315 tra..sh
-//                textView5.setTextSize(2.5f * setting.gTextDenst);    //돌아가기- 운행거리
-//                textView6.setTextSize(2.5f * setting.gTextDenst);    //돌아가기- 총거래
-//                textView7.setTextSize(2.5f * setting.gTextDenst);    //돌아가기- 총수입
-///////////////
-
-//                hideEmptyIcon.setTextSize(2.5f * setting.gTextDenst); //돌아가기
 
                 /** 주행 **/
-
                 tv_boardkm.setTextSize(3.5f * setting.gTextDenst); //distance //ex; 0.00km
                 btn_extra.setTextSize(2.0f * setting.gTextDenst);  //할증꺼짐
                 btn_suburb.setTextSize(2.0f * setting.gTextDenst); //시외꺼짐
@@ -4953,18 +4712,7 @@ public class MainActivity extends Activity {
                 btn_status.setTextSize(2.0f * setting.gTextDenst); //+할증 20%
                 tv_callfare.setTextSize(3.5f * setting.gTextDenst); //+1000
 
-
-
-                //주행요금 텍스트
-//                if (tv_nowfare.getText().toString().length() < 7) {
-//                    tv_nowfare.setTextSize(8.0f * setting.gTextDenst);
-//                } else if (tv_nowfare.getText().toString().length() >= 7) {
-//                    tv_nowfare.setTextSize(5.0f * setting.gTextDenst);
-//                } else { }
-
                 /** 요금계산 **/
-
-//                textView14.setTextSize(4.0f * setting.gTextDenst);      //원
                 tv_resDistance.setTextSize(4.0f * setting.gTextDenst);  //운행거리
                 tv_resPayment.setTextSize(4.0f * setting.gTextDenst);   //운행요금
                 tv_rescallpay.setTextSize(4.0f * setting.gTextDenst);   //호출요금
@@ -4985,15 +4733,7 @@ public class MainActivity extends Activity {
             }
             else {
 
-
                 /** 주행 **/
-
-                //주행요금 텍스트
-//                if (tv_nowfare.getText().toString().length() < 7) {
-//                    tv_nowfare.setTextSize(12.0f * setting.gTextDenst);
-//                } else if (tv_nowfare.getText().toString().length() >= 7) {
-//                    tv_nowfare.setTextSize(6.0f * setting.gTextDenst);
-//                } else { }
 
                 /** 요금계산 **/
                 tv_resDistance.setTextSize(6.0f * setting.gTextDenst);  //운행거리
@@ -5013,15 +4753,9 @@ public class MainActivity extends Activity {
                 btn_drive_ep.setTextSize(5.0f * setting.gTextDenst);
                 btn_reserv_ep.setTextSize(5.0f * setting.gTextDenst);
             }
-
-
-
-
-
-
         }
 
-    }
+    }//set_frame_orient
 
     private void createGpsDisabledAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -7166,21 +6900,17 @@ public class MainActivity extends Activity {
 
         frameviewchange(1);
 
-//20210917
-//20120928 TODO>
+
         if(false) {
             if (anim != null)
                 anim.cancel();
-
         }
-
-
     }
 
-//20220421
+
+    //당일 금액마감 - reset to zero
     private void _todayreset()
     {
-
         mtddistanceB = 0;
         mtcnt = 0;
         mtfare = 0;
@@ -7189,13 +6919,12 @@ public class MainActivity extends Activity {
         save_totalfare_pref(0, 0, 0);
 
         tv_todayTotalDist.setText((String.format("%.2f", mtddistanceB / 1000.0)) + " km");  //20220303 tra..sh "km" to " km"
-
         tv_todayTotalDrvCnt.setText(mtcnt + " 회");
         tv_todayTotalPayment.setText(mtfare + " 원");
         Log.d("tv_todayTotalPayment_1", mtfare+"");
     }
 
-//20220503 tra..sh
+
     private void _setSuburbState()
     {
         if(suburbUse) {

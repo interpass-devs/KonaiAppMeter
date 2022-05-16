@@ -1,4 +1,4 @@
-package com.konai.appmeter.driver;
+package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -10,11 +10,14 @@ import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.struct.AMBlestruct;
@@ -25,7 +28,7 @@ import java.util.Date;
 
 public class InfoActivity extends Activity {
 
-    private TextView textView9, rtv_name, phone_title, unique_title, carno_title, company_title, gps_title, bluetooth_title, obd_title, osver_title, maker_title;  //todo: 20210902
+    private TextView textView9, rtv_name, phone_title, unique_title, carno_title, company_title, gps_title, bluetooth_title, obd_title, osver_title, maker_title;
     private TextView tv_name;
     private TextView tv_phoneno;
     private TextView tv_unique;
@@ -53,17 +56,15 @@ public class InfoActivity extends Activity {
 
 //        initializecontents(getResources().getConfiguration().orientation);
         initializecontents(setting.gOrient);
-
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if(Info.m_Service != null)
-            Info.m_Service._showhideLbsmsg(true);
-
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//
+//        if(Info.m_Service != null)
+//            Info.m_Service._showhideLbsmsg(true);
+//    }
 
     @Override
     protected void onResume() {
@@ -71,12 +72,10 @@ public class InfoActivity extends Activity {
 
         if(Info.m_Service != null)
             Info.m_Service._showhideLbsmsg(false);
-
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-
         super.onConfigurationChanged(newConfig);
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -99,7 +98,7 @@ public class InfoActivity extends Activity {
         }
         else
         {
-            setContentView(R.layout.activity_info_h);  //가로   //todo: 20210902
+            setContentView(R.layout.activity_info_h);  //가로
             set_frame_orient(1);
         }
         tv_area_name.setText(Info.AREA_CODE); //20220318 tra..sh
@@ -164,6 +163,16 @@ public class InfoActivity extends Activity {
         btn_goMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Toast.makeText(InfoActivity.this, "정보화면 메뉴버튼 클릭", Toast.LENGTH_SHORT).show();
+
+                if (Info.m_Service != null) {
+                    Log.d("info_m_Service","not null");
+                    Info.m_Service._showhideLbsmsg(false);
+                }else {
+                    Log.d("info_m_Service","null");
+                }
+
                 finish();
             }
         });
