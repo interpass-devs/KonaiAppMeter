@@ -26,7 +26,6 @@
                 android:id="@+id/menu_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-
                 android:text="메뉴"
                 android:textColor="@color/black"
                 android:autoSizeTextType="uniform"

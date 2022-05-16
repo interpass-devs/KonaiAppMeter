@@ -49,12 +49,6 @@
                         android:layout_weight="1"
                         android:weightSum="3"
                         android:orientation="horizontal">
-                        <!--
-                        android:paddingTop="10sp"
-                            android:paddingBottom="10sp"
-                            android:paddingLeft="2sp"
-                            android:paddingRight="2sp"
-                        -->
 
                         <com.konai.appmeter.driver.util.ButtonFitText
                             android:id="@+id/nbtn_emptycar_e"
@@ -66,7 +60,6 @@
                             android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-
                             android:text="빈차"
                             android:textStyle="bold"
                             android:textColor="#000000"/>
@@ -83,7 +76,6 @@
                             android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-
                             android:text="주행"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -99,7 +91,6 @@
                             android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-
                             android:text="수기"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -114,7 +105,6 @@
                             android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-
                             android:text="호출"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -159,7 +149,6 @@
                             android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-
                             android:text="빈차"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -177,7 +166,6 @@
                             android:paddingRight="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/yellow_gradi_btn"
-
                             android:text="주행"
                             android:textColor="#000000"/>
 
@@ -192,7 +180,6 @@
                             android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-
                             android:text="호출"
                             android:textColor="@color/white"/>
 
@@ -208,7 +195,6 @@
                             android:paddingRight="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/grey_gradi_btn"
-
                             android:text="복합"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -223,7 +209,6 @@
                             android:paddingBottom="10dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-
                             android:text="시외"
                             android:textStyle="bold"
                             android:textColor="@color/white"/>
@@ -310,7 +295,6 @@
                             android:layout_weight="1"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/grey_gradi_btn"
-
                             android:text="호출요금"
                             android:textStyle="bold"
                             android:textColor="@color/white"
@@ -325,7 +309,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="0.5"
                         android:background="@drawable/grey_gradi_btn"
-
                         android:text="취 소"
                         android:textStyle="bold"
                         android:textColor="@color/white"

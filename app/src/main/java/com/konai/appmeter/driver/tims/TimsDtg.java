@@ -924,6 +924,7 @@ public class TimsDtg {
 
                     int nextra = 0; //20210520
 
+                    //main { }
                     infoObj.put("appId", AMBlestruct.AMLicense.timscode);
                     infoObj.put("license", AMBlestruct.AMLicense.timslicense);
                     //infoObj.put("license", AMBlestruct.AMLicense.licensecode);
@@ -956,6 +957,7 @@ public class TimsDtg {
 
                         JSONObject uObj = new JSONObject();
 
+                        //sub { }
                         uObj.put("idx", Params.get(i).getIdx());
                         uObj.put("dt", Params.get(i).getDt());
                         uObj.put("longitude", Params.get(i).getLongitude());

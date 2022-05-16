@@ -3,7 +3,6 @@ package com.konai.appmeter.driver.view;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -59,11 +57,9 @@ public class SettingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+//        setContentView(R.layout.activity_setting);
 
-        //todo 1) 가로/세로 화면 붙이기 (x)
-        //todo 2) 가로에도 앱 자동실행 목록 추가 (v)
-
+        initializecontents(setting.gOrient);
 
         context = this;
 
@@ -149,10 +145,17 @@ public class SettingActivity extends Activity {
                 oriVertical.setChecked(true);
                 break;
             default:
-                //todo: 먼저 display 의 사이즈로 판단하고 세팅해주기
-                com.konai.appmeter.driver.setting.setting.gOrient = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                oriText.setText("가로");
-                oriVertical.setChecked(true);
+                //me: 먼저 display 의 사이즈로 판단하고 세팅해주기
+
+                if (com.konai.appmeter.driver.setting.setting.gOrient == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    oriText.setText("세로");
+                    oriVertical.setChecked(true);
+                }else {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    oriText.setText("가로");
+                    oriHorizontal.setChecked(true);
+                }
                 break;
         }
 
@@ -196,14 +199,6 @@ public class SettingActivity extends Activity {
     }//onCreate..
 
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//
-//        if (Info.m_Service != null) {
-//            Info.m_Service._showhideLbsmsg(true);
-//        }
-//    }
 
     @Override
     protected void onResume() {
@@ -436,7 +431,7 @@ public class SettingActivity extends Activity {
         if (ntp == Configuration.ORIENTATION_PORTRAIT) {
             setContentView(R.layout.activity_setting);
         }else {
-            setContentView(R.layout.activity_setting);
+            setContentView(R.layout.activity_setting_h);
         }
     }
 

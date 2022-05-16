@@ -7,16 +7,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.konai.appmeter.driver.Dialog.Dlg_Basic;
 import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
@@ -46,9 +52,12 @@ public class InfoActivity extends Activity {
     private TextView after_fare;
     private Button btn_goMenu;
     private Button btn_tims;
+    private Button connStatusBtn;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private TextView tv_area_name, tv_base_cost, tv_base_drvdist, tv_dist_cost, tv_interval_dist, tv_night_time_rate;
+    private Context mContext;
+    private Dlg_Basic connStatusDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +65,10 @@ public class InfoActivity extends Activity {
 
 //        initializecontents(getResources().getConfiguration().orientation);
         initializecontents(setting.gOrient);
+
+        mContext = this;
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//
-//        if(Info.m_Service != null)
-//            Info.m_Service._showhideLbsmsg(true);
-//    }
 
     @Override
     protected void onResume() {
@@ -204,14 +208,56 @@ public class InfoActivity extends Activity {
             }
         });
 
+        connStatusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show dialog
+                connStatusDialog = new Dlg_Basic( mContext
+                        , "블루투스 연결여부, 시경계 동작여부 데이터 전송"
+                        , new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {  //ok
+
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {  //cancel
+
+                    }
+                });
+
+                DisplayMetrics dm = mContext.getApplicationContext().getResources().getDisplayMetrics();
+                int w = dm.widthPixels;
+                int h = dm.heightPixels;
+
+                if (Build.VERSION.SDK_INT <= 25){
+                    w = (int)(w * 0.6);
+                    h = (int)(h * 0.8);
+                }else {
+                    w = (int)(w * 0.9);
+                    h = (int)(h * 0.5);
+                }
+
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(connStatusDialog.getWindow().getAttributes());
+                lp.width = w;
+                lp.height = h;
+                Window window = connStatusDialog.getWindow();
+                window.setAttributes(lp);
+
+                connStatusDialog.setCancelable(true);
+                connStatusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                connStatusDialog.show();
+            }
+        });
+
     }
 
     private void set_frame_orient(int tp)
     {
-//////////////////////
-//todo: 20210902
         textView9 = (TextView) findViewById(R.id.textView9);
         rtv_name = (TextView)findViewById(R.id.rtv_name);
+        connStatusBtn = (Button)findViewById(R.id.conn_status_btn);
         phone_title = (TextView)findViewById(R.id.phone_title);
         unique_title = (TextView)findViewById(R.id.unique_title);
         carno_title = (TextView)findViewById(R.id.carno_title);

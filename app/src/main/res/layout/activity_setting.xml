@@ -82,19 +82,19 @@
                     android:text="블루투스"
                     android:textSize="18dp"
                     android:textColor="@color/yellow"/>
-<!--                <androidx.appcompat.widget.SwitchCompat-->
-<!--                    android:id="@+id/switchTest"-->
-<!--                    android:layout_weight="0.5"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    app:kswTintColor="@color/yellow"-->
-<!--                    style="@style/SwitchButtonStyle"-->
-<!--                    android:checked="false"-->
-<!--                    android:textOff="OFF"-->
-<!--                    android:textOn="ON"-->
-<!--                    android:background="@color/blue_btn"-->
-<!--                    android:layout_gravity="right"-->
-<!--                    android:gravity="right"/>-->
+                <!--                <androidx.appcompat.widget.SwitchCompat-->
+                <!--                    android:id="@+id/switchTest"-->
+                <!--                    android:layout_weight="0.5"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    app:kswTintColor="@color/yellow"-->
+                <!--                    style="@style/SwitchButtonStyle"-->
+                <!--                    android:checked="false"-->
+                <!--                    android:textOff="OFF"-->
+                <!--                    android:textOn="ON"-->
+                <!--                    android:background="@color/blue_btn"-->
+                <!--                    android:layout_gravity="right"-->
+                <!--                    android:gravity="right"/>-->
                 <com.kyleduo.switchbutton.SwitchButton
                     android:id="@+id/ble"
                     android:layout_weight="0.5"

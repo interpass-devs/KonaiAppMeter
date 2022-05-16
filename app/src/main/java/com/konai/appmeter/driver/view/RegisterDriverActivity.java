@@ -83,7 +83,7 @@ public class RegisterDriverActivity extends Activity {
         driverName = findViewById(R.id.et_driver_name);
         driverLicenseNum = findViewById(R.id.et_driver_license_num);
         driverIdentiNum = findViewById(R.id.et_driver_identi_num);
-//        driverIdentiNum.setEnabled(false); //20210901 tra..sh  //todo: 2022-04-29
+//        driverIdentiNum.setEnabled(false); //20210901 tra..sh
         //todo: 2022-04-29
         //운전자 등록 -> 운전자 자격증 다이얼로그
         driverLicenseNum.setOnClickListener(new View.OnClickListener() {
@@ -97,11 +97,11 @@ public class RegisterDriverActivity extends Activity {
                     public void onClick(View v) {
                         //ok
                         String val = numTypeDialog.returnNumTypeVal();
-                        if (val.length() == 9){
+                        if (val.length() == 9 || val.length() == 10){
                             driverLicenseNum.setText(val);  //운전자 자격증번호
                             numTypeDialog.dismiss();
                         }else {
-                            Toast.makeText(context, "잘못 입력하셨습니다. \n운전자 자격증 9자리를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "잘못 입력하셨습니다. \n운전자 자격증 9자리 또는 10자리를 입력해주세요.", Toast.LENGTH_SHORT).show();
                             driverLicenseNum.setText("");}
                     }
                 }, new View.OnClickListener() {

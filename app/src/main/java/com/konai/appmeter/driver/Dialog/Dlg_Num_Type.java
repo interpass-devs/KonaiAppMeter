@@ -110,12 +110,12 @@ public class Dlg_Num_Type extends Dialog {
             mlength = 4;
         }else if (numType.equals("licenseNum")){
             dlgTitle.setText("운전자 자격번호 입력");
-            mlength = 9;
-        }else if (numType.equals("password")){  //todo: 2022-05-12
+            mlength = 10;
+        }else if (numType.equals("password")){
             dlgTitle.setText("비밀번호 입력");
             mlength = 4;
         }
-        //todo: end
+
 
         framework.setVisibility(View.GONE);
         tvNumType.setVisibility(View.VISIBLE);

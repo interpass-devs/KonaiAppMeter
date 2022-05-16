@@ -632,17 +632,20 @@ public class MainActivity extends Activity {
                 timeExtrachk();
             } else if (nType == AMBlestruct.MeterState.BLELEDON) {
                 Log.e("BLE", "On Ble Service");
+                Log.d("mm_ble_on", nType+"");  //70
             } else if (nType == AMBlestruct.MeterState.BLELEDOFF) {
-//20211216                btn_connBLE.setBackgroundResource(R.drawable.ic_bluetooth_btn);
-                displayHandler.sendEmptyMessage(51); //20211216
+                displayHandler.sendEmptyMessage(51);
                 Log.e("BLE", "Off Ble Service");
-            } else if (nType == AMBlestruct.MeterState.SUBURBSIN) //20210325
+                Log.d("mm_ble_off", nType+""); //170
+            } else if (nType == AMBlestruct.MeterState.SUBURBSIN)  //자동으로
             {
-                suburbUseAuto = true; //20220503 tra..sh
+                Log.d("mm_sub_in", nType+"");
+                suburbUseAuto = true;
                 if (suburbUse == true)
-                    _setSuburbState(); //20220503 tra..sh
-            } else if (nType == AMBlestruct.MeterState.SUBURBSOUT) //20210325
+                    _setSuburbState();
+            } else if (nType == AMBlestruct.MeterState.SUBURBSOUT)
             {
+                Log.d("mm_sub_out", nType+"");
 
                 if (suburbUse == false && suburbUseAuto == true)
                     _setSuburbState(); //20220503 tra..sh
@@ -1641,7 +1644,7 @@ public class MainActivity extends Activity {
         frameviewchange(1);
         //menu_submenu.setVisibility(View.GONE);
 
-//20210419
+
         if (setting.gUseBLE) {
             final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
             mBluetoothAdapter = bluetoothManager.getAdapter();
@@ -1662,46 +1665,7 @@ public class MainActivity extends Activity {
 
         registerReceiver(); //20210823
 
-//20210917
-//2010928 TODO.
-        if (false) {
-            anim = ObjectAnimator.ofFloat(iv_car_icon, "rotation", 0, 360);
-            anim.setDuration(1000);
-            anim.setRepeatMode(ValueAnimator.REVERSE);
-            anim.setRepeatCount(ValueAnimator.INFINITE);
-
-//        anim.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-////                            super.onAnimationEnd(animation);
-//                anim.setDuration(50);
-//                anim.start();
-//            }
-//        });
-
-            anim.start();
-//        animthread = new AnimThread();
-///        animthread.start();
-
-        }
-
-//20210311        _Find_AMdevice();
-
-        /*setting.BLUETOOTH_DEVICE_ADDRESS = "";
-        setting.BLUETOOTH_DEVICE_NAME = "";*/
-
-    }
-
-
-//    @Override
-//    protected void onStart() {
-//
-//        super.onStart();
-//
-//        //get getFrameLayoutSize 사이즈..
-//        Log.d("getSize_width>", getFrameLayoutSize.getWidth()+"");
-//        Log.d("getSize_height>", getFrameLayoutSize.getHeight()+"");
-//    }
+    }//onCreate
 
 
     private void chkExtraUse() {
@@ -1710,8 +1674,6 @@ public class MainActivity extends Activity {
         if (extraUse) {
 
             extraPercent = extraPercent + (int) (CalFareBase.mNightTimerate * 100);
-
-
         }
 
         if (suburbUse) {
@@ -2025,6 +1987,517 @@ public class MainActivity extends Activity {
         }
     }
 
+    /* viewframe2 메인버튼 클릭리스너 [빈차] */
+    private View.OnClickListener emptyBtnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+
+                case R.id.nbtn_drivestart:   //손님탑승
+                    Log.d("메인버튼", "손님탑승");
+                    btn_emptyCar_d.setEnabled(true);
+
+                    setStateDrive();
+
+                    faresendCount = 0;
+                    tv_curEmptyDist.setText("0.00");
+
+                    if(Info.REPORTREADY)
+                        Info._displayLOG(Info.LOGDISPLAY, "이전상태 빈차 - 주행 변경", "");
+                    break;
+
+                case R.id.nbtn_emptycar_e:   //빈차
+                    Log.d("메인버튼","빈차");
+                    if(reservUse) {
+                        btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
+                        m_Service.update_BLEmeterstate("41");
+                        reservUse = false;
+                        setCallpay(0);
+                    }
+
+                    Info.CALL_PAY = 0; //20210909
+                    break;
+
+                case R.id.nbtn_manualpay_e:  //수기
+                    Log.d("메인버튼","수기");
+                    mChangefare = 0;
+                    get_manualfare(1);
+                    break;
+
+                case R.id.nbtn_reserv_e:  //호출
+                    Log.d("메인버튼","호출");
+                    if(!reservUse) {
+                        btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                        reservUse = true;
+
+                        do_CallPay_other();
+                    }
+                    m_Service.update_BLEmeterstate("40");
+
+                    if(Info.REPORTREADY)
+                    {
+                        if(Info.REPORTREADY)
+                            Info._displayLOG(Info.LOGDISPLAY, "이전상태 빈차 - 예약 변경", "");
+                    }
+                    break;
+            }
+
+        }
+    };
+
+
+    /*  */
+    private View.OnClickListener driveBtnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+
+                case R.id.nbtn_driveend:  //지불
+                    Log.d("메인버튼","지불");
+                    btn_cashPayment.setEnabled(true); //20220411 tra..sh
+
+                    frameviewchange(3);
+                    // 인천제한
+                    if(false)
+                    {
+                        mnfare = (int)(Math.round((Double.parseDouble(mnfare + "")/100)) * 100);
+                    }
+                    tv_resPayment.setText(decimalForm.getFormat(Info.PAYMENT_COST) + "");
+                    String stemp = String.format(Locale.getDefault(), "%.2f", Info.MOVEDIST / 1000.0);
+                    tv_resDistance.setText(stemp);
+                    tv_rescallpay.setText(decimalForm.getFormat(Info.CALL_PAY) + "");
+                    edt_addpayment.setText(decimalForm.getFormat(mAddfare) + "");
+                    //인천한정 반올림
+                    tv_restotpayment.setText(decimalForm.getFormat(Info.PAYMENT_COST + Info.CALL_PAY + mAddfare) + " 원");
+
+                    sendbroadcast_state(5001, 3, Info.PAYMENT_COST + mAddfare + Info.CALL_PAY,
+                            Info.MOVEDIST, 0);
+                    Log.e("drive END", m_Service.mCardmode + "");
+
+                    if(m_Service.mCardmode == AMBlestruct.MeterState.EMPTYPAY)
+                        return;
+
+                    if(m_Service.mCardmode == AMBlestruct.MeterState.ADDPAY)
+                    {
+                        m_Service.update_BLEmeterstate("01");
+                        return;
+                    }
+                    if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY)
+                    {
+                        m_Service.update_BLEmeterstate("01");
+                        return;
+                    }
+                    if(m_Service.mCardmode == AMBlestruct.MeterState.CANCELPAY) { return; }
+
+                    if(m_Service.mbDrivestart == false)
+                    {
+                        Info.makeDriveCode();
+                        bInsertDB = true;
+
+                        _setBoardDist(0);
+
+                        //Log.e("frame Change a", "4");
+                        frameviewchange(4);
+
+                        m_Service.drive_state(AMBlestruct.MeterState.EMPTYPAY);
+                        m_Service.update_BLEmeterstate("01");
+                    }
+                    else
+                    {
+                        if(true)
+                        {
+                            m_Service.drive_endtime();
+                            m_Service.drive_state(AMBlestruct.MeterState.PAY);
+                            m_Service.update_BLEmeterstate("01"); //?
+                        }
+                        else
+                        {
+                            m_Service.drive_endtime(); //20210823
+                        }
+                    }
+                    break;
+
+                case R.id.nbtn_emptycar_d:  //빈차
+                    Log.d("메인버튼","빈차");
+                    btn_emptyCar_d.setEnabled(false); //20220411 tra..sh
+
+                    m_Service.drive_state(AMBlestruct.MeterState.PAY); //20211210 추가
+
+                    try {
+                        Thread.sleep(200);
+                    }
+                    catch (InterruptedException e) { e.printStackTrace(); }
+
+                    if(AMBlestruct.mBTConnected)
+                    {
+                        btn_cashPayment.performClick();
+                    }
+                    else {
+                        mndrvPayDiv = 0;
+                        if(m_Service != null)
+                            m_Service.m_timsdtg.setTIMSfinal("2", memptydistance);
+
+                        AMBlestruct.AMCardResult.msType.equals("05"); //20220415
+                        btn_emptyCar_ep_process(); //20220411
+                    }
+                    break;
+
+                case R.id.nbtn_complex_d: //복합
+                    Log.d("메인버튼","복합");
+                    btn_complex.performClick();
+                    break;
+
+                case R.id.nbtn_surburb_d:  //시외
+                    Log.d("메인버튼","시외");
+                    btn_suburb.performClick();
+                    break;
+
+            }
+        }
+    };
+
+
+    /* 결제 */
+    private View.OnClickListener payBtnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+
+                case R.id.nbtn_cashpayment:   //현금
+                    Log.d("결제","현금");
+                    btn_cashPayment.setEnabled(false); //20220411 tra..sh
+                    mnlastcashfare = Info.PAYMENT_COST + mAddfare + Info.CALL_PAY; //20211019
+                    Info.g_cashKeyCode = Info.g_nowKeyCode; //20220411
+                    cashPay = true;
+                    m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
+                    m_Service.m_timsdtg._sendTIMSEventCash();
+                    break;
+
+                case R.id.nbtn_addpayment:   //추가요금
+                    Log.d("결제","추가요금");
+                    get_manualfare(2);
+                    break;
+
+                case R.id.nbtn_callpayment:  //호출요금
+                    Log.d("결제","호출요금");
+                    if(Info.CALL_PAY > 0) //20220110
+                        setCallpay(0);
+                    else
+                        do_CallPay_pay(); //20211229
+
+                    displayHandler.sendEmptyMessage(11);
+                    break;
+
+                case R.id.nbtn_cancelpayment:   //주행/취소
+
+                    Log.d("결제","주행/취소");
+
+                    btn_emptyCar_d.setEnabled(true);
+
+                    tv_pay_card.setVisibility(View.GONE);
+
+                    mAddfare = 0;
+                    LocService.CDrive_val.setmFareAdd(0);
+
+                    if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY || m_Service.mbDrivestart == false)
+                    {
+                        Info.sqlite.delete(Info.g_nowKeyCode); //20210611
+                        frameviewchange(1);
+                        m_Service.update_BLEmeterstate("20");
+                        m_Service.drive_state(AMBlestruct.MeterState.EMPTYBYEMPTY);
+                    }
+                    else
+                        continue_board();
+
+                    break;
+            }
+        }
+    };
+
+
+
+    //Drawer 메뉴버튼 클릭리스너
+    private View.OnClickListener menuBtnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+
+                case R.id.nbtn_connectble:  //블루투스 아이콘
+                    setupBluetooth(1);
+                    break;
+
+                case R.id.nbtn_navi:      //네비 아이콘
+                    sendbroadcast_normal(setting.BROADCAST_SHOWAPP, 1);
+                    break;
+
+                case R.id.nbtn_menu:      //메뉴버튼
+                    if (Info.m_Service != null) {
+                        Info.m_Service._showhideLbsmsg(false);
+                    }
+                    viewframe1.setClickable(false);
+
+                    if(m_Service.mbDrivestart == false)
+                    {
+                        menu_menualpay.setEnabled(true);
+                    }
+                    else {
+                        menu_menualpay.setEnabled(false);
+                        return; //20210827
+                    }
+                    menu.openDrawer(drawerView);
+
+                    if(Info.REPORTREADY)
+                    {
+                        Info._displayLOG(Info.LOGDISPLAY, "메뉴버튼, 메뉴창 ", "");
+                    }
+                    break;
+
+                case R.id.menu_btnclose:   //메뉴닫기 버튼
+                    menu.closeDrawer(drawerView);
+                    break;
+
+                case R.id.menu_home:  //정보
+                    menu.closeDrawer(drawerView);
+                    Intent infoIntent = new Intent(getApplicationContext(), InfoActivity.class);
+                    startActivity(infoIntent);
+                    break;
+
+                case R.id.menu_drvhistory: //거래집계
+                    menu.closeDrawer(drawerView);
+                    show_drvhistory();
+                    break;
+
+                case R.id.menu_setting:  //빈차등메뉴
+                    setupBluetooth(2);
+                    break;
+
+                case R.id.menu_app_control_setting:  //앱자동실행
+
+                    if (Info.m_Service != null) {
+                        Log.d("m_Service_Resume", "not null");
+                        Info.m_Service._showhideLbsmsg(false);
+                    }else {
+                        Log.d("m_Service_Resume", "null");
+                    }
+                    menu.closeDrawer(drawerView);
+                    Intent i = new Intent(getApplicationContext(), SettingActivity.class);
+                    startActivity(i);
+                    break;
+
+                case R.id.menu_env_setting:   //설정상태/환경설정
+                    menu.closeDrawer(drawerView);
+                    Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.menu_menualpay:  //수기결제
+                    mChangefare = 0;
+                    menu.closeDrawer(drawerView);
+                    get_manualfare(1);
+                    break;
+
+                case R.id.menu_getreceipt:   //영수증출력
+
+                    if(AMBlestruct.AMCardResult.msOpercode.equals(""))
+                    {
+                        Info.makeDriveCode();
+                        AMBlestruct.AMCardResult.msOpercode = Info.g_nowKeyCode;
+                    }
+                    m_Service.writeBLE("26");
+
+                    m_Service.m_timsdtg._sendTIMSEventReceipt();
+
+                    menu.closeDrawer(drawerView);
+                    break;
+
+                case R.id.menu_cashreceipt:   //현금영수증
+
+                    get_Cashreceipts();
+
+                    break;
+                case R.id.menu_cancelpay:
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+                    //결제취소 다이얼로그 생성
+                    final LinearLayout dialogView;
+                    dialogView = (LinearLayout)View.inflate(context, R.layout.dlg_basic, null);
+
+                    final TextView msg = (TextView)dialogView.findViewById(R.id.msg);
+                    final Button cancelBtn = (Button)dialogView.findViewById(R.id.cancel_btn);
+                    final Button okayBtn = (Button)dialogView.findViewById(R.id.okay_btn);
+                    msg.setText("결제취소를 진행하시겠습니까?");
+
+                    final Dialog dlg = new Dialog(MainActivity.this);
+                    dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dlg.setContentView(dialogView);
+                    dlg.setCancelable(true);
+
+                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dlg.dismiss();
+                            menu.closeDrawer(drawerView);
+                        }
+                    });
+                    okayBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (false) {
+//                      //me: 당일 거래내역
+                                todayData = Info.sqlite.selectToday();
+                                if (todayData.length > 0) {
+                                    String[] splt = todayData[0].split("#");   //맨 마지막 데이터
+                                    if (splt.length > 0) {
+                                        drvCode = splt[0];   //운행코드 string
+                                        drvPay = Integer.parseInt(splt[2]);  //요금(fare)
+                                        payDiv = Integer.parseInt(splt[3]);  //현금/카드/모바일
+//                                payDiv = 0;  //카드
+                                        addPay = Integer.parseInt(splt[4]);  //추가요금
+                                        Log.d("today_data[0]", todayData[0]+", "+drvCode+", "+payDiv+", "+drvPay+", "+addPay);
+
+                                        String strDrvPay = drvPay + "";
+                                        if (strDrvPay.contains("-")) {
+                                            Log.d("strdrvpay_confain", strDrvPay);
+                                            Toast.makeText(MainActivity.this, "결제취소가 이미 처리되었습니다.", Toast.LENGTH_SHORT).show();
+                                            dlg.dismiss();
+
+                                        } else {
+                                            Log.d("strdrvpay", strDrvPay);
+
+                                            if (payDiv == 0) {  //현금
+                                                Log.d("today_data_", "현금");
+                                                AMBlestruct.AMCardFare.mstype = "05";
+                                                {
+                                                    m_Service.writeBLE("23");
+                                                }
+                                                //do nothing
+                                            } else if (payDiv == 1) {  //카드
+                                                Log.d("today_data_", "카드");
+
+                                                AMBlestruct.AMCardFare.mstype = "01";
+                                                {
+                                                    m_Service.writeBLE("23");
+                                                }
+
+                                            } else if (payDiv == 2) {   //모바일(2)
+                                                //do nothing
+                                                Log.d("today_data_", "모바일");
+                                                AMBlestruct.AMCardFare.mstype = "06";
+                                                {
+                                                    m_Service.writeBLE("23");
+                                                }
+                                            }
+
+                                            frameviewchange(1);
+
+                                            m_Service.set_payviewstate(true); //20220421
+
+                                            menu.closeDrawer(drawerView);
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(MainActivity.this, "결제취소할 목록이 없습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                                dlg.dismiss();
+                            }
+                            else
+                            {
+                                AMBlestruct.AMCardFare.mstype = "01";
+                                m_Service.writeBLE("23");
+
+                                m_Service.set_payviewstate(true); //20220421
+
+                                menu.closeDrawer(drawerView);
+
+                                dlg.dismiss();
+
+                                set_basic_dlg("카드를 인식해주세요.", "닫기", "");
+                            }
+                        }
+                    });
+                    dlg.dismiss();
+
+                    DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
+                    int width = dm.widthPixels;
+                    int height = dm.heightPixels;
+
+                    if (Build.VERSION.SDK_INT <= 25) {
+                        msg.setTextSize(3.0f * setting.gTextDenst);
+                        cancelBtn.setTextSize(2.5f * setting.gTextDenst);
+                        okayBtn.setTextSize(2.5f * setting.gTextDenst);
+                        width = (int) (width * 0.6);
+                        height = (int) (height * 0.5);
+                    }else {
+                        width = (int)(width * 0.9);
+                        height = (int)(height * 0.5);
+                    }
+
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(dlg.getWindow().getAttributes());
+                    lp.width = width;
+                    lp.height= height;
+                    Window window = dlg.getWindow();
+                    window.setAttributes(lp);
+
+                    dlg.show();
+
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    break;
+
+                case R.id.menu_enddrv:  //금일영업마감
+                {
+                    _todayreset();
+                    exitprocess();
+                }
+
+                if (false) {
+                    if (Info.TIMSUSE) {
+                        if (Info.APPMETERRUNSTOP == 0) {
+                            Info.APPMETERRUNSTOP = 1;
+                            menu_endDrv.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                        } else {
+                            Info.APPMETERRUNSTOP = 0;
+                            menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
+                        }
+                    } else {
+                        if (Info.APPMETERRUNSTOP == 0) {
+                            Info.APPMETERRUNSTOP = 1;
+                            menu_endDrv.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                        } else {
+                            Info.APPMETERRUNSTOP = 0;
+                            menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
+                        }
+                        m_Service.m_timsdtg._sendPowerOnoff();
+                    }
+                }
+
+                if (false) //Info.TIMSUSE)
+                {
+                    if (Info.APPMETERRUNSTOP == 0) {
+                        Info.APPMETERRUNSTOP = 1;
+                        menu_endDrv.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                    } else {
+                        Info.APPMETERRUNSTOP = 0;
+                        menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
+                    }
+                    m_Service.m_timsdtg._sendPowerOnoff();
+                }
+                    break;
+
+                case R.id.menu_endapp:  //앱종료
+
+                    exitprocess();
+                break;
+            }
+        }
+    };
+
+
     private String getCurDateString() {
         SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -2188,15 +2661,6 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        /*if(setting.BLUETOOTH_DEVICE_NAME.equals("") == true) {
-            _Find_AMdevice();
-        }*/
-
-        //get getFrameLayoutSize 사이즈..
-//        Log.d("getSize_width>", cover_layout.getWidth()+"");
-//        Log.d("getSize_height>", cover_layout.getHeight()+"");
-
-//20220415 tra..sh ver158
         getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
@@ -2231,8 +2695,6 @@ public class MainActivity extends Activity {
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
-                ;
-
             }
             else
                 Info._displayLOG(Info.LOGDISPLAY, "GPS정상동작", "");
@@ -2260,15 +2722,13 @@ public class MainActivity extends Activity {
         super.onPause();
     }
 
-//20210823
+
     @Override
     public void onDestroy() {
         super.onDestroy();
 
         readyclose();
 
-//20210917
-//20210928 TODO.
         if(false) {
             if (anim != null) {
                 anim.cancel();
@@ -2279,18 +2739,17 @@ public class MainActivity extends Activity {
 
     }
 
-    //20210823
     private void readyclose()
     {
 
         if(second != null)
             second.cancel();
 
-        unregisterReceiver(); //20210823
+        unregisterReceiver();
 
         if (m_Service != null) {
 
-//20210823 종료 코드 전송
+            //종료 코드 전송
             AMBlestruct.mSState = "60";
             m_Service.writeBLE("15");
 
@@ -2319,107 +2778,23 @@ public class MainActivity extends Activity {
         }
 
         /*** Main Layout Button ***/
+        /* 메인버튼 onTouch */
+        //손님탑승/주행
         btn_driveStart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                   // btn_driveStart.setBackgroundColor(Color.parseColor("#2e2e6a"));
-//                    btn_driveStart.setBackgroundResource(R.drawable.ok_btn_blue_round_clicked_bg);
                     btn_driveStart.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    //btn_driveStart.setBackgroundColor(Color.parseColor("#2e2eae"));
-//                    btn_driveStart.setBackgroundResource(R.drawable.ok_btn_blue_round_bg);
                     btn_driveStart.setBackgroundResource(R.drawable.yellow_gradi_btn);
                 }
                 return false;
             }
         });
 
-        //todo: 20210917
-        // 손님탑승 버튼
-        btn_driveStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                btn_emptyCar_d.setEnabled(true); //20220411 tra..sh
-
-//20210928 TODO.
-                if(false) {
-                    if (false) {
-                        anim = ObjectAnimator.ofFloat(iv_car_icon, "rotation", 0, 360);
-                        anim.setDuration(2000);
-//                anim.setRepeatCount(ObjectAnimator.INFINITE);
-                        anim.start();
-                    } else
-                        anim.start();
-                }
-
-                // Log.d("btn_driveStart", "손님탑승 클릭");
-                setStateDrive();
-                faresendCount = 0; //20201207
-
-                tv_curEmptyDist.setText("0.00"); //20220303 km제거. //20211103
-
-                if(Info.REPORTREADY)
-                    Info._displayLOG(Info.LOGDISPLAY, "이전상태 빈차 - 주행 변경", "");
-            }
-        });
-        //todo: end
-
-
-        btn_emptyCar_e.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(reservUse) {
-                   // btn_reserv_e.setBackgroundColor(Color.parseColor("#3c3c4a"));
-                    btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
-                    m_Service.update_BLEmeterstate("41");
-                    reservUse = false;
-                    setCallpay(0);
-                }
-
-                Info.CALL_PAY = 0; //20210909
-            }
-        });
-
-        btn_driveCar_e.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    //btn_driveCar_e.setBackgroundColor(Color.parseColor("#97833a"));
-                    btn_driveCar_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    //btn_driveCar_e.setBackgroundColor(Color.parseColor("#3c3c4a"));
-                    btn_driveCar_e.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
-                }
-                return false;
-            }
-        });
-
-        //todo: 20210917
-        // 주행버튼
-        btn_driveCar_e.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//20210928 TODO.
-                if(false) {
-                    anim = ObjectAnimator.ofFloat(iv_car_icon, "rotation", 360);
-                    anim.setDuration(2000);
-                    anim.start();
-                }
-
-                setStateDrive();
-
-            }
-        });
-        //todo: end
-
-
+        //수기
         btn_manualpay_e.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -2436,75 +2811,52 @@ public class MainActivity extends Activity {
             }
         });
 
-        //메인 수기결제 버튼
-        btn_manualpay_e.setOnClickListener(new View.OnClickListener() {  //추가버튼
-            @Override
-            public void onClick(View view) {
-                mChangefare = 0;
-
-//20200303 tra..sh                get_manualfare(2);
-                get_manualfare(1);
-            }
-        });
-
+        //호출
         btn_reserv_e.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                   // btn_reserv_e.setBackgroundColor(Color.parseColor("#97833a"));
                     btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    //btn_reserv_e.setBackgroundColor(Color.parseColor("#3c3c4a"));
                     if(reservUse) {
-                        // btn_reserv_e.setBackgroundColor(Color.parseColor("#97833a"));
                         btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-
                     }
                     else
-                        btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
+                        btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
                 }
                 return false;
             }
         });
-        btn_reserv_e.setOnClickListener(new View.OnClickListener() {
+
+
+        btn_driveCar_e.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                //frameviewchange(6);
-                if(!reservUse) {
-                   // btn_reserv_e.setBackgroundColor(Color.parseColor("#97833a"));
-                    btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-                    reservUse = true;
+            public boolean onTouch(View arg0, MotionEvent arg1) {
 
-//20211216
-//                    if(Info.AREA_CODE.equals("천안"))
-//                    {
-//
-//                        setCallpay(0);
-//
-//                    }
-//                    else
-//                        setCallpay(1000);
-//
-                    do_CallPay_other(); //20211229
-
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    //btn_driveCar_e.setBackgroundColor(Color.parseColor("#97833a"));
+                    btn_driveCar_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
-
-                m_Service.update_BLEmeterstate("40");
-
-                if(Info.REPORTREADY)
-                {
-
-                    if(Info.REPORTREADY)
-                        Info._displayLOG(Info.LOGDISPLAY, "이전상태 빈차 - 예약 변경", "");
-
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    //btn_driveCar_e.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                    btn_driveCar_e.setBackgroundResource(R.drawable.grey_gradi_btn);
                 }
-
+                return false;
             }
         });
 
-        //todo: 20210917
+
+        btn_driveCar_e.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                setStateDrive();
+            }
+        });
+
+
         // 빈차 숨기기 아이콘
         hideEmptyIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2521,7 +2873,7 @@ public class MainActivity extends Activity {
                 emptyFrame1_new.setVisibility(View.GONE);
             }
         });
-//        //todo: end
+
 
         //거래집계 버튼
         hideReport.setOnClickListener(new View.OnClickListener() {
@@ -2631,6 +2983,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        //지불
         btn_driveEnd.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -2649,199 +3002,22 @@ public class MainActivity extends Activity {
             }
         });
 
-        //todo: 20220223
-        btn_driveEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                btn_cashPayment.setEnabled(true); //20220411 tra..sh
-
-//20220303 tra..sh                tv_restotpayment_title.setVisibility(View.VISIBLE);
-
-                frameviewchange(3);
-                // 인천제한
-                if(false) //20210607
-                {
-                    mnfare = (int)(Math.round((Double.parseDouble(mnfare + "")/100)) * 100);
-
-                    //m_Service.update_BLEmeterstate("01");
-                }
-
-
-//20210607                tv_resPayment.setText(mnfare + " 원");
-//20220303 tra..sh                tv_resPayment.setText(Info.PAYMENT_COST + " 원");
-                tv_resPayment.setText(decimalForm.getFormat(Info.PAYMENT_COST) + "");
-//20220303 tra..sh                String stemp = String.format(Locale.getDefault(), "%.2fkm", Info.MOVEDIST / 1000.0);
-                String stemp = String.format(Locale.getDefault(), "%.2f", Info.MOVEDIST / 1000.0);
-                tv_resDistance.setText(stemp);
-//20220303 tra..sh                tv_rescallpay.setText(Info.CALL_PAY + " 원");
-                tv_rescallpay.setText(decimalForm.getFormat(Info.CALL_PAY) + "");
-                edt_addpayment.setText(decimalForm.getFormat(mAddfare) + ""); //20210909
-                //인천한정 반올림
-//20210607                tv_restotpayment.setText(mnfare + " 원");
-                tv_restotpayment.setText(decimalForm.getFormat(Info.PAYMENT_COST + Info.CALL_PAY + mAddfare) + " 원");
-
-//20210909 ???                mAddfare = 0; //20210611
-
-//20211229
-                sendbroadcast_state(5001, 3, Info.PAYMENT_COST + mAddfare + Info.CALL_PAY,
-                        Info.MOVEDIST, 0); //20210823 20210827
-
-                Log.e("drive END", m_Service.mCardmode + ""); //99
-
-                if(m_Service.mCardmode == AMBlestruct.MeterState.EMPTYPAY)
-                    return;
-
-                if(m_Service.mCardmode == AMBlestruct.MeterState.ADDPAY)
-                {
-                    m_Service.update_BLEmeterstate("01");
-                    return;
-                }
-                if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY)
-                {
-                    m_Service.update_BLEmeterstate("01");
-                    return;
-                }
-                if(m_Service.mCardmode == AMBlestruct.MeterState.CANCELPAY)
-                {
-//취소시 결재기 지불만적용됨                    m_Service.update_BLEmeterstate("01");
-                    return;
-                }
-
-                if(m_Service.mbDrivestart == false) //20201112
-                {
-                    Info.makeDriveCode();
-                    bInsertDB = true;
-
-                    _setBoardDist(0);
-
-                    //Log.e("frame Change a", "4");
-                    frameviewchange(4);
-
-                    m_Service.drive_state(AMBlestruct.MeterState.EMPTYPAY);
-                    m_Service.update_BLEmeterstate("01");
-                }
-                else
-                {
-                    //Log.e("frame Change b", "3");
-
-//                    frameviewchange(3);
-//20210823
-//20210909                    if(false)
-                    if(true)
-                    {
-//                        stopdriverstart();
-                        m_Service.drive_endtime(); //20220107
-                        m_Service.drive_state(AMBlestruct.MeterState.PAY);
-                        m_Service.update_BLEmeterstate("01"); //?
-                    }
-                    else
-                    {
-
-                        m_Service.drive_endtime(); //20210823
-
-                    }
-                }
-            }
-        });
-
+        //주행- 빈차
         btn_emptyCar_d.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    //btn_emptyCar_d.setBackgroundColor(Color.parseColor("#97833a"));
                     btn_emptyCar_d.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    //btn_emptyCar_d.setBackgroundColor(Color.parseColor("#3c3c4a"));
-                    btn_emptyCar_d.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
-//                    btn_emptyCar_d.setTextColor(Color.parseColor("#000000")); //20210827
+                    btn_emptyCar_d.setBackgroundResource(R.drawable.grey_gradi_btn);
                 }
                 return false;
             }
         });
-        btn_emptyCar_d.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-
-                btn_emptyCar_d.setEnabled(false); //20220411 tra..sh
-//                mndrvtotal = true; //20211022
-//                btn_emptyCar_ep.performClick();
-//
-////20210909                btn_cashPay.performClick(); //20210823
-//                btn_cashPayment.performClick();
 
 
-
-//                mndrvtotal = true; //20211022
-//20211210 get rid                btn_emptyCar_ep.performClick();
-
-//20210909                btn_cashPay.performClick(); //20210823
-
-                m_Service.drive_state(AMBlestruct.MeterState.PAY); //20211210 추가
-
-                try {
-//20211216 need timing
-                    Thread.sleep(200);
-
-                }
-                catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-
-                }
-
-//20211220                btn_cashPayment.performClick();
-                if(AMBlestruct.mBTConnected)
-                {
-
-                    btn_cashPayment.performClick();
-
-                }
-                else {
-                    mndrvPayDiv = 0; //20220103
-//20220411                    btn_emptyCar_ep.performClick();
-                    if(m_Service != null)
-                        m_Service.m_timsdtg.setTIMSfinal("2", memptydistance);
-
-                    AMBlestruct.AMCardResult.msType.equals("05"); //20220415
-                    btn_emptyCar_ep_process(); //20220411
-                }
-
-
-/////////
-
-/*
-                m_Service.drive_state(AMBlestruct.MeterState.EMPTY);
-                if(false) //20210607
-                {
-                    ;
-
-//                    PAYMENT_COST = (int) (Math.round((Double.parseDouble(PAYMENT_COST + "") / 100)) * 100);
-                }
-                Info.end_rundata(mlocation, Info.PAYMENT_COST, 0, mAddfare, mddistance, mnseconds);
-                bInsertDB = false;
-                frameviewchange(1);
-                if (Info.USEDRIVESTATEPOWEROFF)
-                    save_state_pref("", 1, System.currentTimeMillis(), 0, 0, 0, 0, 0, 0, 0);
-
-                if(Info.TIMSUSE == true)
-                    setTIMSfinal("2");
-
-                sendTimsAfterDrive();
-                m_Service.SendTIMS_Data(2, 0, null, "05&0");
-
-
-                if(Info.REPORTREADY)
-                    Info._displayLOG(Info.LOGDISPLAY, "이전상태 주행 - 빈차 변경", "");
-
-
- */
-            }
-
-        });
 
         btn_reserv_d.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -2882,14 +3058,16 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        btn_complex_d.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                btn_complex.performClick();
-
-            }
-        });
+        //복합
+//        btn_complex_d.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                btn_complex.performClick();
+//
+//            }
+//        });
 
 //20210909
         btn_surburb_d.setOnTouchListener(new View.OnTouchListener() {
@@ -2907,14 +3085,14 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        btn_surburb_d.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                btn_suburb.performClick();
-
-            }
-        });
+//        btn_surburb_d.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                btn_suburb.performClick();
+//
+//            }
+//        });
 
         /** 결 제 **/
         if(false) {
@@ -3061,18 +3239,17 @@ public class MainActivity extends Activity {
         });
 
         //[현금]버튼 클릭시
-        btn_cashPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_cashPayment.setEnabled(false); //20220411 tra..sh
-                mnlastcashfare = Info.PAYMENT_COST + mAddfare + Info.CALL_PAY; //20211019
-                Info.g_cashKeyCode = Info.g_nowKeyCode; //20220411
-                cashPay = true;
-                m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
-                m_Service.m_timsdtg._sendTIMSEventCash();
-
-            }
-        });
+//        btn_cashPayment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                btn_cashPayment.setEnabled(false); //20220411 tra..sh
+//                mnlastcashfare = Info.PAYMENT_COST + mAddfare + Info.CALL_PAY; //20211019
+//                Info.g_cashKeyCode = Info.g_nowKeyCode; //20220411
+//                cashPay = true;
+//                m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
+//                m_Service.m_timsdtg._sendTIMSEventCash();
+//            }
+//        });
 
         //todo: 20220209
 //        btn_cardPayment.setOnTouchListener(new View.OnTouchListener(){
@@ -3116,28 +3293,28 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        btn_addPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        btn_addPayment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                get_manualfare(2);
+//
+//            }
+//        });
 
-                get_manualfare(2);
-
-            }
-        });
-
-
-        btn_callPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(Info.CALL_PAY > 0) //20220110
-                    setCallpay(0);
-                else
-                    do_CallPay_pay(); //20211229
-
-                displayHandler.sendEmptyMessage(11);
-
-            }
-        });
+        //호출요금
+//        btn_callPayment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(Info.CALL_PAY > 0) //20220110
+//                    setCallpay(0);
+//                else
+//                    do_CallPay_pay(); //20211229
+//
+//                displayHandler.sendEmptyMessage(11);
+//
+//            }
+//        });
 
 
 
@@ -3244,29 +3421,30 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        btn_cancelpayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                btn_emptyCar_d.setEnabled(true);
-
-                tv_pay_card.setVisibility(View.GONE);
-
-                mAddfare = 0;
-                LocService.CDrive_val.setmFareAdd(0);
-
-                if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY || m_Service.mbDrivestart == false)
-                {
-                    Info.sqlite.delete(Info.g_nowKeyCode); //20210611
-                    frameviewchange(1);
-                    m_Service.update_BLEmeterstate("20");
-                    m_Service.drive_state(AMBlestruct.MeterState.EMPTYBYEMPTY);
-                }
-                else
-                    continue_board();
-
-            }
-        });
+        //주행/취소
+//        btn_cancelpayment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                btn_emptyCar_d.setEnabled(true);
+//
+//                tv_pay_card.setVisibility(View.GONE);
+//
+//                mAddfare = 0;
+//                LocService.CDrive_val.setmFareAdd(0);
+//
+//                if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY || m_Service.mbDrivestart == false)
+//                {
+//                    Info.sqlite.delete(Info.g_nowKeyCode); //20210611
+//                    frameviewchange(1);
+//                    m_Service.update_BLEmeterstate("20");
+//                    m_Service.drive_state(AMBlestruct.MeterState.EMPTYBYEMPTY);
+//                }
+//                else
+//                    continue_board();
+//
+//            }
+//        });
 
         btn_cashReceipt.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -3332,7 +3510,9 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        //me: 결제완료- 빈차버틀 클릭
+
+
+        //결제완료- 빈차버틀 클릭
         btn_emptyCar_ep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -3373,10 +3553,9 @@ public class MainActivity extends Activity {
 
 
 
-
-
-        btn_menu.setOnTouchListener(new View.OnTouchListener() { // 터치 이벤트 리스너 등록(누를때와
-            // 뗐을때를 구분)
+        /* 메인화면 onTouch */
+        //메뉴버튼
+        btn_menu.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
@@ -3390,78 +3569,42 @@ public class MainActivity extends Activity {
             }
         });
 
-        btn_menu.setOnClickListener(new View.OnClickListener() {
+        //메뉴닫기 버튼
+        menu_close.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onTouch(View arg0, MotionEvent arg1) {
 
-                if (Info.m_Service != null) {
-                    Info.m_Service._showhideLbsmsg(false);
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    menu_close.setBackgroundResource(R.drawable.nbtn_exit_c);
                 }
-
-                viewframe1.setClickable(false);
-
-                if(m_Service.mbDrivestart == false)
-                {
-                    menu_menualpay.setEnabled(true);
-                }
-                else {
-                    menu_menualpay.setEnabled(false);
-                    return; //20210827
-                }
-
-                menu.openDrawer(drawerView);
-
-                if(Info.REPORTREADY)
-                {
-
-                    Info._displayLOG(Info.LOGDISPLAY, "메뉴버튼, 메뉴창 ", "");
-
-                }
-            }
-        });
-
-
-
-
-
-        btn_connBLE.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    btn_connBLE.setBackgroundResource(R.drawable.btn_bles_c);
-                      btn_connBLE.setBackgroundResource(R.drawable.bluetooth_clicked);  //todo: 20220209
-                }
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    if(AMBlestruct.mBTConnected) {
-
-//                        btn_connBLE.setBackgroundResource(R.drawable.btn_bles_on); //20220207
-                        btn_connBLE.setBackgroundResource(R.drawable.bluetooth_green); //todo: 20220209
-
-
-                    }
-                    else
-//                        btn_connBLE.setBackgroundResource(R.drawable.ic_bluetooth_btn);
-                        btn_connBLE.setBackgroundResource(R.drawable.bluetooth_blue);  //todo: 20220209
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    menu_close.setBackgroundResource(R.drawable.nbtn_exit);
                 }
                 return false;
             }
         });
 
-
-
-        //메인- 블루투스 아이콘
-        btn_connBLE.setOnClickListener(new View.OnClickListener() {
+        //블루투스 아이콘
+        btn_connBLE.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+//                    btn_connBLE.setBackgroundResource(R.drawable.btn_bles_c);
+                      btn_connBLE.setBackgroundResource(R.drawable.bluetooth_clicked);
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if(AMBlestruct.mBTConnected) {
 
-                setupBluetooth(1);  //todo: 20220208
-
-//                btn_gpstext.setVisibility(View.VISIBLE); //for report ??????
-
+                        btn_connBLE.setBackgroundResource(R.drawable.bluetooth_green);
+                    }
+                    else
+                        btn_connBLE.setBackgroundResource(R.drawable.bluetooth_blue);
+                }
+                return false;
             }
         });
 
-
+        //네비 아이콘
         btn_navi.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -3476,16 +3619,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        btn_navi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                sendbroadcast_normal(setting.BROADCAST_SHOWAPP, 1);
-
-            }
-        });
-
-
+        /* 메뉴버튼 onTouch */
+        //정보
         menu_home.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -3500,16 +3635,21 @@ public class MainActivity extends Activity {
             }
         });
 
-        menu_home.setOnClickListener(new View.OnClickListener() {
+        //거래집계
+        menu_drvHistory.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view)
-            {
-                menu.closeDrawer(drawerView); //20220503 tra..sh
-                Intent infoIntent = new Intent(getApplicationContext(), InfoActivity.class);
-                startActivity(infoIntent);
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    menu_drvHistory.setBackgroundResource(R.drawable.shadow_menu);
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                }
+                return false;
             }
         });
 
+        //빈차등메뉴
         menu_setting.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -3524,14 +3664,30 @@ public class MainActivity extends Activity {
             }
         });
 
-        menu_setting.setOnClickListener(new View.OnClickListener() {
+        //앱자동실행
+        menu_app_control_setting.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-
-                setupBluetooth(2);  //todo: 20220208
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
             }
         });
 
+        //설정상태/ 환경설정
+        menu_env_setting.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN){
+                    menu_env_setting.setBackgroundResource(R.drawable.shadow_menu);
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    menu_env_setting.setBackgroundResource(R.drawable.menu_borders);
+                }
+                return false;
+            }
+        });
+
+        //수기결제
         menu_menualpay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -3546,27 +3702,78 @@ public class MainActivity extends Activity {
             }
         });
 
-        //메뉴 수기결제 버튼
-        menu_menualpay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mChangefare = 0;
-
-                menu.closeDrawer(drawerView);
-
-
-                get_manualfare(1);
-            }
-        });
-
-        menu_drvHistory.setOnTouchListener(new View.OnTouchListener() {
+        //영수증출력
+        menu_getReceipt.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_drvHistory.setBackgroundResource(R.drawable.shadow_menu);
+
+                    menu_getReceipt.setBackgroundResource(R.drawable.shadow_menu);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    menu_getReceipt.setBackgroundResource(R.drawable.menu_borders);
+                }
+                return false;
+            }
+        });
+
+        //현금영수증
+        menu_cashReceipt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    menu_cashReceipt.setBackgroundResource(R.drawable.shadow_menu);
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    menu_cashReceipt.setBackgroundResource(R.drawable.menu_borders);
+                }
+                return false;
+            }
+        });
+
+        //카드결제취소
+        menu_cancelPay.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    menu_cancelPay.setBackgroundResource(R.drawable.shadow_menu);
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    menu_cancelPay.setBackgroundResource(R.drawable.menu_borders);
+                }
+                return false;
+            }
+        });
+
+        //금일영업종료
+        menu_endDrv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    menu_endDrv.setBackgroundColor(Color.parseColor("#97833a"));
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
+                }
+                return false;
+            }
+        });
+
+        //앱종료
+        menu_endApp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    menu_endApp.setBackgroundColor(Color.parseColor("#DC143C"));
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    menu_endApp.setBackgroundColor(Color.parseColor("#800000"));
                 }
                 return false;
             }
@@ -3643,82 +3850,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        menu_drvHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //서브메뉴
-//                if(chkSubMenuUse) {
-//                    menu_submenu.setVisibility(View.GONE);
-//                    chkSubMenuUse = false;
-//                } else {
-//                    menu_submenu.setVisibility(View.GONE);
-//                    chkSubMenuUse = true;
-//                }
-
-                menu.closeDrawer(drawerView);
-
-                show_drvhistory();
-
-            }
-        });
-
-        menu_env_setting.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
-                    menu_env_setting.setBackgroundResource(R.drawable.shadow_menu);
-                }
-                if (event.getAction() == MotionEvent.ACTION_UP){
-                    menu_env_setting.setBackgroundResource(R.drawable.menu_borders);
-                }
-                return false;
-            }
-        });
-
-
-        //todo: 2022-05-12
-        menu_env_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                if (isClicked == true){
-//                    submenu_env_setting.setVisibility(View.VISIBLE);
-//                    isClicked = false;
-//                }else {
-//                    submenu_env_setting.setVisibility(View.GONE);
-//                    isClicked = true;
-//                }
-
-                //환경설정 화면으로 이동
-                menu.closeDrawer(drawerView);
-                Intent i = new Intent(getApplicationContext(), SettingActivity.class);
-                startActivity(i);
-            }
-        });
-        //todo: end
-
-
-
-
-        //todo: 2022-05-12
-        // 앱 자동실행 설정메뉴
-        menu_app_control_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (Info.m_Service != null) {
-                    Log.d("m_Service_Resume", "not null");
-                    Info.m_Service._showhideLbsmsg(false);
-                }else {
-                    Log.d("m_Service_Resume", "null");
-                }
-
-                menu.closeDrawer(drawerView);
-                Intent i = new Intent(getApplicationContext(), SettingActivity.class);
-                startActivity(i);
-            }
-        });
-        //todo: end
 
 
 
@@ -3818,319 +3949,11 @@ public class MainActivity extends Activity {
 
 
 
-        menu_getReceipt.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-
-                    menu_getReceipt.setBackgroundResource(R.drawable.shadow_menu);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_getReceipt.setBackgroundResource(R.drawable.menu_borders);
-                }
-                return false;
-            }
-        });
-
-        menu_getReceipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(AMBlestruct.AMCardResult.msOpercode.equals(""))
-                {
-                    Info.makeDriveCode();
-                    AMBlestruct.AMCardResult.msOpercode = Info.g_nowKeyCode;
-                }
-                m_Service.writeBLE("26");
-
-                m_Service.m_timsdtg._sendTIMSEventReceipt();
 
 
-                menu.closeDrawer(drawerView);
-            }
-        });
-
-        menu_cancelPay.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-
-                    menu_cancelPay.setBackgroundResource(R.drawable.shadow_menu);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_cancelPay.setBackgroundResource(R.drawable.menu_borders);
-                }
-                return false;
-            }
-        });
 
 
-        // 결제취소 메뉴 클릭 시
-        menu_cancelPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-                //결제취소 다이얼로그 생성
-                final LinearLayout dialogView;
-                dialogView = (LinearLayout)View.inflate(context, R.layout.dlg_basic, null);
-
-                final TextView msg = (TextView)dialogView.findViewById(R.id.msg);
-                final Button cancelBtn = (Button)dialogView.findViewById(R.id.cancel_btn);
-                final Button okayBtn = (Button)dialogView.findViewById(R.id.okay_btn);
-                msg.setText("결제취소를 진행하시겠습니까?");
-
-                final Dialog dlg = new Dialog(MainActivity.this);
-                dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dlg.setContentView(dialogView);
-                dlg.setCancelable(true);
-
-                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dlg.dismiss();
-                        menu.closeDrawer(drawerView);
-                    }
-                });
-
-                //todo: 20220111
-                okayBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                        helper = new SQLiteHelper(getBaseContext());
-//                        sqlite = new SQLiteControl(helper);
-
-                        if (false) {
-//                      //todo: 당일 거래내역
-                            todayData = Info.sqlite.selectToday();
-                            if (todayData.length > 0) {
-                                String[] splt = todayData[0].split("#");   //맨 마지막 데이터
-                                if (splt.length > 0) {
-                                    drvCode = splt[0];   //운행코드 string
-                                    drvPay = Integer.parseInt(splt[2]);  //요금(fare)
-                                    payDiv = Integer.parseInt(splt[3]);  //현금/카드/모바일
-                                    Log.d("payDivCheck", payDiv + "");
-//                                payDiv = 0;  //카드
-                                    addPay = Integer.parseInt(splt[4]);  //추가요금
-                                    Log.d("today_data[0]", todayData[0]);
-                                    Log.d("today_data_drvCode", drvCode + "");  //null
-                                    Log.d("today_data_payDivision", payDiv + "");
-                                    Log.d("today_data_drvPay", drvPay + "");
-                                    Log.d("today_data_addPay", addPay + "");
-
-                                    String strDrvPay = drvPay + "";
-                                    if (strDrvPay.contains("-")) {
-                                        Log.d("strdrvpay_confain", strDrvPay);
-                                        Toast.makeText(MainActivity.this, "결제취소가 이미 처리되었습니다.", Toast.LENGTH_SHORT).show();
-                                        dlg.dismiss();
-
-                                    } else {
-                                        Log.d("strdrvpay", strDrvPay);
-
-                                        if (payDiv == 0) {  //현금
-                                            Log.d("today_data_", "현금");
-                                            AMBlestruct.AMCardFare.mstype = "05";
-                                            {
-                                                m_Service.writeBLE("23");
-                                            }
-                                            //do nothing
-                                        } else if (payDiv == 1) {  //카드
-                                            Log.d("today_data_", "카드");
-
-
-                                            AMBlestruct.AMCardFare.mstype = "01";
-                                            {
-                                                m_Service.writeBLE("23");
-                                            }
-
-                                        } else if (payDiv == 2) {   //모바일(2)
-                                            //do nothing
-                                            Log.d("today_data_", "모바일");
-                                            AMBlestruct.AMCardFare.mstype = "06";
-                                            {
-                                                m_Service.writeBLE("23");
-                                            }
-                                        }
-
-                                        Log.d("check_mstype", AMBlestruct.AMCardFare.mstype);
-
-
-                                        frameviewchange(1);
-
-                                        m_Service.set_payviewstate(true); //20220421
-
-                                        menu.closeDrawer(drawerView);
-                                    }
-
-
-                                }
-                            } else {
-                                Toast.makeText(MainActivity.this, "결제취소할 목록이 없습니다.", Toast.LENGTH_SHORT).show();
-                            }
-
-                            dlg.dismiss();
-
-                        } //if (false)
-                        else
-                        {
-                            AMBlestruct.AMCardFare.mstype = "01";
-                            m_Service.writeBLE("23");
-
-                            m_Service.set_payviewstate(true); //20220421
-
-                            menu.closeDrawer(drawerView);
-
-                            dlg.dismiss();
-
-                            set_basic_dlg("카드를 인식해주세요.", "닫기", "");  //todo: 2022-04-27
-                        }
-                    }
-                });
-                dlg.dismiss();
-
-                DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
-                int width = dm.widthPixels;
-                int height = dm.heightPixels;
-
-                if (Build.VERSION.SDK_INT <= 25) {
-                    msg.setTextSize(3.0f * setting.gTextDenst);
-                    cancelBtn.setTextSize(2.5f * setting.gTextDenst);
-                    okayBtn.setTextSize(2.5f * setting.gTextDenst);
-                    width = (int) (width * 0.6);
-                    height = (int) (height * 0.5);
-                }else {
-                    width = (int)(width * 0.9);
-                    height = (int)(height * 0.5);
-                }
-
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dlg.getWindow().getAttributes());
-                lp.width = width;
-                lp.height= height;
-                Window window = dlg.getWindow();
-                window.setAttributes(lp);
-
-                dlg.show();
-
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            }
-        });
-
-        // 현금영수증
-        menu_cashReceipt.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_cashReceipt.setBackgroundResource(R.drawable.shadow_menu);
-                }
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    menu_cashReceipt.setBackgroundResource(R.drawable.menu_borders);
-                }
-                return false;
-            }
-        });
-        menu_cashReceipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                get_Cashreceipts();
-            }
-        });
-        //todo: end
-
-        menu_endDrv.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_endDrv.setBackgroundColor(Color.parseColor("#97833a"));
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
-                }
-                return false;
-            }
-        });
-        menu_endDrv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                {
-
-                    _todayreset();
-                    exitprocess();
-                }
-
-                if (false) {
-                    if (Info.TIMSUSE) {
-                        if (Info.APPMETERRUNSTOP == 0) {
-                            Info.APPMETERRUNSTOP = 1;
-                            menu_endDrv.setBackgroundColor(Color.parseColor("#3c3c4a"));
-                        } else {
-                            Info.APPMETERRUNSTOP = 0;
-                            menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
-
-                        }
-                    } else {
-
-                        if (Info.APPMETERRUNSTOP == 0) {
-                            Info.APPMETERRUNSTOP = 1;
-                            menu_endDrv.setBackgroundColor(Color.parseColor("#3c3c4a"));
-
-                        } else {
-                            Info.APPMETERRUNSTOP = 0;
-                            menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
-
-                        }
-
-                        m_Service.m_timsdtg._sendPowerOnoff();
-                    }
-
-                }
-
-                if (false) //Info.TIMSUSE)
-                {
-                    if (Info.APPMETERRUNSTOP == 0) {
-                        Info.APPMETERRUNSTOP = 1;
-                        menu_endDrv.setBackgroundColor(Color.parseColor("#3c3c4a"));
-
-                    } else {
-                        Info.APPMETERRUNSTOP = 0;
-                        menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
-
-                    }
-
-                    m_Service.m_timsdtg._sendPowerOnoff();
-                }
-
-            }
-
-        });
-
-        menu_endApp.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_endApp.setBackgroundColor(Color.parseColor("#DC143C"));
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_endApp.setBackgroundColor(Color.parseColor("#800000"));
-                }
-                return false;
-            }
-        });
-        menu_endApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //frameviewchange(1);
-
-                exitprocess();
-
-            }
-        });
 
 
         if(Info.APP_VERSION >= Info.SV_APP_VERSION) {
@@ -4301,28 +4124,8 @@ public class MainActivity extends Activity {
         });
 
 
-        menu_close.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
 
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_close.setBackgroundResource(R.drawable.nbtn_exit_c);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_close.setBackgroundResource(R.drawable.nbtn_exit);
-                }
-                return false;
-            }
-        });
 
-        menu_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menu.closeDrawer(drawerView);
-//                emptyFrame1_new.setClickable(true);
-
-            }
-        });
     }
 
     @Override
@@ -4395,18 +4198,36 @@ public class MainActivity extends Activity {
     {
         menu = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.drawer_menu);
-
-        /**
-         * menu item match
-         */
-
         menu_version = (TextView)findViewById(R.id.menuversion);
 
-        menu_version.setText("ver " + Info.APP_VERSION + "(" + Info.AREA_CODE + ")"); //20220318 tra..sh
+        menu_version.setText("ver " + Info.APP_VERSION + "(" + Info.AREA_CODE + ")");
 
-        menu_app_control_setting = (LinearLayout)findViewById(R.id.menu_app_control_setting);  //todo: 2022-05-12
-        menu_env_setting = (LinearLayout)findViewById(R.id.menu_env_setting);
-        submenu_env_setting = (LinearLayout)findViewById(R.id.submenu_env_setting);
+        btn_menu = (Button)findViewById(R.id.nbtn_menu);          //메뉴버튼
+        btn_connBLE = (Button) findViewById(R.id.nbtn_connectble);//블루투스 아이콘
+        btn_navi = (Button)findViewById(R.id.nbtn_navi);          //네비버튼
+
+        btn_navi.setVisibility(View.INVISIBLE);
+        if(tp == 1) //for landscape
+        {
+            btn_navi.setVisibility(View.VISIBLE);
+        }
+
+        /** menu item match **/
+        menu_title = (TextView)findViewById(R.id.menu_title);    //drawer 메뉴 타이틀
+        menu_close = (Button)findViewById(R.id.menu_btnclose);   //메뉴닫기 버튼
+
+        menu_home = (LinearLayout)findViewById(R.id.menu_home);  //정보
+        menu_drvHistory = (LinearLayout)findViewById(R.id.menu_drvhistory);  //거래집계
+        menu_submenu = (LinearLayout)findViewById(R.id.menu_submenu);        //거래집계 sub 메뉴
+        menu_setting = (LinearLayout)findViewById(R.id.menu_setting);        //빈차등메뉴
+        menu_app_control_setting = (LinearLayout)findViewById(R.id.menu_app_control_setting);  //앱자동실행
+        menu_env_setting = (LinearLayout)findViewById(R.id.menu_env_setting);  //설정상태/ 환경설정
+        menu_menualpay = (LinearLayout)findViewById(R.id.menu_menualpay);      //수기결제
+        menu_getReceipt = (LinearLayout)findViewById(R.id.menu_getreceipt);    //영수증출력
+        menu_cashReceipt = (LinearLayout)findViewById(R.id.menu_cashreceipt);  //현금영수증
+        menu_cancelPay = (LinearLayout)findViewById(R.id.menu_cancelpay);      //카드결제취소
+
+        submenu_env_setting = (LinearLayout)findViewById(R.id.submenu_env_setting); //설정상태 sub
         menu_ble = (TextView)findViewById(R.id.menu_ble);
         menu_ble_status = (TextView)findViewById(R.id.menu_ble_status);
         menu_ori = (TextView)findViewById(R.id.menu_ori);
@@ -4417,40 +4238,36 @@ public class MainActivity extends Activity {
         menu_auto_login_status = (TextView)findViewById(R.id.menu_auto_login_status);
         menu_modem = (TextView)findViewById(R.id.menu_modem);
         menu_modem_status = (TextView)findViewById(R.id.menu_modem_status);
-        menu_home = (LinearLayout)findViewById(R.id.menu_home);
-        menu_drvHistory = (LinearLayout)findViewById(R.id.menu_drvhistory);
-        menu_submenu = (LinearLayout)findViewById(R.id.menu_submenu);
-        menu_setting = (LinearLayout)findViewById(R.id.menu_setting);
-        menu_menualpay = (LinearLayout)findViewById(R.id.menu_menualpay);
-        menu_getReceipt = (LinearLayout)findViewById(R.id.menu_getreceipt);
-        menu_cancelPay = (LinearLayout)findViewById(R.id.menu_cancelpay);
-        menu_endDrv = (Button)findViewById(R.id.menu_enddrv);
-        menu_endApp = (Button)findViewById(R.id.menu_endapp);
-        menu_title = (TextView)findViewById(R.id.menu_title);
-        menu_update = (Button)findViewById(R.id.menu_update);
-        menu_reset_app = (Button)findViewById(R.id.reset_app_btn);
-        menu_close = (Button)findViewById(R.id.menu_btnclose);
 
-        menu_todayRecord = (TextView)findViewById(R.id.menu_todayrecord);
-        menu_yesterdayRecord = (TextView)findViewById(R.id.menu_yestrecord);
-        menu_allRecord = (TextView)findViewById(R.id.menu_allrecord);
+        menu_endDrv = (Button)findViewById(R.id.menu_enddrv);   //금일영업마감
+        menu_endApp = (Button)findViewById(R.id.menu_endapp);   //영업종료
+        menu_update = (Button)findViewById(R.id.menu_update);   //업데이트
+        menu_reset_app = (Button)findViewById(R.id.reset_app_btn); //환경설정 초기화
+        menu_todayRecord = (TextView)findViewById(R.id.menu_todayrecord);    //오늘집계
+        menu_yesterdayRecord = (TextView)findViewById(R.id.menu_yestrecord); //어제집계
+        menu_allRecord = (TextView)findViewById(R.id.menu_allrecord);        //총집계
 
-        menu_cashReceipt = (LinearLayout)findViewById(R.id.menu_cashreceipt); //20210923
+        // menuBtnClickListener
+        btn_connBLE.setOnClickListener(menuBtnClickListener);
+        btn_menu.setOnClickListener(menuBtnClickListener);
+        btn_navi.setOnClickListener(menuBtnClickListener);
 
-        LayoutInflater inflater = null;
+        menu_home.setOnClickListener(menuBtnClickListener);
+        menu_drvHistory.setOnClickListener(menuBtnClickListener);
+        menu_setting.setOnClickListener(menuBtnClickListener);
+        menu_app_control_setting.setOnClickListener(menuBtnClickListener);
+        menu_env_setting.setOnClickListener(menuBtnClickListener);
+        menu_menualpay.setOnClickListener(menuBtnClickListener);
+        menu_getReceipt.setOnClickListener(menuBtnClickListener);
+        menu_getReceipt.setOnClickListener(menuBtnClickListener);
+        menu_cashReceipt.setOnClickListener(menuBtnClickListener);
+        menu_cancelPay.setOnClickListener(menuBtnClickListener);
+        menu_endDrv.setOnClickListener(menuBtnClickListener);
+        menu_endApp.setOnClickListener(menuBtnClickListener);
 
-        btn_menu = (Button)findViewById(R.id.nbtn_menu);
-        btn_connBLE = (Button) findViewById(R.id.nbtn_connectble);  //메인- 블루투스 아이콘
 
-        btn_navi = (Button)findViewById(R.id.nbtn_navi);
-        btn_navi.setVisibility(View.INVISIBLE);
-        if(tp == 1) //for landscape
-        {
-            btn_navi.setVisibility(View.VISIBLE);
-        }
-
-        tv_nowDate = (TextView)findViewById(R.id.ntv_nowdate);
-        tv_nowTime = (TextView)findViewById(R.id.ntv_nowtime);
+        tv_nowDate = (TextView)findViewById(R.id.ntv_nowdate);  //현재날짜
+        tv_nowTime = (TextView)findViewById(R.id.ntv_nowtime);  //현재시간
 
         viewframe1 = null;
         frame1 = (FrameLayout) findViewById(R.id.frame1); // 1. 기반이 되는 FrameLayout
@@ -4459,16 +4276,17 @@ public class MainActivity extends Activity {
             frame1.removeViewAt(0);
         }
 
-        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); // 2. inflater 생성
+        LayoutInflater inflater = null;
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         viewframe1 = inflater.inflate(R.layout.newmainframe1, frame1,true);
         /** Frame Layout **/
-        emptyFrame1_new = (LinearLayout)viewframe1.findViewById(R.id.emptylayouts_new);  //todo: 20210917
+        emptyFrame1_new = (LinearLayout)viewframe1.findViewById(R.id.emptylayouts_new);
         emptyFrame1 = (LinearLayout)viewframe1.findViewById(R.id.emptylayouts);
-        driveFrame1 = (LinearLayout)viewframe1.findViewById(R.id.drivelayouts);
+        driveFrame1 = (LinearLayout)viewframe1.findViewById(R.id.drivelayouts);   //주행화면
         paymentFrame1 = (LinearLayout)viewframe1.findViewById(R.id.paymentlayouts);  //결제화면 버튼 레이아웃
         payingFrame1 = (LinearLayout)viewframe1.findViewById(R.id.payinglayout);
         endFrame1 = (LinearLayout)viewframe1.findViewById(R.id.endpayment);
-        textView12 = (TextView)viewframe1.findViewById(R.id.textView12);  //todo: 20220209
+        textView12 = (TextView)viewframe1.findViewById(R.id.textView12);
 
         /** Empty match **/
         tv_todayTotalDist = (FontFitTextView) viewframe1.findViewById(R.id.ntv_daytotdist);
@@ -4476,17 +4294,17 @@ public class MainActivity extends Activity {
         tv_todayTotalPayment = (FontFitTextView)viewframe1.findViewById(R.id.ntv_daytotpay);   //총 수입
         tv_todayTotalPayment.setSizeRate(0.9);
         tv_todayreset = (TextView)viewframe1.findViewById(R.id.resettfare);       //금액마감
-        tv_curEmptyDist = (FontFitTextView)viewframe1.findViewById(R.id.curemptydist);   //20211103
-        hideEmptyIcon = (TextView) viewframe1.findViewById(R.id.hide_empty_icon); //me: 20211118 돌아가기 버튼
-        showEmptyIcon = (TextView)viewframe1.findViewById(R.id.show_empty_icon);  //me: 20210917 셍세보기 버튼
+        tv_curEmptyDist = (FontFitTextView)viewframe1.findViewById(R.id.curemptydist);
+        hideEmptyIcon = (TextView) viewframe1.findViewById(R.id.hide_empty_icon); //돌아가기 버튼
+        showEmptyIcon = (TextView)viewframe1.findViewById(R.id.show_empty_icon);  //셍세보기 버튼
         hideReport = (TextView) viewframe1.findViewById(R.id.hide_report);       //거래집계 버튼
 
         /** 주행 **/
         tv_remainfare = (TextView)viewframe1.findViewById(R.id.ntv_remainfare);
         tv_remainfare.setVisibility(View.GONE); //20210917
-        iv_car_icon = (ImageView)viewframe1.findViewById(R.id.iv_car_icon);    //me: 20210917 차/말/바람개비
-        progressremain1 = viewframe1.findViewById(R.id.progressremain1);      //me: 20210928 차/말/바람개비
-        progressremain2 = viewframe1.findViewById(R.id.progressremain2);     //me: 20210928 차/말/바람개비
+        iv_car_icon = (ImageView)viewframe1.findViewById(R.id.iv_car_icon);    //차/말/바람개비
+        progressremain1 = viewframe1.findViewById(R.id.progressremain1);      //차/말/바람개비
+        progressremain2 = viewframe1.findViewById(R.id.progressremain2);     //차/말/바람개비
         tv_boardkm = (FontFitTextView)viewframe1.findViewById(R.id.ntv_boardkm);
         tv_nowfare = (FontFitTextView)viewframe1.findViewById(R.id.ntv_nowfare);
         tv_nowfare.setSizeRate(0.9);
@@ -4532,6 +4350,7 @@ public class MainActivity extends Activity {
         tv_finEndPay = (TextView)viewframe1.findViewById(R.id.ntv_finendpay);  //
         tv_fincallpay = (TextView)viewframe1.findViewById(R.id.ntv_fincallpay); //20210909
 
+        /* 메인버튼 */
         viewframe2 = null;
         frame2 = (FrameLayout) findViewById(R.id.frame2); // 1. 기반이 되는 FrameLayout
         if (frame2.getChildCount() > 0) {
@@ -4551,13 +4370,13 @@ public class MainActivity extends Activity {
         Log.d("btn_driveStart", btn_driveStart.getTextSize() + " 1");
         btn_driveStart.setSizeRate(0.6); //20220318 tra..sh
         btn_driveStart.setText("손님탑승");
-        Log.d("btn_driveStart", btn_driveStart.getTextSize() + " 2");
+        Log.d("btn_driveStart", btn_driveStart.getText().toString()+": "+btn_driveStart.getTextSize() + " 2");
 
         btn_emptyCar_e = (Button)viewframe2.findViewById(R.id.nbtn_emptycar_e);  //빈차
         btn_driveCar_e = (Button)viewframe2.findViewById(R.id.nbtn_drivecar_e);
         btn_driveCar_e.setVisibility(View.GONE); //20210909
-        btn_reserv_e = (Button)viewframe2.findViewById(R.id.nbtn_reserv_e);
-        btn_manualpay_e = (Button)viewframe2.findViewById(R.id.nbtn_manualpay_e); //20210909
+        btn_reserv_e = (Button)viewframe2.findViewById(R.id.nbtn_reserv_e);   //호출
+        btn_manualpay_e = (Button)viewframe2.findViewById(R.id.nbtn_manualpay_e);  //수기
 
         /** 주행 **/
         btn_driveEnd = (ButtonFitText)viewframe2.findViewById(R.id.nbtn_driveend);   //지불버튼
@@ -4566,18 +4385,18 @@ public class MainActivity extends Activity {
         btn_driveEnd.setSizeRate(0.6); //20220318 tra..sh
         Log.d("btn_driveStart", btn_driveEnd.getTextSize() + " 5");
 
-        btn_emptyCar_d = (Button)viewframe2.findViewById(R.id.nbtn_emptycar_d);
+        btn_emptyCar_d = (Button)viewframe2.findViewById(R.id.nbtn_emptycar_d); //빈차
         btn_driveCar_d = (Button)viewframe2.findViewById(R.id.nbtn_drivecar_d);
         btn_driveCar_d.setVisibility(View.GONE); //20210909
         btn_reserv_d = (Button)viewframe2.findViewById(R.id.nbtn_reserv_d);
         btn_reserv_d.setVisibility(View.GONE); //20210909
-        btn_complex_d = (Button)viewframe2.findViewById(R.id.nbtn_complex_d);
+        btn_complex_d = (Button)viewframe2.findViewById(R.id.nbtn_complex_d);  //복합
         btn_surburb_d = (Button)viewframe2.findViewById(R.id.nbtn_surburb_d);  //시외
 
         /** 요금계산 **/
         btn_endPayment = (Button)viewframe2.findViewById(R.id.nbtn_endpayment);
         btn_endPayment.setVisibility(View.GONE); //20210909
-        btn_cancelpayment = (Button)viewframe2.findViewById(R.id.nbtn_cancelpayment);
+        btn_cancelpayment = (Button)viewframe2.findViewById(R.id.nbtn_cancelpayment);  //주행/취소
 
         layout_payment_type = (LinearLayout)viewframe2.findViewById(R.id.layout_payment_type);
         layout_add_payment = (LinearLayout)viewframe2.findViewById(R.id.layout_add_payment);
@@ -4602,6 +4421,25 @@ public class MainActivity extends Activity {
         btn_drive_ep.setVisibility(View.INVISIBLE); //20210909
         btn_reserv_ep = (Button)viewframe2.findViewById(R.id.nbtn_reserv_ep);
         btn_reserv_ep.setVisibility(View.INVISIBLE); //20210909
+
+        /* 메인 버튼 클릭리스너 */
+        /* 빈차 */
+        btn_driveStart.setOnClickListener(emptyBtnClickListener);   //손님탑승
+        btn_emptyCar_e.setOnClickListener(emptyBtnClickListener);   //빈차
+        btn_manualpay_e.setOnClickListener(emptyBtnClickListener);  //수기
+        btn_reserv_e.setOnClickListener(emptyBtnClickListener);     //호출
+
+        /* 주행 */
+        btn_driveEnd.setOnClickListener(driveBtnClickListener);     //지불
+        btn_emptyCar_d.setOnClickListener(driveBtnClickListener);   //빈차
+        btn_complex_d.setOnClickListener(driveBtnClickListener);    //복합
+        btn_surburb_d.setOnClickListener(driveBtnClickListener);    //시외
+
+        /* 결제 */
+        btn_cashPayment.setOnClickListener(payBtnClickListener);   //현금
+        btn_addPayment.setOnClickListener(payBtnClickListener);    //추가요금
+        btn_callPayment.setOnClickListener(payBtnClickListener);   //호출요금
+        btn_cancelpayment.setOnClickListener(payBtnClickListener); //주행/취소
 
         //세로
         if(tp == 0)
@@ -4844,11 +4682,7 @@ public class MainActivity extends Activity {
             }
 
         }
-//        else if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
-//
-//20220407            _start_service();
-//
-//        }
+
     }
 
 
@@ -4860,7 +4694,6 @@ public class MainActivity extends Activity {
         //기존코드
         Info.makeDriveCode();
         Info.insert_rundata(mlocation, 2);
-//        Info.end_run_cancel_data(mlocation, -drvPay, payDiv, -addPay, AMBlestruct.AMReceiveFare.mBoarddist, 0);
         Log.d("mfare-->", mfare+"");
 
         if (AMBlestruct.AMCardCancel.msType.equals("01")){
@@ -4882,37 +4715,31 @@ public class MainActivity extends Activity {
     public void _start_service()
     {
 
-        if(m_Service != null) //20220407
+        if(m_Service != null)
             return;
 
         if(setting.gUseBLE) {
-            if (!mBluetoothAdapter.isEnabled()) //20210419
+            if (!mBluetoothAdapter.isEnabled())
                 return;
 
         }
 
-        Info.g_appmode = Info.APP_METER; //20210416
-        Info.set_MainIntent(this, MainActivity.class); //20210416
+        Info.g_appmode = Info.APP_METER;
+        Info.set_MainIntent(this, MainActivity.class);
 
         Intent service = new Intent(getApplicationContext(), LocService.class);
         service.setPackage("com.konai.appmeter.driver");
 
-//20180410
-        try {
 
-            unbindService(mServiceConnection); //20180410
+        try {
+            unbindService(mServiceConnection);
             Thread.sleep(1000);
         }
         catch (InterruptedException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
-
         }
-        catch (IllegalArgumentException e){
-
-            ;
-//			Log.d("pos_app_mainActivity", "pos_app_service_main not bounded ok");
-        }
+        catch (IllegalArgumentException e){ }
 
         m_Service = null;
 
@@ -4928,9 +4755,8 @@ public class MainActivity extends Activity {
 
         }
         catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
 
+            e.printStackTrace();
         }
 
 //		startService(new Intent(getApplicationContext(), pos_app_service_main.class));
@@ -5188,7 +5014,7 @@ public class MainActivity extends Activity {
 
 
 
-    //todo: 20211115
+
     // 가로세로 해상도 세팅 다이얼로그
     private void setMenuOrientationCheck(){
         LayoutInflater inflater = getLayoutInflater();
@@ -6338,11 +6164,10 @@ public class MainActivity extends Activity {
 
     private void setStateDrive()
     {
-        mnSendfare = 0; //20210407
-        mAddfare = 0; //20210909
+        mnSendfare = 0;
+        mAddfare = 0;
 
         if(reservUse) {
-//20220303 tra..sh            btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
             btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
             reservUse = false;
         }
@@ -6353,7 +6178,7 @@ public class MainActivity extends Activity {
 
         Info.sqlite.setUpdateTotalData(0, 0, (int)memptydistance, memptyseconds, 0);
         Info.makeDriveCode();
-//20210611
+
         Info.insert_rundata(mlocation, 2); //drive
 
         bInsertDB = true;
@@ -6363,7 +6188,7 @@ public class MainActivity extends Activity {
 
         save_TIMS_pref(1);
         m_Service.m_timsdtg._sendTIMSEventDrive();
-        sendbroadcast_state(5001, 2, 0, 0, 0); //20210823 20210827
+        sendbroadcast_state(5001, 2, 0, 0, 0);
     }
 
 
@@ -6939,10 +6764,12 @@ public class MainActivity extends Activity {
                 Info._displayLOG(Info.LOGDISPLAY, "시계할증 종료", "");
 
             m_Service.m_timsdtg._sendTIMSEventSuburb(false, suburbUseAuto);
+            Log.d("sub_check","off");
 
         } else {
             m_Service.mbSuburb = true;
             suburbUse = true;
+            Log.d("sub_check","on");
             btn_suburb.setText("시외 켜짐");
             btn_suburb.setTextColor(Color.parseColor("#ffffff"));
             btn_suburb.setBackgroundResource(R.drawable.radius_extra_button_on_pink);
