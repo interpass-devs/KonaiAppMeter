@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.struct.AMBlestruct;
-import com.konai.appmeter.driver.view.AMBleConfigActivity;
 
 public class AMtestActivity extends Activity
 {

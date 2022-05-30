@@ -357,7 +357,7 @@ public class SettingActivity extends Activity {
 
 
 
-    private void setBasicDlg(String msg, String ok, String cancel, String bleValue, String oriValue, String gubunValue, String appControlValue) {
+    private void setBasicDlg(String msg, String ok, String cancel, String sbleValue, String soriValue, String sgubunValue, String sappControlValue) {
         LayoutInflater flater = getLayoutInflater();
         final View dView;
         dView = flater.inflate(R.layout.dlg_basic, null);

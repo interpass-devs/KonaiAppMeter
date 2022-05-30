@@ -57,6 +57,7 @@ public class RegisterDriverActivity extends Activity {
         getWindow().getAttributes().width = width;
         getWindow().getAttributes().height = height;
 
+        //해상도에 맞게 래이아웃 설정
         if (true){
             if (setting.gOrient == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
 
@@ -68,15 +69,6 @@ public class RegisterDriverActivity extends Activity {
             }
         }
 
-
-        if (Build.VERSION.SDK_INT >= 24){
-            Log.d("uuu", "24");
-        }else if (Build.VERSION.SDK_INT >= 25){
-            Log.d("uuu", "25");
-        }else if (Build.VERSION.SDK_INT >= 26){
-            Log.d("uuu", "26");
-        }
-
         context = this;
         helper = new SQLiteHelper(context);
         sqlite = new SQLiteControl(helper);
@@ -84,7 +76,7 @@ public class RegisterDriverActivity extends Activity {
         driverLicenseNum = findViewById(R.id.et_driver_license_num);
         driverIdentiNum = findViewById(R.id.et_driver_identi_num);
 //        driverIdentiNum.setEnabled(false); //20210901 tra..sh
-        //todo: 2022-04-29
+
         //운전자 등록 -> 운전자 자격증 다이얼로그
         driverLicenseNum.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,9 +125,9 @@ public class RegisterDriverActivity extends Activity {
                 numTypeDialog.show();
             }
         });
-        //todo: end
 
-        //todo: 2022-04-29
+
+
         //운전자 등록 -> 사원번호 다이얼로그
         driverIdentiNum.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,14 +304,6 @@ public class RegisterDriverActivity extends Activity {
     }//onCreate..
 
 
-    /*@Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }*/
-
-    private void updateDriverMember(){
-        // String name =
-    }
 
     private void initializecontents(int nTP){
         if (nTP == Configuration.ORIENTATION_PORTRAIT){
@@ -328,4 +312,5 @@ public class RegisterDriverActivity extends Activity {
             setContentView(R.layout.activity_register_driver_h);
         }
     }
-}
+
+}//RegisterDriverActivity

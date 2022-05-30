@@ -219,34 +219,34 @@
 
 
 
-        <LinearLayout
-            android:id="@+id/menu_app_control_setting"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/menu_borders"
-            android:orientation="horizontal"
-            android:weightSum="10"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1.5"
-                android:src="@drawable/ic_setting_status"
-                android:tint="@color/yellow"
-                tools:ignore="UseAppTint"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="7.5"
-                android:gravity="center_vertical|left"
-                android:text="앱 자동실행"
-                android:textColor="@color/white"
-                android:textSize="25dp"
-                android:textStyle="bold"/>
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:id="@+id/menu_app_control_setting"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:background="@drawable/menu_borders"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="10"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginRight="10dp">-->
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="5dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:layout_weight="1.5"-->
+<!--                android:src="@drawable/ic_setting_status"-->
+<!--                android:tint="@color/yellow"-->
+<!--                tools:ignore="UseAppTint"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="7.5"-->
+<!--                android:gravity="center_vertical|left"-->
+<!--                android:text="앱 자동실행"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="25dp"-->
+<!--                android:textStyle="bold"/>-->
+<!--        </LinearLayout>-->
 
 
 

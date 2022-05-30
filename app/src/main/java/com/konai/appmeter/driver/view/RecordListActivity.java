@@ -24,7 +24,6 @@ import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.VO.RecordVO;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.view.RecordDetailListActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

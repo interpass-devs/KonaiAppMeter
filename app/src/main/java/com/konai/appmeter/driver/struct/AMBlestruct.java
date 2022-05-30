@@ -123,6 +123,8 @@ public class AMBlestruct {
         public static final int BLE1SDATAERROR = 180; //20201215
         public static final int SUBURBSIN = 191; //20210325
         public static final int SUBURBSOUT = 192; //20210325
+        public static final int EXTRADIST = 65; //20220522 장거리
+        public static final int EXTRADISTOFF = 165; //20220520 장거리
     }
 
     /////////menu.

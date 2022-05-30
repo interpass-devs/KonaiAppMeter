@@ -2,6 +2,7 @@
 
 package com.konai.appmeter.driver.struct;
 
+
 import org.json.JSONObject;
 
 public class TIMSQueue {
@@ -10,7 +11,7 @@ public class TIMSQueue {
     public JSONObject mJson;
     public String mData; //20220425
     public int mSendType; // 1: POST, 2: GET
-    public int mSubType; //20210419 1 운행정보, 2 버튼정보, 3 POWER
+    public int mSubType; //20210419 1 운행정보, 2 버튼정보, 3 POWER 4.차량정보 인증 5.택시차량인증 6.연결상태
     public boolean mResend; //재전송인지
     public String mdrvtime; //table primarykey
     public long mtrytime; //20210419

@@ -9,6 +9,7 @@ import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.struct.CalFareBase;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class SQLiteControl {
@@ -61,27 +62,6 @@ public class SQLiteControl {
         Log.d("77777", getData.toString());
 
         return getData;
-
-       /* Cursor c = sqlite.rawQuery("SELECT * FROM " + helper.MEMBER_TABLE_NAME, null);
-        StringBuffer buffer = new StringBuffer();
-
-        String value = "";
-
-
-        while (c.moveToNext()){
-
-            int num = c.getInt(0);
-            String name = c.getString(1);
-            String licenseNum = c.getString(2);
-
-            buffer.append( num+" "+name+" "+licenseNum+"\n" );
-            value = num+" "+name+" "+licenseNum+"\n";
-        }//while..
-
-        Log.d("66666",value);
-
-        return value.toString();*/
-
     }
 
 
@@ -95,6 +75,9 @@ public class SQLiteControl {
 
         long result = sqlite.insert(helper.MEMBER_TABLE_NAME, null, values);
         sqlite.close();
+
+        Log.d("insertMember", result+"");
+
         return result;
     }
 
@@ -119,6 +102,118 @@ public class SQLiteControl {
         sqlite.delete(helper.MEMBER_TABLE_NAME, "licenseNum=?",new String[]{licenseNum});
     }
 
+
+
+    /** 블루투스 & 시경계 연결상태 **/
+
+    public long insertConnStatus (String phoneNum, String carno, String logs, String logtime, String logtype, String log) {
+
+        //get the data repository in write mode
+        sqlite = helper.getWritableDatabase();
+
+        //create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(helper.cCOL_2, phoneNum);
+        values.put(helper.cCOL_3, carno);
+        values.put(helper.cCOL_4, logs);
+        values.put(helper.cCOL_5, logtime);
+        values.put(helper.cCOL_6, logtype);
+        values.put(helper.cCOL_7, log);
+
+        //insert the new row, returning the primary key value of the new row
+        long result = sqlite.insert(helper.CONN_STATUS_TABLE_NAME, null, values);
+        sqlite.close();
+
+        Log.d("insertConnStatus", result+"");
+
+        return result;
+    }
+
+
+    //3일전 데이터 삭제
+    public void deleteConnStatus() {
+
+        sqlite = helper.getWritableDatabase();
+
+        Date time = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String logtime = sdf.format(time) + "";
+
+        sqlite.delete(helper.CONN_STATUS_TABLE_NAME, "logtime<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{logtime});
+        sqlite.close();
+//        return logtime;
+    }
+
+
+
+    //3일치 데이터 fetch
+    public String[] selectConnStatus() {
+
+        sqlite = helper.getWritableDatabase();
+
+        String today = null;
+        String today_3 = null;
+
+        Date time = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(time);
+
+        today = sdf.format(time);
+
+        cal.add(Calendar.DATE, -3);
+        today_3 = sdf.format(cal.getTime());
+
+//        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, null, null,null,null,null); //모든 데이터 fetch
+
+//        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, "logtime BETWEEN '" + sdf.format(time) + " 00:00:00' AND '" + sdf.format(time) + " 23:59:59'", null, null, null, null, null);
+
+        // 3일전 ~ 오늘
+        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, "logtime BETWEEN '" + today_3 + " 00:00:00' AND '" + today + " 23:59:59'", null, null, null, null);
+
+
+        String[] columnName = { helper.cCOL_2, helper.cCOL_3, helper.cCOL_4, helper.cCOL_5, helper.cCOL_6, helper.cCOL_7};
+        String[] returnValue = new String[columnName.length]; //0~3
+
+//        Log.d("returnValue", returnValue.toString()+" 개");
+        String[] getData = new String[cursor.getCount()];
+
+        int cntValue = 0;
+
+        while (cursor.moveToNext()) {
+
+            String addData = "";
+
+            for (int i=0; i<returnValue.length; i++) {
+
+                if (i==5) {
+                  addData += "#" + cursor.getString(cursor.getColumnIndex(columnName[i]));
+                  getData[cntValue] = addData;
+                  cntValue++;
+                }else if (i==0) {
+                    addData += cursor.getString(cursor.getColumnIndex(columnName[i]));
+                }else {
+                    addData += "#" + cursor.getString(cursor.getColumnIndex(columnName[i]));
+                }
+                returnValue[i] = cursor.getString(cursor.getColumnIndex(columnName[i]));
+//                Log.d("returnValue", returnValue[i]);
+
+            }//for
+
+        }//while
+
+        cursor.close();
+        sqlite.close();
+
+        return getData;
+    }
+
+
+
+
+
+
+
     /** Drive TABLE QUERY **/
 
     public String[] select() {
@@ -127,7 +222,7 @@ public class SQLiteControl {
             return new String[1];
 
         sqlite = helper.getWritableDatabase();
-        Cursor c = sqlite.query(helper.TABLE_NAME, null, null, null, null, null, helper.COL_1+" desc", null);   //todo: 20210902
+        Cursor c = sqlite.query(helper.TABLE_NAME, null, null, null, null, null, helper.COL_1+" desc", null);
 
         String[] columnName = {helper.COL_1,helper.COL_2,helper.COL_3,helper.COL_4,helper.COL_5,
                 helper.COL_6,helper.COL_7,helper.COL_8,helper.COL_9, helper.COL_10, helper.COL_11, helper.COL_12};
@@ -339,9 +434,7 @@ public class SQLiteControl {
 
             sqlite.update(helper.TABLE_NAME, value, "drvCode=?", new String[]{key});
         }
-
         sqlite.close();
-
     }
 
     public void insert(String drvCode, int drvDivision, int drvPay, int drvPayDivision, int addPay, String coordsX, String coordsY, int nmode) {
@@ -351,7 +444,7 @@ public class SQLiteControl {
         sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Date time = new Date();
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         values.put("drvCode", drvCode);
         values.put("drvDivision", drvDivision);
         values.put("drvPay", drvPay);
@@ -366,7 +459,6 @@ public class SQLiteControl {
         values.put("runmode", nmode);
 
         sqlite.insert(helper.TABLE_NAME, null, values);
-
 
         sqlite.close();
     }
@@ -864,7 +956,7 @@ public class SQLiteControl {
     }
 //////////////////////
 
-/**  DGTDATA TABLE INSERT **/
+    /**  DGTDATA TABLE INSERT **/
     public void insertDtgdata(String keycode, String sdata, int iok) {
         sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -879,7 +971,7 @@ public class SQLiteControl {
         sqlite.close();
     }
 
-/** DTGDATA TABLE QUERY **/
+    /** DTGDATA TABLE QUERY **/
     public String[] selectDtgResenddata(){
         sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT " + helper.DTGCOL_1 + "," + helper.DTGCOL_2 + "," + helper.DTGCOL_3 + "," + helper.DTGCOL_4 + " FROM "
@@ -934,7 +1026,7 @@ public class SQLiteControl {
         return returnValue;
     }
 
-/** DTGDATA TABLE UPDATE **/
+    /** DTGDATA TABLE UPDATE **/
     public void updateDtgdata(String drvdate){
 
         sqlite = helper.getWritableDatabase();
@@ -945,7 +1037,7 @@ public class SQLiteControl {
         sqlite.close();
     }
 
-/** DTGDATA TABLE CLEAR **/
+    /** DTGDATA TABLE CLEAR **/
     public void updateDtgdataClear(){
 
         sqlite = helper.getWritableDatabase();
@@ -957,12 +1049,12 @@ public class SQLiteControl {
 
         values.put(helper.DTGCOL_3, 1);
 
-            sqlite.update(helper.DTG_TABLE_NAME, values, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
+        sqlite.update(helper.DTG_TABLE_NAME, values, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
 
         sqlite.close();
     }
 
-/** DTGDATA TABLE DELETE **/
+    /** DTGDATA TABLE DELETE **/
     public void deleteDtgdata() {
         Date time = new Date();
         SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");

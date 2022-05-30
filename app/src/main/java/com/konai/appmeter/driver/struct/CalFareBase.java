@@ -1,5 +1,7 @@
 package com.konai.appmeter.driver.struct;
 
+import com.konai.appmeter.driver.setting.Info;
+
 public class CalFareBase {
 
 
@@ -35,7 +37,7 @@ public class CalFareBase {
     //시간간격
     public static double INTERVAL_TIME = 31; //20201211
 
-//20201211
+    //20201211
 //20210703    public static double BASEDIST_PER1S = INTERVAL_DIST / INTERVAL_TIME; //20201211 for double
     public static double BASEDIST_PER1S = INTERVAL_DIST / INTERVAL_TIME; // - 0.005; //20201211 for double
 
@@ -52,11 +54,20 @@ public class CalFareBase {
 
     public static int mDistance = 0;
 
+    public static double mTotalExtrarate = 0.0; //20220523 각 할증 합계
     public static double mComplexrate = 0.0; //복함.
     public static double mNightTimerate = 0.2; //심야할증.
     public static double mSuburbrate = 0.2; //20201203 시외.
+    public static int mDistExtra = 0; //20220520 장거리할증 for 제주.
+    public static double mDistExtrarate = 0.2; //20200520 장거리할증률 for 제주
 
     public static int CALTYPE = 0; //20210416 0 동시, 1 시간만계산, 2 완전 시간을요금 ?, 3거리만계산, 4 상호병산, 5 기본거리검사
+
+    ////////////////////
+    public static boolean mbExtraTime = false; //심야할증시간
+    public static boolean mbExtraComplex = false; //복합.
+    public static boolean mbExtraSuburb = false; //시외.
+    public static boolean mbExtraDist = false; //20220520 장거리할증
 
     /** 인천
      * //기본요금
@@ -105,5 +116,44 @@ public class CalFareBase {
      public static double mSuburbrate = 0.3; //20201203 시외.
      */
 
+    public static int _getExtTotalrate()
+    {
+        double extraPercent = 0;
+        if (mbExtraTime) {
+
+            extraPercent = extraPercent + mNightTimerate;
+        }
+
+        if (mbExtraSuburb) {
+
+            extraPercent = extraPercent + mSuburbrate;
+
+        }
+
+        if (mbExtraComplex) {
+
+            extraPercent = extraPercent + mComplexrate;
+
+        }
+
+//20220520
+        if (mbExtraDist) {
+
+            extraPercent = extraPercent + mDistExtra;
+
+        }
+
+        if(Info.AREA_CODE.equals("부산"))
+        {
+
+            if (mbExtraTime == true && mbExtraSuburb == true)
+                extraPercent = mComplexrate;
+        }
+
+        mTotalExtrarate = extraPercent;
+
+        return (int)(extraPercent * 100);
+
+    }
 }
 

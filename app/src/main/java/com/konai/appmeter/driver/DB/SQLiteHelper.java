@@ -3,6 +3,8 @@ package com.konai.appmeter.driver.DB;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 public class SQLiteHelper extends SQLiteOpenHelper  {
 
@@ -125,8 +127,37 @@ public class SQLiteHelper extends SQLiteOpenHelper  {
             + mCOL_4 + " text"
             + ")";
 
-////////////////////
-//20220415
+
+
+    /**
+     * 불루투스 & 시경계 연결상태 정보
+     * 1. num
+     * 2. phoneNum : 폰번호
+     * 3. carno : 차량번호
+     * 4. logs : logtime, logtype, log
+     * **/
+    public static final String CONN_STATUS_TABLE_NAME = "anlst_log_data";
+
+    public static final String cCOL_1 = "num";
+    public static final String cCOL_2 = "phoneNo";
+    public static final String cCOL_3 = "carno";
+    public static final String cCOL_4 = "logs";
+    public static final String cCOL_5 = "logtime";
+    public static final String cCOL_6 = "logtype";
+    public static final String cCOL_7 = "log";
+
+    private static final String DATABASE_CREATE_CONNSTATUS = "create table "
+            + CONN_STATUS_TABLE_NAME
+            + "("
+            + cCOL_2 + " text,"
+            + cCOL_3 + " text,"
+            + cCOL_4 + " text,"
+            + cCOL_5 + " text primary key,"
+            + cCOL_6 + " text,"
+            + cCOL_7 + " text"
+            + ")";
+
+
     /**
      * tims전송 정보
      * 1. 날짜
@@ -186,7 +217,7 @@ public class SQLiteHelper extends SQLiteOpenHelper  {
         db.execSQL(DATABASE_CREATE_DRVRECORD);
         db.execSQL(TOT_DATABASE_CREATE_DRVRECORD);
         db.execSQL(DATABASE_CREATE_MEMBER);
-
+        db.execSQL(DATABASE_CREATE_CONNSTATUS);
         db.execSQL(DATABASE_CREATE_TIMSDATA);
         db.execSQL(DATABASE_CREATE_DTGDATA);
     }
@@ -197,6 +228,7 @@ public class SQLiteHelper extends SQLiteOpenHelper  {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TOTAL_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MEMBER_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CONN_STATUS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TIMS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DTG_TABLE_NAME);
         onCreate(db);

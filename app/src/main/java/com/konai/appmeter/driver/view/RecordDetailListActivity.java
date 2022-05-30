@@ -23,11 +23,6 @@ import com.konai.appmeter.driver.VO.RecordVO;
 import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
-import com.konai.appmeter.driver.view.DayReportActivity;
-import com.konai.appmeter.driver.view.DriveInfoActivity;
-import com.konai.appmeter.driver.view.InfoActivity;
-import com.konai.appmeter.driver.view.MainActivity;
-import com.konai.appmeter.driver.view.PayListActivity;
 
 import java.util.ArrayList;
 

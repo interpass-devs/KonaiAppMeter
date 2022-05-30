@@ -114,7 +114,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="fdb22e" />
+                                      <entry key="backgroundColor" value="ffffff" />
+                                      <entry key="outputName" value="launcher_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>

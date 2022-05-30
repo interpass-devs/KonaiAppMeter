@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.R;
-import com.konai.appmeter.driver.view.RegisterDriverActivity;
 import com.konai.appmeter.driver.setting.Info;
+import com.konai.appmeter.driver.view.RegisterDriverActivity;
 
 import java.util.ArrayList;
 

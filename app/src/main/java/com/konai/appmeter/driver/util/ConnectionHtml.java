@@ -1,8 +1,6 @@
 package com.konai.appmeter.driver.util;
 
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 
 import com.konai.appmeter.driver.setting.Info;
 

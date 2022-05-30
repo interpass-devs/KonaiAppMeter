@@ -46,15 +46,24 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.widget.TextViewCompat;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.konai.appmeter.driver.DB.SQLiteControl;
+import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.Dialog.Dlg_Env_setting;
 import com.konai.appmeter.driver.Dialog.Dlg_Select_Driver;
 import com.konai.appmeter.driver.R;
+import com.konai.appmeter.driver.VO.TIMS_UnitVO;
+import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.socket.UDPClientUtil;
 import com.konai.appmeter.driver.struct.AMBlestruct;
 import com.konai.appmeter.driver.struct.CalFareBase;
+import com.konai.appmeter.driver.tims.TimsDtg;
 
 import org.json.JSONObject;
 
@@ -63,9 +72,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 //import android.support.annotation.NonNull;
 //import android.support.v4.content.FileProvider;
@@ -88,6 +100,13 @@ public class MemberCertActivity extends Activity {
     private String CertURL = setting.BASEDOMAIN;
     private String Domain = "";
     private String ResultData;
+    private MainActivity mainActivity;
+    public static LocService m_Service;
+    public TimsDtg m_timsdtg;
+    public static List<TIMS_UnitVO> sendParams;
+    private SQLiteControl sqlite;
+    private SQLiteHelper helper;
+    private String[] splt;
     private String preResultData; //20211109
     private String prePhoneno = "0"; //20211109
     private String blueOn, blueOff;
@@ -317,11 +336,11 @@ public class MemberCertActivity extends Activity {
                     String getGubunStatus = dlg_env_setting.return_gubunValue();
                     dlg_env_setting.dismiss();
 
-                    //todo: 블루투스 상태저장 및 변경
+                    //블루투스 상태저장 및 변경
                     editor.putString("ble_Status", getBlueStatus);
                     editor.putString("ori_Status", getOriStatus);
                     editor.putString("gubun_Status", getGubunStatus);
-                    //todo: end
+
                     editor.commit();
 
                     switch (getBlueStatus) {
@@ -346,11 +365,11 @@ public class MemberCertActivity extends Activity {
                     switch (getOriStatus) {
                         case "1":
                             setting.gOrient = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                            initializecontents(setting.gOrient); //20211203 1);
+                            initializecontents(setting.gOrient);
                             break;
                         case "2":
                             setting.gOrient = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                            initializecontents(setting.gOrient); //20211203 0);
+                            initializecontents(setting.gOrient);
                             break;
                     }
 
@@ -366,7 +385,6 @@ public class MemberCertActivity extends Activity {
                             break;
                     }
 
-                    //todo: 20220124
 //                    switch (getModemStatus){
 //                        case "1":   //모뎀-일반
 //                            setting.gModem = 1;
@@ -378,9 +396,6 @@ public class MemberCertActivity extends Activity {
 //                            setting.gModem = 3;
 //                            break;
 //                    }
-                    //todo: end
-
-////////////////////
 
                 }
             }, new View.OnClickListener() {
@@ -405,28 +420,11 @@ public class MemberCertActivity extends Activity {
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             lp.copyFrom(dlg_env_setting.getWindow().getAttributes());
             lp.width = width;
-//            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
             lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-//            lp.height = height;
             Window window = dlg_env_setting.getWindow();
             window.setAttributes(lp);
-
-
-            //todo: end
         } else {
-            //todo: 20211201
-            // 가로 세로값 가져오기
-            /**
-             //            editor.putString("ble_Status", getBlueStatus);
-             //            editor.putString("ori_Status", getOriStatus);
-             if (getPrefData_ori.equals("1")){  //가로
-             set_frame_orient(1);
-             }else if (getPrefData_ori.equals("2")){ //세로
-             set_frame_orient(0);
-             }else {
-             //do nothing
-             }
-             **/
+
         }
 
 
@@ -445,7 +443,7 @@ public class MemberCertActivity extends Activity {
             Log.d("set_ori", "111");
             initializecontents(setting.gOrient);
         } else
-//            initializecontents(getResources().getConfiguration().orientation);
+
             initializecontents(setting.gOrient);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //20201207
@@ -453,12 +451,8 @@ public class MemberCertActivity extends Activity {
         inpt_name.setEnabled(false);
         inpt_carno.setEnabled(false);
         inpt_certino.setEnabled(false);
-
         btn_ok.setEnabled(false);
-        // btn_ok.setBackgroundColor(Color.parseColor("#2e2e6a"));
-//        btn_ok.setBackgroundResource(R.drawable.ok_btn_blue_round_bg);  //todo: 20220223
-        btn_ok.setBackgroundResource(R.drawable.selected_btn_touched_yellow); //todo: 20220223
-
+        btn_ok.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
         Info.init_SQLHelper(this);
 
         TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -501,9 +495,9 @@ public class MemberCertActivity extends Activity {
 //        if(setting.phoneNumber.equals("01036610720"))
 ///            setting.phoneNumber = "01040001338";
 
-        //todo: 20211230
+
         //m_bSkipLogin
-        //true 하면 강제로 로그인됌
+        //true 하면 강제 로그인됌
         if (false) //m_bSkipLogin)
         {
             setting.phoneNumber = "01036610720";
@@ -513,16 +507,16 @@ public class MemberCertActivity extends Activity {
 //        if(setting.gUseBLE == false)
 ///            setting.phoneNumber = "01236610720";
 
-//20210823
+
         registerReceiver();
         dlgbox = new ProgressDialog(this);
         dlgbox.setTitle("잠시만 대기하여 주세요");
         dlgbox.setMessage("파일 다운로드 중입니다.");
         dlgbox.setIndeterminate(true);
         dlgbox.setCancelable(true);
-//////
+
         if (Info.REPORTREADY) {
-//            Toast.makeText(MemberCertActivity.this, "전화번호 가져오기 실패!", Toast.LENGTH_SHORT).show();
+
             Info._displayLOG(Info.LOGDISPLAY, "회원 인증 진행", "");
         }
 
@@ -541,14 +535,11 @@ public class MemberCertActivity extends Activity {
     public boolean onTouchEvent(MotionEvent event) {
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            Log.d("detect_user_up", event.toString());
             setting.gUserAction = false;
         }
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            Log.d("detect_user_down", event.toString());
             setting.gUserAction = false;
         }
-
 
         return super.onTouchEvent(event);
     }
@@ -580,18 +571,15 @@ public class MemberCertActivity extends Activity {
         super.onConfigurationChanged(newConfig);
 
 
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.d("configurechange", "가로");
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//
+//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//
+//        }
 
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Log.d("configurechange", "세로");
-
-        }
-
-//		Log.i("TAg", "---------- screenWidthDp : " + newConfig.screenWidthDp + ", screenHeightDp : " + newConfig.screenHeightDp);
     }
 
-    //20210823
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -602,57 +590,46 @@ public class MemberCertActivity extends Activity {
         unregisterReceiver();
 
     }
-////////////
 
 
     //로그인 [확인]버튼 화면
     private void initializecontents(int nTP) {
         Log.d("nTP_ori", "MembercertActivity");
         Log.d("nTP_ori", nTP + "");
-//20211203        if(nTP == 0)
-        if (nTP == 1) {
-            Log.d("set_ori", "세로설정");
+
+        if (nTP == 1) { //세로
             setContentView(R.layout.activity_membercert_v);
             set_frame_orient(0);
-//version 1.56            setting.UPFILENAME = "appmeter.apk"; //20210823
 
-        } else {
-            Log.d("set_ori", "가로설정");
+        } else { //가로
             setContentView(R.layout.activity_membercert_h);
             set_frame_orient(1);
-//            setting.UPFILENAME = "appmeter_l.apk"; //20210823 paju.
-////version 1.56            setting.UPFILENAME = "appmeter.apk"; //20210823 cheonan.
         }
 
-        //todo: 20220223
+
         btn_ok.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    // btn_ok.setBackgroundColor(Color.parseColor("#2e2e6a"));
-//                    btn_ok.setBackgroundResource(R.drawable.ok_btn_blue_round_clicked_bg);
                     btn_ok.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // btn_ok.setBackgroundColor(Color.parseColor("#2e2eae"));
-//                    btn_ok.setBackgroundResource(R.drawable.ok_btn_blue_round_bg);
                     btn_ok.setBackgroundResource(R.drawable.yellow_gradi_btn);
                 }
                 return false;
             }
         });
-        //todo: end..
 
 
-        //todo: 20220119
+
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean updateRes = false;
                 if (m_bSkipLogin) {
                     updateRes = true;
-                    AMBlestruct.AMLicense.drivername = Info.G_driver_name; //20201110;
-                    AMBlestruct.AMLicense.taxinumber = inpt_carno.getText().toString().trim(); //20201110
+                    AMBlestruct.AMLicense.drivername = Info.G_driver_name;
+                    AMBlestruct.AMLicense.taxinumber = inpt_carno.getText().toString().trim();
                     AMBlestruct.AMLicense.drivernum = Info.G_driver_num;
                     AMBlestruct.AMLicense.licensecode = "000000000000".substring(0, 12 - Info.G_license_num.length())
                             + Info.G_license_num + "";
@@ -662,19 +639,15 @@ public class MemberCertActivity extends Activity {
                     Toast.makeText(context, "차량번호를 다시 입력해주세요.\n\nex) 서울00가0000", Toast.LENGTH_SHORT).show();
                 } else {
                     updateRes = updateCertification(Info.G_driver_name, inpt_carno.getText().toString(), Info.G_license_num);  //me: 서버로 값을 보냄
-                    // boolean updateRes = updateCertification(inpt_name.getText().toString(), inpt_carno.getText().toString(), driver_num.getText().toString());
                     AMBlestruct.AMLicense.drivername = Info.G_driver_name; //20201110;
                     AMBlestruct.AMLicense.taxinumber = inpt_carno.getText().toString().trim(); //20201110
                     AMBlestruct.AMLicense.drivernum = Info.G_driver_num;
                     AMBlestruct.AMLicense.licensecode = "000000000000".substring(0, 12 - Info.G_license_num.length())
                             + Info.G_license_num + "";
-
                 }
-                //todo: end
 
                 AMBlestruct.AMLicense.phonenumber = setting.phoneNumber.trim();
 
-//22010827
                 if (Info.G_license_num.equals("") == false) {
 
                     AMBlestruct.AMLicense.timslicense = Info.G_license_num;
@@ -688,11 +661,9 @@ public class MemberCertActivity extends Activity {
                     AMBlestruct.AMLicense.timslicense = AMBlestruct.AMLicense.timslicensetmp;
                 }
 
-//                Log.d("timslicense", "- " + AMBlestruct.AMLicense.timslicense);
                 Log.d("login_info", "- " + AMBlestruct.AMLicense.timslicense + " - " + AMBlestruct.AMLicense.timstaxinum + AMBlestruct.AMLicense.companynum);
                 Log.d("login_info_2", "- " + Info.G_license_num + " " + Info.G_driver_num + " " + AMBlestruct.AMLicense.licensecode);
 
-/////////////////////
                 if (updateRes) {
                     try {
                         if (m_bSkipLogin == false) { //20211109
@@ -702,24 +673,21 @@ public class MemberCertActivity extends Activity {
                             editor.putString("driver_num", Info.G_driver_num);
                             editor.putString("license_num", Info.G_license_num);
                             editor.putString("car_no", AMBlestruct.AMLicense.taxinumber);
-                            editor.putString("phoneno", setting.phoneNumber); //20211109
-                            editor.putString("resultdata", preResultData); //20211109
+                            editor.putString("phoneno", setting.phoneNumber);
+                            editor.putString("resultdata", preResultData);
                             editor.commit();
-//                            Log.d("last_login_info", setting.phoneNumber + " " + preResultData);
                         }
-                    } catch (Exception e) {
+                    } catch (Exception e) {}
 
-                    }
                     totData = Info.sqlite.getTotalKey();
-                    //Log.e("total Date is", totData);
                     if (totData.equals("") || totData.equals("0")) {
                         Info.sqlite.insertTotalData();
                     }
 
-                    //todo: 20220104
 //                    update_centerapk(2);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     Log.d(logtag + "_lead_main", "to main activity");
+//                    intent.putExtra("errorLogParams", (Serializable) sendParams);
                     startActivity(intent);
                     finish();
                 } else {
@@ -729,20 +697,17 @@ public class MemberCertActivity extends Activity {
         });
 
 
-        //todo: 20211230
         auto_login_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //me: 로그인 Handler
                 //me: 로그인 상태값 저장하기
                 if (isChecked) {
-//                    Toast.makeText(context, "auto login clicked", Toast.LENGTH_SHORT).show();
                     editor.putString("auto_login_Status", "1");
                     setting.gAutoLogin = 1;
                     autoLoginVal = "1";
                     editor.commit();
                 } else {
-//                    Toast.makeText(context, "auto login canceled", Toast.LENGTH_SHORT).show();
                     editor.putString("auto_login_Status", "2");
                     setting.gAutoLogin = 2;
                     autoLoginVal = "2";
@@ -756,13 +721,12 @@ public class MemberCertActivity extends Activity {
 
 
     private void set_frame_orient(int tp) {
-//////////////////////
+
         View viewframe1 = null;
         frame1 = (FrameLayout) findViewById(R.id.frame1); // 1. 기반이 되는 FrameLayout
         if (frame1.getChildCount() > 0) {
             // FrameLayout에서 뷰 삭제.
             frame1.removeViewAt(0);
-
         }
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); // 2. inflater 생성
@@ -772,7 +736,6 @@ public class MemberCertActivity extends Activity {
         inpt_name = viewframe1.findViewById(R.id.inpt_name);
         inpt_carno = viewframe1.findViewById(R.id.inpt_carno);
         inpt_certino = viewframe1.findViewById(R.id.inpt_certino);
-
         driver_name = viewframe1.findViewById(R.id.driver_name);
         driver_num = viewframe1.findViewById(R.id.driver_num);
 
@@ -782,7 +745,6 @@ public class MemberCertActivity extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     setting.editTouch = true;
-                    Log.d("setting.editTouch!!", setting.editTouch + "");
                 }
             }
         });
@@ -792,7 +754,6 @@ public class MemberCertActivity extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     setting.editTouch = true;
-                    Log.d("setting.editTouch!!", setting.editTouch + "");
                 }
             }
         });
@@ -843,28 +804,15 @@ public class MemberCertActivity extends Activity {
                             driver_name.setText(Info.G_driver_name);
                             driver_num.setText(Info.G_driver_num);
                             inpt_name.setText(Info.G_driver_name);
-                            inpt_certino.setText(Info.G_license_num); //20210901
+                            inpt_certino.setText(Info.G_license_num);
                         }
                     }
                 });
             }
         });
 
-//////////////////////
-/*
-        View viewframe2 = null;
-
-        frame2 = (FrameLayout) findViewById(R.id.frame2); // 1. 기반이 되는 FrameLayout
-        if (frame2.getChildCount() > 0) {
-            // FrameLayout에서 뷰 삭제.
-            frame2.removeViewAt(0);
-        }
-        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); // 2. inflater 생성
-        viewframe2 = inflater.inflate(R.layout.membercertframe2, frame2,true);
-*/
         btn_ok = findViewById(R.id.btn_ok);
 
-        //todo: 20211230
         auto_login_checkbox = findViewById(R.id.auto_login_checkbox);
         auto_login_checkbox_layout = findViewById(R.id.auto_login_checkbox_layout);
 
@@ -876,11 +824,9 @@ public class MemberCertActivity extends Activity {
                 auto_login_checkbox.setChecked(false);
             }
         } else {
-//            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-//            auto_login_checkbox.setEnabled(false);
             auto_login_checkbox_layout.setVisibility(View.GONE);
         }
-        //todo: end
+
 
         connStatus = findViewById(R.id.tv_conn_status);
 
@@ -891,10 +837,9 @@ public class MemberCertActivity extends Activity {
 
             TextView textView10 = viewframe1.findViewById(R.id.textView10);
             textView10.setTextSize(setting.gTextDenst);
-
         }
-
     }
+
 
     public boolean updateCertification(String name, String carno, String certNo) {
 
@@ -940,8 +885,8 @@ public class MemberCertActivity extends Activity {
                     inpt_certino.setEnabled(true);
                     btn_ok.setEnabled(true);
                     //btn_ok.setBackgroundColor(Color.parseColor("#2e2eae"));
-//                    btn_ok.setBackgroundResource(R.drawable.ok_btn_blue_round_bg); //todo: 20220223
-                    btn_ok.setBackgroundResource(R.drawable.yellow_gradi_btn);    //todo: 20220223
+//                    btn_ok.setBackgroundResource(R.drawable.ok_btn_blue_round_bg);
+                    btn_ok.setBackgroundResource(R.drawable.yellow_gradi_btn);
 
                     if (Info.REPORTREADY) {
                         Info._displayLOG(Info.LOGDISPLAY, "회원 인증 성공", "");
@@ -1087,21 +1032,6 @@ public class MemberCertActivity extends Activity {
             int nType = 0;
 
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-/* 20210601
-			NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-			if(ni != null)
-			{
-
-				isWifiAvail = ni.isAvailable();
-				isWifiConn = ni.isConnected();
-			}
-			ni = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-			if(ni != null) {
-
-				isMobileAvail = ni.isAvailable();
-				isMobileConn = ni.isConnected();
-			}
-*/
 
             NetworkInfo ni = cm.getActiveNetworkInfo();
             nType = ni.getType();
@@ -1146,17 +1076,17 @@ public class MemberCertActivity extends Activity {
             if (Info.REPORTREADY) {
 
                 Info._displayLOG(Info.LOGDISPLAY, " NetworkThreads " + CertURL + Domain, "");
-
             }
 
             try {
                 URL url = new URL(CertURL + Domain);
                 conn = (HttpURLConnection) url.openConnection();
 
+                Log.d("check_member", url.toString());  //https://acc.psweb.kr/drvlogs//certification?p=01050564465
+
                 if (Info.REPORTREADY) {
 
                     Info._displayLOG(Info.LOGDISPLAY, "회원 인증, 요금체계수신 주소 " + CertURL + Domain, "");
-
                 }
 
                 if (conn != null) {
@@ -1178,14 +1108,43 @@ public class MemberCertActivity extends Activity {
                             if (Info.REPORTREADY) {
 
                                 Info._displayLOG(Info.LOGDISPLAY, "수신 data " + line, "");
-
                             }
-
                         }
                         br.close();
                     }
                     conn.disconnect();
-                    ResultData = jsonData.toString();
+                    ResultData = jsonData.toString();  //json 결과값
+//                    Log.d("resultData>>1", ResultData);
+
+                    //회원인증시 json 결과값의 errorLog 의 값을 (Y/N) 판단하여 서버에 연결상태 값 보내기
+                    try {
+                        JsonParser jsonPase = new JsonParser();
+                        JsonObject jsonObject = (JsonObject) jsonPase.parse(ResultData);
+                        Log.d("getJSonData", "errorLog: "+jsonObject.get("errorLog"));  //"N"
+
+                        //GSON JsonElement to String
+                        Gson gson = new GsonBuilder().create();
+                        String errorLog = gson.toJson(jsonObject.get("errorLog"));
+
+
+                        if (errorLog.contains("Y")) {
+
+                        }else if (errorLog.contains("N")) {
+
+                            Log.d("errorLog","errorLog check111");
+
+                            connParams();
+//                            sendParams = connParams();
+                            Info.ERRORlOG_CONN_PARAMS = connParams();
+                            Info.ERRORLOG = true;
+
+                        }
+
+
+
+                    }catch (Exception e) {e.printStackTrace();}
+
+
                 } else {
                     ResultData = "Fail";
                 }
@@ -1193,7 +1152,6 @@ public class MemberCertActivity extends Activity {
                 if (Info.REPORTREADY) {
 
                     Info._displayLOG(Info.LOGDISPLAY, "회원 인증, 요금체계수신 종료 " + CertURL + Domain, "");
-
                 }
 
             } catch (Exception e) {
@@ -1206,15 +1164,40 @@ public class MemberCertActivity extends Activity {
         }
     }
 
+    public List connParams() {
+
+        helper = new SQLiteHelper(context);
+        sqlite = new SQLiteControl(helper);
+
+        List<TIMS_UnitVO> params = new ArrayList<>();
+        TIMS_UnitVO unit;
+
+        String connList[] = sqlite.selectConnStatus();
+
+        if (connList.length > 0) {
+            for (int i=0; i<connList.length; i++) {
+
+                splt = connList[i].split("#");
+
+                unit = new TIMS_UnitVO();
+                unit.setLogtime(splt[3]);
+                unit.setLogtype(splt[4]);
+                unit.setLog(splt[5]);
+
+                params.add(i, unit);
+            }
+        }
+        return params;
+    }
+
+
     public String parsingCert(String json) {
 
         if (json.equals("Fail")) {
 
             return "n";
-
         }
 
-//        Log.d("CERTDATA", json);
         String certRes = "";
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -1264,6 +1247,39 @@ public class MemberCertActivity extends Activity {
 
             }
 
+            try{
+                String errorLog = jsonObject.getString("errorLog");
+                Log.d("final_errorLog", errorLog);
+                switch (errorLog) {
+                    case "Y":
+                        Info.ERRORLOG = true;
+                        break;
+                    case "N":
+                        Info.ERRORLOG = false;
+                        break;
+                }
+            }catch (Exception e) {
+
+            }
+
+
+//20220520 parsing added
+            int d_distextra= Integer.parseInt(jsonObject.getString("Dlimit"));
+            Double d_distextrarate = Double.parseDouble(jsonObject.getString("Drate"));
+            try {
+                String slogs = jsonObject.getString("tims");
+                if(slogs != null && slogs.equals("Y"))
+                    Info.SENDERRLOG = true;
+                else
+                    Info.SENDERRLOG = false;
+            }
+            catch (Exception e)
+            {
+                ;
+            }
+
+///////////////////
+
             Log.d(logtag + "_사업자번호", AMBlestruct.AMLicense.companynum + " suburbs " + Info.SV_SUBURBSVER + " " + Info.TIMSUSE);
 
             if (cert.equals("1")) {
@@ -1284,6 +1300,8 @@ public class MemberCertActivity extends Activity {
                 CalFareBase.mComplexrate = C_ExtraRate;
                 CalFareBase.mNightTimerate = T_ExtraRate;
                 CalFareBase.mSuburbrate = S_ExtraRate;
+                CalFareBase.mDistExtra = d_distextra; //20220520
+                CalFareBase.mDistExtrarate = d_distextrarate; //20220520
 
             } else if (cert.equals("0")) {
                 certRes = "n";
@@ -1314,9 +1332,8 @@ public class MemberCertActivity extends Activity {
         return phone;
     }
 
-    //20210823
+
     private void update_centerapk(int iTP) {
-        //todo: 20220104
 
         // 업데이트
         if (iTP == 1) {
@@ -1362,7 +1379,7 @@ public class MemberCertActivity extends Activity {
             int width = dm.widthPixels;
             int height = dm.heightPixels;
 
-            //todo://20211203
+
             if (Build.VERSION.SDK_INT <= 25) {
                 msg.setTextSize(3.0f * setting.gTextDenst);
                 updateBtn.setTextSize(2.5f * setting.gTextDenst);
@@ -1386,7 +1403,6 @@ public class MemberCertActivity extends Activity {
             window.setAttributes(lp);
 
             dialog.show();
-
         }
 
         else if (iTP == 2) {
@@ -1417,7 +1433,7 @@ public class MemberCertActivity extends Activity {
                     viewer.setTextSize(30);
 
                     new Thread(new UpdateThread())
-                            .start();// 배차 소리
+                            .start(); // 배차 소리
 
                     dialog.dismiss();
                 }
@@ -1435,7 +1451,6 @@ public class MemberCertActivity extends Activity {
             int width = dm.widthPixels;
             int height = dm.heightPixels;
 
-            //todo://20211203
             if (Build.VERSION.SDK_INT <= 25) {
                 msg.setTextSize(3.0f * setting.gTextDenst);
                 updateBtn.setTextSize(2.5f * setting.gTextDenst);
@@ -1459,12 +1474,10 @@ public class MemberCertActivity extends Activity {
             window.setAttributes(lp);
 
             dialog.show();
-
         }
-
     }
 
-    //20210823 getphonenum
+
     public String getPhonenum() {
         UDPClientUtil mrndis_woorinet = null; //20210823
         int trycnt = 0;
@@ -1498,7 +1511,7 @@ public class MemberCertActivity extends Activity {
 
     }
 
-    ///20210823
+
     class UpdateThread implements Runnable {
 
         public void run() {
@@ -1514,7 +1527,7 @@ public class MemberCertActivity extends Activity {
 
         try {
             //String url = "https://download.enpossystem.kr/posapk/drvpos.apk";
-//20211029 add Info.AREA_CODE
+            // add Info.AREA_CODE
             String url = setting.FILESERVERAPK + Info.AREA_CODE + setting.UPFILENAME;
             URLConnection uc = new URL(url).openConnection();
             InputStream in = uc.getInputStream();
@@ -1617,7 +1630,6 @@ public class MemberCertActivity extends Activity {
 
                             case 2: //해제.
                                 break;
-
                         }
 
 
@@ -1670,17 +1682,11 @@ public class MemberCertActivity extends Activity {
 
         }
         else {
-            prePhoneno = editor.getString("phoneno", "0"); //20211109
-            preResultData = editor.getString("resultdata", "Fail"); //20211109
+            prePhoneno = editor.getString("phoneno", "0");
+            preResultData = editor.getString("resultdata", "Fail");
 
         }
-        //todo: 20211115
-
-        //todo: end
-
-//        Log.d("login_info", "file " + Info.G_license_num + " " + Info.G_driver_num);
     }
 
-///////////////
 
 }

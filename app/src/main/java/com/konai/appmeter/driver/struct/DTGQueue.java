@@ -3,7 +3,7 @@
 package com.konai.appmeter.driver.struct;
 
 public class DTGQueue {
-
+    public String mURLs;
     public String mKeycode;
     public String mData;
     public int mSendType; // 1: POST, 2: GET

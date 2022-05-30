@@ -1,6 +1,7 @@
 package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -19,54 +20,83 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.konai.appmeter.driver.Dialog.Dlg_Basic;
+import com.konai.appmeter.driver.DB.SQLiteControl;
+import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.R;
+import com.konai.appmeter.driver.VO.TIMS_UnitVO;
+import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.struct.AMBlestruct;
 import com.konai.appmeter.driver.struct.CalFareBase;
+import com.konai.appmeter.driver.struct.DTGQueue;
+import com.konai.appmeter.driver.struct.TIMSQueue;
 
+import org.json.JSONObject;
+
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class InfoActivity extends Activity {
 
     private TextView textView9, rtv_name, phone_title, unique_title, carno_title, company_title, gps_title, bluetooth_title, obd_title, osver_title, maker_title;
-    private TextView tv_name;
-    private TextView tv_phoneno;
-    private TextView tv_unique;
-    private TextView tv_carno;
-    private TextView tv_company;
-    private TextView tv_gps;
-    private TextView tv_bluetooth;
-    private TextView tv_obd;
-    private TextView tv_osver;
-    private TextView tv_maker;
-    private TextView tv_version;
-    private TextView area_name;
-    private TextView basic_fare;
-    private TextView basic_dist;
-    private TextView after_fare;
-    private Button btn_goMenu;
-    private Button btn_tims;
-    private Button connStatusBtn;
+    private TextView tv_name, tv_phoneno, tv_unique, tv_carno, tv_company, tv_gps, tv_bluetooth, tv_obd, tv_osver, tv_maker, tv_version, area_name, basic_fare, basic_dist, after_fare;
+    private TextView tv_area_name, tv_base_cost, tv_base_drvdist, tv_dist_cost, tv_interval_dist, tv_night_time_rate;
+    private Button btn_goMenu, btn_tims, connStatusBtn;
+
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private TextView tv_area_name, tv_base_cost, tv_base_drvdist, tv_dist_cost, tv_interval_dist, tv_night_time_rate;
     private Context mContext;
-    private Dlg_Basic connStatusDialog;
+
+    private String Domain = "";
+    private String TIMS_BASEURL = "https://tims-help.kotsa.or.kr";
+    private String TIMS_ADDURL = "";
+    private MainActivity mainActivity;
+
+    private String[] splt;
+    private SQLiteHelper helper;
+    private SQLiteControl sqlite;
+
+    private String phoneNo, carno, logs, logtime, logtype, log;
+
+    public static LocService m_Service = null;
+    private LocService mService;
+
+    Thread timsSendThread = null;
+    Thread dtgSendThread = null;
+    public BlockingQueue<DTGQueue> mSendDTGQ = new ArrayBlockingQueue<DTGQueue>(5);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        initializecontents(getResources().getConfiguration().orientation);
         initializecontents(setting.gOrient);
 
         mContext = this;
+
+        helper = new SQLiteHelper(mContext);
+        sqlite = new SQLiteControl(helper);
+
+        //me: 3일 전 데이터 삭제
+//        sqlite.deleteConnStatus();  //데이터 전체가 삭제되고 있음..
+
+//        timsSendThread = new Thread(new TIMS_THREAD());
+//        timsSendThread.start();
+
+//        dtgSendThread = new Thread(new DTG_NETWORK_THREAD());
+//        dtgSendThread.start();
+
     }
 
 
@@ -176,7 +206,6 @@ public class InfoActivity extends Activity {
                 }else {
                     Log.d("info_m_Service","null");
                 }
-
                 finish();
             }
         });
@@ -208,50 +237,75 @@ public class InfoActivity extends Activity {
             }
         });
 
+        //연결상태 전송 버튼
         connStatusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //show dialog
-                connStatusDialog = new Dlg_Basic( mContext
-                        , "블루투스 연결여부, 시경계 동작여부 데이터 전송"
-                        , new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {  //ok
+                final LinearLayout dialogView;
+                dialogView = (LinearLayout)View.inflate(mContext, R.layout.dlg_basic, null);
 
+                final TextView msg = (TextView) dialogView.findViewById(R.id.msg);
+                final Button okBtn = (Button) dialogView.findViewById(R.id.okay_btn);
+                final Button cancelBtn = (Button)dialogView.findViewById(R.id.cancel_btn);
+                msg.setText("데이터를 전송하시겠습니까?");
+                okBtn.setText("전송");
+
+                final Dialog dlg = new Dialog(InfoActivity.this);
+                dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dlg.setContentView(dialogView);
+                dlg.setCancelable(true);
+
+                //전송버튼
+                okBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mainActivity.m_Service.m_timsdtg._sendTIMSConnStatus();
+
+                        dlg.dismiss();
                     }
-                }, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {  //cancel
+                });
 
+                //취소버튼
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dlg.dismiss();
                     }
                 });
 
                 DisplayMetrics dm = mContext.getApplicationContext().getResources().getDisplayMetrics();
-                int w = dm.widthPixels;
-                int h = dm.heightPixels;
+                int width = dm.widthPixels;
+                int height = dm.heightPixels;
 
-                if (Build.VERSION.SDK_INT <= 25){
-                    w = (int)(w * 0.6);
-                    h = (int)(h * 0.8);
+                if (Build.VERSION.SDK_INT <= 25) {
+                    msg.setTextSize(3.0f * setting.gTextDenst);
+                    cancelBtn.setTextSize(2.5f * setting.gTextDenst);
+                    okBtn.setTextSize(2.5f * setting.gTextDenst);
+                    width = (int) (width * 0.6);
+                    height = (int) (height * 0.5);
                 }else {
-                    w = (int)(w * 0.9);
-                    h = (int)(h * 0.5);
+                    width = (int)(width * 0.9);
+                    height = (int)(height * 0.5);
                 }
 
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(connStatusDialog.getWindow().getAttributes());
-                lp.width = w;
-                lp.height = h;
-                Window window = connStatusDialog.getWindow();
+                lp.copyFrom(dlg.getWindow().getAttributes());
+                lp.width = width;
+                lp.height= height;
+                Window window = dlg.getWindow();
                 window.setAttributes(lp);
 
-                connStatusDialog.setCancelable(true);
-                connStatusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                connStatusDialog.show();
+                dlg.show();
+
             }
         });
 
     }
+
+
 
     private void set_frame_orient(int tp)
     {
@@ -287,8 +341,6 @@ public class InfoActivity extends Activity {
         tv_interval_dist = (TextView)findViewById(R.id.interval_dist);
         tv_night_time_rate = (TextView)findViewById(R.id.night_time_rate);
 
-////////////////////////
-
         tv_name = (TextView)findViewById(R.id.rtv_name);
         btn_goMenu = (Button)findViewById(R.id.dbtn_menu);
         btn_tims = (Button)findViewById(R.id.btn_tims);
@@ -320,14 +372,14 @@ public class InfoActivity extends Activity {
                 //   tv_version.setTextSize(3 * setting.gTextDenst);
             }else {}
         }
-        //todo: end
 
     }
 
     private String getBuildtime() {
-//        Date buildDate = new Date(BuildConfig.TIMESTAMP);
         Date buildDate = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yy.MM.dd");
         return transFormat.format(buildDate);
     }
+
+
 }

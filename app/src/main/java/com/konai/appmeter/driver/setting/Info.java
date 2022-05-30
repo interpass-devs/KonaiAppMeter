@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
+import com.konai.appmeter.driver.VO.TIMS_UnitVO;
 import com.konai.appmeter.driver.view.MainActivity;
 import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.struct.AMBlestruct;
@@ -23,6 +24,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,7 +41,11 @@ public class Info {
     public static String G_driver_name = "";
     public static String G_driver_num = "0000"; //사원번호.
     public static String G_license_num = ""; //자격번호.
-
+    public static boolean SENDERRLOG = false; //20220520
+    public static String[] gSplt;
+    public static String CAR_SPEED;
+    public static List<TIMS_UnitVO> ERRORlOG_CONN_PARAMS = new ArrayList<>();
+    public static Boolean ERRORLOG = false;
 //20210318
     public static final boolean REPORTREADY = false; //false;
     private static String TAG = "driver: ";
@@ -143,6 +149,7 @@ public class Info {
     public static String mDriveTIMSdate;
     public static String mDriveTIMSok;
     public static boolean mPowerTIMSok;
+    public static String mGps = "";
 
 //20210520
     private static SimpleDateFormat mtransFormat = new SimpleDateFormat("yyyyMMddHHmmss");

@@ -20,7 +20,6 @@ import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.struct.AMBlestruct;
 import com.konai.appmeter.driver.struct.AMdtgform;
-import com.konai.appmeter.driver.struct.CalFareBase;
 
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -147,13 +146,17 @@ public class AMBluetoothLEManager {
         }
         else {
             if (setting.gSerialUnit==1){  //me: 아이나비
+
                 serialPort_AM = new SerialPort_Device("/dev/ttyXRM1", 115200, 11000);  //(115200-통신속도, 속도 구분자-11000)
+
             }else if (setting.gSerialUnit==2){  //me: 아트뷰
-//20220329                serialPort_AM = new SerialPort_Device("/dev/ttySCA0", 115200, 11000);
+
                 serialPort_AM = new SerialPort_Device("/dev/ttyMT2", 115200, 11000);
+
             }else if (setting.gSerialUnit==3){  //me: 아틀란
+
                 serialPort_AM = new SerialPort_Device("/dev/ttymxc2", 115200, 11000);
-//20211220
+
                 if(serialPort_AM.out == null) {
                     serialPort_AM = null;
                     Log.d(TAG, "openfail serial");
@@ -164,14 +167,7 @@ public class AMBluetoothLEManager {
                 return false;
             }
 
-//20211220            serialPort_AM.start("", 11000, null);
-//            serialPort_AM.setManager(this);
-//
-//            AMBlestruct.mBTConnected = true;
-//
-//            Log.d(TAG, "opened serial");
 
-//20211220
             if(serialPort_AM.out != null) {
                 serialPort_AM.start("", 11000, null);
                 serialPort_AM.setManager(this);

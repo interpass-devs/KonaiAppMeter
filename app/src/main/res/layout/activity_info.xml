@@ -63,7 +63,7 @@
 
             <TextView
                 android:id="@+id/rtv_name"
-                android:layout_weight="1.4"
+                android:layout_weight="1.2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -76,11 +76,14 @@
                 android:id="@+id/conn_status_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.8"
                 android:gravity="center"
-                android:text="연결 데이터\n전송"
+                android:text="연결상태 전송"
                 android:textColor="@color/yellow"
-                android:background="@drawable/grey_gradi_btn"/>
+                android:textStyle="bold"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/grey_gradi_btn"
+                android:padding="5dp"/>
 
             <!--            <LinearLayout-->
 <!--                android:layout_width="0dp"-->

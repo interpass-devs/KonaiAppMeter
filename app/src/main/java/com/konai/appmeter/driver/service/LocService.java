@@ -46,11 +46,11 @@ import androidx.core.app.NotificationCompat;
 
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
+import com.konai.appmeter.driver.setting.Info;
+import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.view.MainActivity;
 import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.VO.TIMS_UnitVO;
-import com.konai.appmeter.driver.setting.Info;
-import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.socket.AMBluetoothLEManager;
 import com.konai.appmeter.driver.struct.AMBlestruct;
@@ -115,7 +115,7 @@ public class LocService extends Service implements LocationListener {
     View m_Lbsview = null;
     LinearLayout m_lbslayoutimg = null;
     LinearLayout m_lbslayoutBottom = null;
-    FontFitTextView transferToFinalPay, transferToFinalEmpty; //todo: 2022-05-04
+    FontFitTextView transferToFinalPay, transferToFinalEmpty;
 
     private double touch_interval_X = 0; // X 터치 간격
     private double touch_interval_Y = 0; // Y 터치 간격
@@ -351,11 +351,11 @@ public class LocService extends Service implements LocationListener {
             mFaresubdistT = 0;
             m30cnt = -1;
 //20210823            mFareDiscount = 0;
-            mFareAdd = 0; //20210823
-            mStarttime = AMBlestruct.getCurDateString(); //20201110
-            mEndtime = AMBlestruct.getCurDateString(); //20201110
+            mFareAdd = 0;
+            mStarttime = AMBlestruct.getCurDateString();
+            mEndtime = AMBlestruct.getCurDateString();
 
-            mCallPay = 0; //20210909
+            mCallPay = 0;
 
         }
 
@@ -374,7 +374,7 @@ public class LocService extends Service implements LocationListener {
 
         }
 
-        //20210823
+
         public static void setmFareAdd(int nfareadd) {
 
             mFareAdd = nfareadd;
@@ -392,12 +392,12 @@ public class LocService extends Service implements LocationListener {
             mCallPay = ncallpay;
 
         }
-//////////////
+
 
     }
 
-    //////////
-//20220120
+
+
     public class CalQueue {
         public long icurtime;
         public long ilasttime;
@@ -406,13 +406,13 @@ public class LocService extends Service implements LocationListener {
         public double altitude;
         public long itimet; //경과시간.
         public int nType; //1 gps 2 dtg
-        public double nowlong; //20210701 x position
-        public double nowlat; //20210710 y position
-        public double lastlong; //20210701 x 이전position
-        public double lastlat; //20210701 y 이전position
-        public boolean bused; //20210701 carculate_fare() 반영됐는지 아닌지
+        public double nowlong;   // x position
+        public double nowlat;    // y position
+        public double lastlong;  // x 이전position
+        public double lastlat;   // y 이전position
+        public boolean bused;    // carculate_fare() 반영됐는지 아닌지
 
-        //20220120
+
         public void init() {
             distance = 0;
             speed = 0;
@@ -423,26 +423,24 @@ public class LocService extends Service implements LocationListener {
         }
     }
 
-    CalQueue mCalque = new CalQueue(); //20210701
-    CalQueue mLastCalque = new CalQueue(); //20210701
-    CalQueue mLastDTGque = new CalQueue(); //20210701
+    CalQueue mCalque = new CalQueue();
+    CalQueue mLastCalque = new CalQueue();
+    CalQueue mLastDTGque = new CalQueue();
 
-/////////////////////////
 
     public AMdtgform mLastDTGform = new AMdtgform();
     AMdtgform mFirstDTGform = new AMdtgform();
 
-    public static int mnReadyToGPS = 0; //20201211
-    int mCalwhich = 2; //20201112 after gps 5count, 5seconnd 1; // 1 gps 2 dtg
+    public static int mnReadyToGPS = 0;
+    int mCalwhich = 2; // after gps 5count, 5seconnd 1; // 1 gps 2 dtg
     long mLasttime = 0;
     long mLastGPStime = 0;
     long mLastDTGtime = 0;
     long mLastCaltime = 0;
-//    Location mLastLocation = null;
 
-    private boolean mbNeedDTGFirst = false; //20210325
+    private boolean mbNeedDTGFirst = false;
     public boolean mbDrivestart = false;
-    public boolean mbPayView = false; //20220120 지불화면. 빈차등연결check여부
+    public boolean mbPayView = false;     // 지불화면. 빈차등연결check여부
     public int mDrivemode = 0;
     public int mCardmode = AMBlestruct.MeterState.NONE;
     static String mDriveCode = "";
@@ -451,7 +449,7 @@ public class LocService extends Service implements LocationListener {
     static double mDTGspeed = 0;
     static double mLastspeed = 0;
 
-//////////////////////////
+
 
     public class ServiceBinder extends Binder {
 
@@ -1356,12 +1354,12 @@ a
 
             Log.d("m_lbsTvBleConn", "m_lbsTvBleConn");
 
-            //todo: 20210831
-            //todo: blooth on
+
+            //me: blooth on
             m_lbsTvBleConn.setBackgroundResource(R.drawable.btn_bles_on);
             // m_lbsTvBleConn.setText("");
 
-            //todo: 20210831 end
+
         }
 
         payHandler.sendEmptyMessage(2);
@@ -2258,7 +2256,6 @@ a
         }
     }
 
-
     private void _checkSuburbs(double lon, double lat) {
 
         if (lon == 0) //20211229
@@ -2376,6 +2373,11 @@ a
         _checkExtraTime();
 
         if(mNowLocation != null)
+
+//            Log.d("mNowLocation>>", mNowLocation.getLatitude()+", "+mNowLocation.getLongitude());
+
+            Info.mGps = mNowLocation.getLatitude()+", "+mNowCalLocation.getLongitude();
+
             _checkSuburbs(mNowLocation.getLongitude(), mNowLocation.getLatitude());
 
         CDrive_val.mDrivetimeT = (int) (System.currentTimeMillis() - CDrive_val.mDrivestart);
@@ -2662,7 +2664,7 @@ a
 
     }
 
-    public void get_gps(Location location) {
+    public String get_gps(Location location) {
 
         mngpserror = 0;
 
@@ -2677,7 +2679,7 @@ a
         if (Info.g_appmode == Info.APP_PAYMENT) {
 
             mCallback.serviceDisplayState(0, 0, 0, 0, 0, 0, location, 0, 0, true);
-            return;
+            return null;
         }
 
         location.getTime();
@@ -2808,6 +2810,7 @@ a
 
         mLastLocation = location;
         mLastGPStime = curtime;
+        return null;
     }
 
 

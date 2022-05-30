@@ -53,6 +53,8 @@
 
 
 
+
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -551,19 +553,37 @@
 
                 </LinearLayout>
 
-
-
-
-
             </LinearLayout>
 
-
-
-
-
-
-
         </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_weight="0.7"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="취소"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:background="@drawable/grey_gradi_btn"/>
+            <Button
+                android:id="@+id/save_btn"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="저장"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/yellow_gradi_btn"/>
+        </LinearLayout>
 
 
     </LinearLayout>

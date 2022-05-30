@@ -4,7 +4,6 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -70,11 +69,13 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.R;
+import com.konai.appmeter.driver.VO.TIMS_UnitVO;
 import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.struct.AMBlestruct;
+import com.konai.appmeter.driver.struct.AMdtgform;
 import com.konai.appmeter.driver.struct.CalFareBase;
 import com.konai.appmeter.driver.struct.CircleProgressBar;
 import com.konai.appmeter.driver.struct.GetDecimalForm;
@@ -230,12 +231,15 @@ public class MainActivity extends Activity {
     private final int PERMISSIONS_REQUEST_STORAGE = 1002;
 
     public static LocService m_Service = null;
+    private Location mLocation = null;
 
     /**할증**/
     boolean extraUse = false;
     boolean suburbUse = false;
     boolean suburbUseAuto = false;
+    String gpsVal = "";
     boolean complexUse = false;
+    boolean extraDistUse = false; //20220520
 
     /**현금결제**/
     boolean cashPay = false;
@@ -254,6 +258,11 @@ public class MainActivity extends Activity {
     private LinearLayout payingFrame2;
     private LinearLayout endFrame2;
 /////////////////
+
+    private String bleConn, subConn;
+
+    private Date date;
+    private SimpleDateFormat sdf;
 
     private Button btn_connBLE;
 //    private ImageView btn_connBLE;
@@ -458,15 +467,13 @@ public class MainActivity extends Activity {
 */
                 return;
             } else if (ntype == 99) {
-                //todo: 20220209
-//                btn_connBLE.setBackgroundResource(R.drawable.btn_bles_on);  //me: 원래이거 - 파란 블루투스 아이콘
-                btn_connBLE.setBackgroundResource(R.drawable.bluetooth_green);  //야야야야야
+
+                btn_connBLE.setBackgroundResource(R.drawable.bluetooth_green);  //연결성공
 
                 if (!finConnect && m_Service != null) {
                     m_Service._setLbsBleState(1);
                     finConnect = true;
                 }
-                //todo: 20220209 end..
 
             } else if (ntype == 98) { //TIMS차량번호인증실패
 
@@ -631,29 +638,47 @@ public class MainActivity extends Activity {
                 extraUse = false;
                 timeExtrachk();
             } else if (nType == AMBlestruct.MeterState.BLELEDON) {
-                Log.e("BLE", "On Ble Service");
-                Log.d("mm_ble_on", nType+"");  //70
+
+                bleConn = "On, " + Info.CAR_SPEED+" km";
+                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf.format(date), "블루투스", bleConn);
+
+                if (Info.ERRORLOG == true) {
+                    m_Service.m_timsdtg._sendTIMSConnStatus();
+                }
+
+                displayHandler.sendEmptyMessage(0);
+
             } else if (nType == AMBlestruct.MeterState.BLELEDOFF) {
+
+                bleConn = "Off, " + Info.CAR_SPEED+" km";
+                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf.format(date), "블루투스", bleConn);
+
+                if (Info.ERRORLOG == true) {
+                    m_Service.m_timsdtg._sendTIMSConnStatus();
+                }
+//
                 displayHandler.sendEmptyMessage(51);
-                Log.e("BLE", "Off Ble Service");
-                Log.d("mm_ble_off", nType+""); //170
-            } else if (nType == AMBlestruct.MeterState.SUBURBSIN)  //자동으로
+
+            } else if (nType == AMBlestruct.MeterState.SUBURBSIN)
             {
-                Log.d("mm_sub_in", nType+"");
                 suburbUseAuto = true;
-                if (suburbUse == true)
+
+                if (suburbUse == true)   //자동으로
                     _setSuburbState();
             } else if (nType == AMBlestruct.MeterState.SUBURBSOUT)
             {
-                Log.d("mm_sub_out", nType+"");
-
                 if (suburbUse == false && suburbUseAuto == true)
-                    _setSuburbState(); //20220503 tra..sh
+                    _setSuburbState();
             }
 
+            //20220520
+            else if (nType == AMBlestruct.MeterState.EXTRADIST)  //자동으로
+            {
+                extraDistUse = true;
+                chkExtraUse(); //20220523
+            }
         }
 
-        //20210310
         @Override
         public void serviceLog(int nseconds, Location location, int gpsAcc, int ndtgdist, int ndtgtot, String altitude, boolean drvState,
                                int speed, double dtime, double dtfare, double ddist, double dcfare,
@@ -682,6 +707,9 @@ public class MainActivity extends Activity {
 
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+
+                    Log.d("getLocationLat", latitude+"" );
+                    Log.d("getLocationLong", longitude+"" );
                 }
 
                 String stemp = "";
@@ -695,21 +723,7 @@ public class MainActivity extends Activity {
                 stemp += String.format("x:%.6f,y:%.6f,보정:%s,속도:%d", latitude, longitude, GPSUse, speed);
                 stemp += String.format(",시간:%.2f,시간요금:%.2f,거리:%.2f,요금합:%.2f,잔여:%.2f,할증:%d,시계:%d,이후:%d,총이동:%d,현재:%d, 총요금거리: %.4f", dtime, dtfare,
                         ddist, dcfare, dremain, nextra, nsuburb, nafterfare, ndtgtot, nfare, tfaredist);
-//                stemp += " F: " + mnfare;
-//                Log.e("SAVE DATA", stemp);
 
-//20220413                if (Info.SENDDTG)
-//                    Savedata(Info.g_nowKeyCode + ".txt", stemp, "appmeter");
-
-//20220413                if (Info.TIMSUSE) {
-//                    mtestdate = ndtgtot + " " + GPSUse + ndtgdist;
-//                    mtesttime = "A:" + gpsAcc;
-//
-////                    displayHandler.sendEmptyMessage(99);
-//
-//                    Savedata(Info.g_nowKeyCode + ".txt", stemp, "appmeter");
-//
-//                }
             }
 
         }
@@ -766,18 +780,21 @@ public class MainActivity extends Activity {
                 case 2:
                     switch (nType) {
                         case 1:
-//                                reservUse = false;
+                            reservUse = false;
 //                                setCallpay(0);
 //                                btn_emptyCar_e.performClick();
                             Log.d("bar_btn_nType", nType+"");
 
+                            btn_emptyCar_d.performClick(); //20220523
+
                             //todo: 2022-05-04
                             reservUse = false;
                             setCallpay(0);
-                            btn_emptyCar_ep_process();
+//20220523                            btn_emptyCar_ep_process();
                             //todo: end
 
                             break;
+
                         case 2:
                             break;
                         case 3:
@@ -794,7 +811,7 @@ public class MainActivity extends Activity {
                 case 3:
                     switch (nType) {
                         case 1:
-                            btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
+                            btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
                             m_Service.update_BLEmeterstate("41");
                             reservUse = false;
                             setCallpay(0);
@@ -1194,6 +1211,11 @@ public class MainActivity extends Activity {
 
                     break;
                 }
+                case 0:
+                    //연결상태 jsonObject 파싱
+//                    String parsingResult = ParsingData();
+                    break;
+
                 case 1: //board display
                     display_Runstate();
 
@@ -1206,6 +1228,7 @@ public class MainActivity extends Activity {
 
                 case 3:
                     tv_curEmptyDist.setText(String.format("%.2f", memptydistance / 1000.0));
+                    Info.CAR_SPEED = tv_curEmptyDist.getText().toString();  //차량속도값 저장
                     break;
 
                 case 10:
@@ -1420,6 +1443,14 @@ public class MainActivity extends Activity {
             m_Service = binder.getService();
             m_Service.registerCallback(mCallback);
 
+            Log.d("mServiceConnection", m_Service+"");
+
+            if (m_Service == null) {
+                Log.d("mServiceConnection", "null");
+            }else {
+                Log.d("mServiceConnection", "not null");
+            }
+
             Info.m_Service = m_Service;
 
             m_Service.lbs_initx = lbs_x;
@@ -1436,6 +1467,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
+            Log.d("mServiceConnection", "not connected");
             Log.d("pos_app_mainActivity", "pos_app_service_main onServiceDisconnected");
             m_Service = null;
             Info.m_Service = null;
@@ -1597,17 +1629,17 @@ public class MainActivity extends Activity {
 
         context = this;
 
+        helper = new SQLiteHelper(context);
+        sqlite = new SQLiteControl(helper);
+
+        //현재날짜 구하기
+        date = new Date();
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        //위치정보 구하기
+
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        if (Build.VERSION.SDK_INT == 24) {
-            Log.d("build_ver", "24");
-        } else if (Build.VERSION.SDK_INT == 25) {
-            Log.d("build_ver", "25");
-        } else if (Build.VERSION.SDK_INT == 26) {
-            Log.d("build_ver", "26");
-        }
-
-
 
         Info.g_appmode = Info.APP_METER;
         Info.set_MainIntent(this, MainActivity.class);
@@ -1665,28 +1697,40 @@ public class MainActivity extends Activity {
 
         registerReceiver(); //20210823
 
+
     }//onCreate
 
 
     private void chkExtraUse() {
         int extraPercent = 0;
 
-        if (extraUse) {
+//        if (extraUse) {
+//
+//            extraPercent = extraPercent + (int) (CalFareBase.mNightTimerate * 100);
+//        }
+//
+//        if (suburbUse) {
+//
+//            extraPercent = extraPercent + (int) (CalFareBase.mSuburbrate * 100);
+//
+//        }
+//
+//        if (complexUse) {
+//
+//            extraPercent = extraPercent + (int) (CalFareBase.mComplexrate * 100);
+//
+//        }
+//
+////20220520
+//        if (extraDistUse) {
+//
+//            extraPercent = extraPercent + (int) (CalFareBase.mDistExtra * 100);
+//
+//        }
+/////////////
 
-            extraPercent = extraPercent + (int) (CalFareBase.mNightTimerate * 100);
-        }
+        extraPercent = CalFareBase._getExtTotalrate(); //20220523
 
-        if (suburbUse) {
-
-            extraPercent = extraPercent + (int) (CalFareBase.mSuburbrate * 100);
-
-        }
-
-        if (complexUse) {
-
-            extraPercent = extraPercent + (int) (CalFareBase.mComplexrate * 100);
-
-        }
 
         if (extraPercent == 0) {
             btn_status.setVisibility(View.INVISIBLE);
@@ -1697,6 +1741,8 @@ public class MainActivity extends Activity {
 //            m_Service.SendTIMS_Data(2, 0, null, "30&0");
 
         }
+
+
 
 
     }
@@ -1716,6 +1762,7 @@ public class MainActivity extends Activity {
         btn_complex.setTextColor(Color.parseColor("#ffffff"));
         btn_complex.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
 
+        extraDistUse = false; //20220520
     }
 
     private void timeExtrachk() {
@@ -2171,6 +2218,9 @@ public class MainActivity extends Activity {
                     Info.g_cashKeyCode = Info.g_nowKeyCode; //20220411
                     cashPay = true;
                     m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
+
+                    Log.d("_sendTIMSEventCash","_sendTIMSEventCash");
+
                     m_Service.m_timsdtg._sendTIMSEventCash();
                     break;
 
@@ -2215,6 +2265,139 @@ public class MainActivity extends Activity {
         }
     };
 
+
+    //더이상 안쓰는 버튼
+    private View.OnClickListener mPayClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+                case R.id.btn_paycash: //[현금]버튼
+                    cashPay = true;
+                    m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
+                    m_Service.m_timsdtg._sendTIMSEventCash();
+                break;
+
+                case R.id.btn_mobilepay: //[모바일]버튼
+                    appPaymentJSON();
+                    m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYETC);
+                    frameviewchange(5);
+                    m_Service.m_timsdtg._sendTIMSEventCash();
+                    break;
+
+                case R.id.btn_payingcancel:  //[결제취소]
+                    if(true)
+                    {
+                        continue_board();
+
+                        if(false) {
+                            m_Service.mDrivemode = AMBlestruct.MeterState.EMPTY;
+                            m_Service.mCardmode = AMBlestruct.MeterState.NONE;
+                            Info.end_rundata(mlocation, Info.PAYMENT_COST, 0, mAddfare, Info.MOVEDIST, mnseconds);
+                            m_Service.set_drivestate(false);
+                            frameviewchange(1);
+                        }
+                    }
+                    break;
+
+                case R.id.nbtn_cashreceipt:  //[현금영수증]버튼
+                    cashReceipt_ = 0;
+                    get_Cashreceipts();
+                    break;
+
+                case R.id.nbtn_receipt:     //[영수증]버튼
+                    if(AMBlestruct.AMCardResult.msOpercode.equals(""))
+                    {
+                        Info.makeDriveCode();
+                        AMBlestruct.AMCardResult.msOpercode = Info.g_nowKeyCode;
+                    }
+                    m_Service.writeBLE("26");
+
+                    m_Service.m_timsdtg._sendTIMSEventReceipt();
+                    break;
+            }
+
+        }
+    };
+
+
+    private View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+
+                case R.id.show_empty_icon:  //상세보기 버튼
+                    emptyFrame1.setVisibility(View.VISIBLE);
+                    emptyFrame1_new.setVisibility(View.GONE);
+                    break;
+
+                case R.id.hide_empty_icon:  //돌아가기 버튼
+                    emptyFrame1.setVisibility(View.GONE);
+                    emptyFrame1_new.setVisibility(View.VISIBLE);
+                    break;
+
+                case R.id.hide_report:    //거래집계 버튼
+                    emptyFrame1.setVisibility(View.GONE);
+                    emptyFrame1_new.setVisibility(View.VISIBLE);
+                    show_drvhistory();
+                    break;
+
+                case R.id.resettfare:     //금액마감 tv
+                    _todayreset();
+                    break;
+
+                case R.id.nbtn_extra:    //할증꺼짐
+                    /*if(extraUse) {
+                    extraUse = false;
+                    btn_extra.setText("할증 꺼짐");
+                    btn_extra.setTextColor(Color.parseColor("#000000"));
+                    btn_extra.setBackgroundResource(R.drawable.radius_extra_button);
+                } else {
+                    extraUse = true;
+                    btn_extra.setText("할증 켜짐");
+                    btn_extra.setTextColor(Color.parseColor("#ffffff"));
+                    btn_extra.setBackgroundResource(R.drawable.radius_extra_button_on);
+                }
+                chkExtraUse();*/
+                    break;
+
+                case R.id.nbtn_suburb:   //시외버튼 (시외꺼짐/ 시외켜짐)
+                    suburbUseAuto = false;
+                    _setSuburbState();
+                    break;
+
+                case R.id.nbtn_complex:  //복합버튼 (복합꺼짐/ 복합켜짐)
+                    if(complexUse) {
+                        complexUse = false;
+                        btn_complex.setText("복합 꺼짐");
+                        btn_complex.setTextColor(Color.parseColor("#000000"));
+                        btn_complex.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
+                        m_Service.drive_state(AMBlestruct.MeterState.EXTRACOMPLEXOFF);
+                        m_Service.m_timsdtg._sendTIMSEventComplex(false);
+                    } else {
+                        complexUse = true;
+                        btn_complex.setText("복합 켜짐");
+                        btn_complex.setTextColor(Color.parseColor("#ffffff"));
+                        btn_complex.setBackgroundResource(R.drawable.radius_extra_button_on_pink);
+                        m_Service.drive_state(AMBlestruct.MeterState.EXTRACOMPLEX);
+                        m_Service.m_timsdtg._sendTIMSEventComplex(true);
+                    }
+                    chkExtraUse();
+                    break;
+
+                case R.id.ntv_status:    // +할증 30% 버튼
+                    //요금상태
+                    break;
+
+                case R.id.ntv_gpstext:  //gps / OBD
+                    btn_gpstext.setVisibility(View.INVISIBLE);
+                    break;
+
+            }
+
+        }
+    };
 
 
     //Drawer 메뉴버튼 클릭리스너
@@ -2273,20 +2456,27 @@ public class MainActivity extends Activity {
                     setupBluetooth(2);
                     break;
 
-                case R.id.menu_app_control_setting:  //앱자동실행
+//                case R.id.menu_app_control_setting:  //앱자동실행
+//
+//                    if (Info.m_Service != null) {
+//                        Log.d("m_Service_Resume", "not null");
+//                        Info.m_Service._showhideLbsmsg(false);
+//                    }else {
+//                        Log.d("m_Service_Resume", "null");
+//                    }
+//                    menu.closeDrawer(drawerView);
+//                    Intent i = new Intent(getApplicationContext(), SettingActivity.class);
+//                    startActivity(i);
+//                    break;
 
+                case R.id.menu_env_setting:   //설정상태/환경설정
                     if (Info.m_Service != null) {
                         Log.d("m_Service_Resume", "not null");
                         Info.m_Service._showhideLbsmsg(false);
                     }else {
                         Log.d("m_Service_Resume", "null");
                     }
-                    menu.closeDrawer(drawerView);
-                    Intent i = new Intent(getApplicationContext(), SettingActivity.class);
-                    startActivity(i);
-                    break;
 
-                case R.id.menu_env_setting:   //설정상태/환경설정
                     menu.closeDrawer(drawerView);
                     Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                     startActivity(intent);
@@ -2779,7 +2969,9 @@ public class MainActivity extends Activity {
 
         /*** Main Layout Button ***/
         /* 메인버튼 onTouch */
-        //손님탑승/주행
+
+        /* 빈차 emptylayouts  */
+       //손님탑승/주행
         btn_driveStart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -2831,16 +3023,61 @@ public class MainActivity extends Activity {
         });
 
 
+        /* 주행 drivelayouts */
+        //지불
+        btn_driveEnd.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_driveEnd.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    btn_driveEnd.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                }
+                return false;
+            }
+        });
+
+        //빈차
+        btn_emptyCar_d.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_emptyCar_d.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    btn_emptyCar_d.setBackgroundResource(R.drawable.grey_gradi_btn);
+                }
+                return false;
+            }
+        });
+
+        //복합
+        btn_complex_d.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_complex_d.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    btn_complex_d.setBackgroundResource(R.drawable.grey_gradi_btn);
+                }
+                return false;
+            }
+        });
+
+
         btn_driveCar_e.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    //btn_driveCar_e.setBackgroundColor(Color.parseColor("#97833a"));
                     btn_driveCar_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    //btn_driveCar_e.setBackgroundColor(Color.parseColor("#3c3c4a"));
                     btn_driveCar_e.setBackgroundResource(R.drawable.grey_gradi_btn);
                 }
                 return false;
@@ -2857,38 +3094,55 @@ public class MainActivity extends Activity {
         });
 
 
-        // 빈차 숨기기 아이콘
-        hideEmptyIcon.setOnClickListener(new View.OnClickListener() {
+        /* 결제 paymentlayouts */
+        //현금
+        btn_cashPayment.setOnTouchListener(new View.OnTouchListener(){
             @Override
-            public void onClick(View v) {
-                emptyFrame1.setVisibility(View.GONE);
-                emptyFrame1_new.setVisibility(View.VISIBLE);
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_cashPayment.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    btn_cashPayment.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                }
+                return false;
             }
         });
 
-        showEmptyIcon.setOnClickListener(new View.OnClickListener() {
+        //추가요금
+        btn_addPayment.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                emptyFrame1.setVisibility(View.VISIBLE);
-                emptyFrame1_new.setVisibility(View.GONE);
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_addPayment.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    btn_addPayment.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
+                }
+                return false;
             }
         });
 
-
-        //거래집계 버튼
-        hideReport.setOnClickListener(new View.OnClickListener() {
+        //주행/취소
+        btn_cancelpayment.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-//                Toast.makeText(context, "거래내역으로 이동", Toast.LENGTH_SHORT).show();
-                emptyFrame1.setVisibility(View.GONE);
-                emptyFrame1_new.setVisibility(View.VISIBLE);
+            public boolean onTouch(View arg0, MotionEvent arg1) {
 
-                show_drvhistory(); //20220110
+                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_cancelpayment.setBackgroundColor(Color.parseColor("#5c5c5c"));
+                    btn_cancelpayment.setTextColor(Color.parseColor("#ffffff"));
+                }
+                if (arg1.getAction() == MotionEvent.ACTION_UP) {
+                    btn_cancelpayment.setBackgroundResource(R.drawable.grey_gradi_btn);
+                    btn_cancelpayment.setTextColor(Color.parseColor("#ffffff"));
+                }
+                return false;
             }
         });
 
-
-        //me: 금액마감
+        //금액마감
         tv_todayreset.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -2896,126 +3150,29 @@ public class MainActivity extends Activity {
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
                     tv_todayreset.getTextColors();
                     tv_todayreset.setTextColor(Color.parseColor("#00ff00"));
-
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
 
                     tv_todayreset.setTextColor(Color.parseColor("#BEBEBE"));
-
                 }
                 return false;
             }
         });
 
-        //금액마감
-        tv_todayreset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                _todayreset();
-
-            }
-        });
 
         /** 운 행 **/
 
-        btn_extra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*if(extraUse) {
-                    extraUse = false;
-                    btn_extra.setText("할증 꺼짐");
-                    btn_extra.setTextColor(Color.parseColor("#000000"));
-                    btn_extra.setBackgroundResource(R.drawable.radius_extra_button);
-                } else {
-                    extraUse = true;
-                    btn_extra.setText("할증 켜짐");
-                    btn_extra.setTextColor(Color.parseColor("#ffffff"));
-                    btn_extra.setBackgroundResource(R.drawable.radius_extra_button_on);
-                }
+        showEmptyIcon.setOnClickListener(mClickListener);
+        hideEmptyIcon.setOnClickListener(mClickListener);
+        hideReport.setOnClickListener(mClickListener);
+        tv_todayreset.setOnClickListener(mClickListener);
+        btn_extra.setOnClickListener(mClickListener);
+        btn_suburb.setOnClickListener(mClickListener);
+        btn_complex.setOnClickListener(mClickListener);
+        btn_status.setOnClickListener(mClickListener); //요금상태/ +할증 30%+
+        btn_gpstext.setOnClickListener(mClickListener); // OBD
 
-                chkExtraUse();*/
-            }
-        });
-
-        btn_suburb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//20220503 tra..sh
-                suburbUseAuto = false;
-                _setSuburbState();
-            }
-        });
-
-        btn_complex.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(complexUse) {
-                    complexUse = false;
-                    btn_complex.setText("복합 꺼짐");
-                    btn_complex.setTextColor(Color.parseColor("#000000"));
-                    btn_complex.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
-                    m_Service.drive_state(AMBlestruct.MeterState.EXTRACOMPLEXOFF);
-                    m_Service.m_timsdtg._sendTIMSEventComplex(false);
-                } else {
-                    complexUse = true;
-                    btn_complex.setText("복합 켜짐");
-                    btn_complex.setTextColor(Color.parseColor("#ffffff"));
-                    btn_complex.setBackgroundResource(R.drawable.radius_extra_button_on_pink);
-                    m_Service.drive_state(AMBlestruct.MeterState.EXTRACOMPLEX);
-                    m_Service.m_timsdtg._sendTIMSEventComplex(true);
-                }
-                chkExtraUse();
-            }
-        });
-
-        btn_status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //요금상태
-            }
-        });
-
-        btn_gpstext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_gpstext.setVisibility(View.INVISIBLE); //for report ??????
-            }
-        });
-
-        //지불
-        btn_driveEnd.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                   // btn_driveEnd.setBackgroundColor(Color.parseColor("#2e2e6a"));
-//                    btn_driveEnd.setBackgroundResource(R.drawable.btn_drive_end_touch);
-                    btn_driveEnd.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                   // btn_driveEnd.setBackgroundColor(Color.parseColor("#2e2eae"));
-//                    btn_driveEnd.setBackgroundResource(R.drawable.ok_btn_blue_round_bg);
-                    btn_driveEnd.setBackgroundResource(R.drawable.yellow_gradi_btn);
-                }
-                return false;
-            }
-        });
-
-        //주행- 빈차
-        btn_emptyCar_d.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_emptyCar_d.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_emptyCar_d.setBackgroundResource(R.drawable.grey_gradi_btn);
-                }
-                return false;
-            }
-        });
 
 
 
@@ -3042,34 +3199,10 @@ public class MainActivity extends Activity {
             }
         });
 
-//20210909
-        btn_complex_d.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
 
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    //btn_reserv_d.setBackgroundColor(Color.parseColor("#97833a"));
-                    btn_complex_d.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    // btn_reserv_d.setBackgroundColor(Color.parseColor("#3c3c4a"));
-                    btn_complex_d.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
-                }
-                return false;
-            }
-        });
 
-        //복합
-//        btn_complex_d.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                btn_complex.performClick();
-//
-//            }
-//        });
 
-//20210909
+
         btn_surburb_d.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -3122,11 +3255,10 @@ public class MainActivity extends Activity {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    if (false) //20210827
+                    if (false)
                     {
                         if (!edt_addpayment.getText().toString().equals("")) {
                             mAddfare = Integer.parseInt(edt_addpayment.getText().toString());
-//20210607                    tv_restotpayment.setText(mnfare + Integer.parseInt(edt_addpayment.getText().toString()) + " 원");
                             tv_restotpayment.setText(decimalForm.getFormat(Info.PAYMENT_COST + Integer.parseInt(edt_addpayment.getText().toString())) + " 원");
 
                             if (Info.REPORTREADY) {
@@ -3136,7 +3268,6 @@ public class MainActivity extends Activity {
                             }
                         } else {
                             mAddfare = 0;
-//20210607                    tv_restotpayment.setText(mnfare + " 원");
                             tv_restotpayment.setText(decimalForm.getFormat(Info.PAYMENT_COST) + " 원");
                         }
                     }
@@ -3172,7 +3303,6 @@ public class MainActivity extends Activity {
                                 ;
                             } else
                                 edt_addpayment.setTextSize(6.0f * setting.gTextDenst);
-
                         }
                     }
 
@@ -3189,7 +3319,6 @@ public class MainActivity extends Activity {
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
                     get_manualfare(2);
                 }
-
                 return false;
             }
         });
@@ -3214,112 +3343,20 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 displayHandler.sendEmptyMessage(11);
                 frameviewchange(4);
-
-//20211229                sendbroadcast_state(5001, 3, Info.PAYMENT_COST + mAddfare + Info.CALL_PAY,
-///                        Info.MOVEDIST, 0); //20210823 20210827
             }
         });
-
-///////////////////////
-//20210909
-        btn_cashPayment.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-//20211216                    btn_cashPayment.setBackgroundColor(Color.parseColor("#97833a"));
-                    btn_cashPayment.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-//20211216                    btn_cashPayment.setBackgroundColor(Color.parseColor("#ffc700"));
-                    btn_cashPayment.setBackgroundResource(R.drawable.yellow_gradi_btn); //20220303 tra..sh
-                }
-                return false;
-            }
-        });
-
-        //[현금]버튼 클릭시
-//        btn_cashPayment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                btn_cashPayment.setEnabled(false); //20220411 tra..sh
-//                mnlastcashfare = Info.PAYMENT_COST + mAddfare + Info.CALL_PAY; //20211019
-//                Info.g_cashKeyCode = Info.g_nowKeyCode; //20220411
-//                cashPay = true;
-//                m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
-//                m_Service.m_timsdtg._sendTIMSEventCash();
-//            }
-//        });
-
-        //todo: 20220209
-//        btn_cardPayment.setOnTouchListener(new View.OnTouchListener(){
-//            @Override
-//            public boolean onTouch(View arg0, MotionEvent arg1) {
-//
-//                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-////20211216                    btn_cardPayment.setBackgroundColor(Color.parseColor("#97833a"));
-//                    btn_cardPayment.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-//
-//
-//                }
-//                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-////20211216                    btn_cardPayment.setBackgroundColor(Color.parseColor("#ffc700"));
-//                    btn_cardPayment.setBackgroundResource(R.drawable.selected_btn);
-//                }
-//                return false;
-//            }
-//        });
-
-        //[카드]버튼 클릭시   //필요없는 버튼임. 사용안함.
-//        btn_cardPayment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-        //todo: 20220209 end..
-
-/////////
-        btn_addPayment.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_addPayment.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_addPayment.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
-                }
-                return false;
-            }
-        });
-//        btn_addPayment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                get_manualfare(2);
-//
-//            }
-//        });
-
-        //호출요금
-//        btn_callPayment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(Info.CALL_PAY > 0) //20220110
-//                    setCallpay(0);
-//                else
-//                    do_CallPay_pay(); //20211229
-//
-//                displayHandler.sendEmptyMessage(11);
-//
-//            }
-//        });
-
 
 
         GlideDrawableImageViewTarget gifImages = new GlideDrawableImageViewTarget(iv_loadingGif);
         Glide.with(this).load(R.drawable.pay_loadings).into(gifImages);
+
+
+        //더이상 안쓰는 버튼들
+        btn_cashPay.setOnClickListener(mPayClickListener);      //[현금]
+        btn_mobilePay.setOnClickListener(mPayClickListener);    //[모바일]
+        btn_payingCancel.setOnClickListener(mPayClickListener); //[결제취소]
+        btn_cashReceipt.setOnClickListener(mPayClickListener);  //[현금영수증]
+        btn_receipt.setOnClickListener(mPayClickListener);      //[영수증]
 
         btn_cashPay.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -3335,16 +3372,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        //[현금]버튼 클릭시
-        btn_cashPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cashPay = true;
-                m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
-                m_Service.m_timsdtg._sendTIMSEventCash();
-            }
-        });
-
         btn_mobilePay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -3356,18 +3383,6 @@ public class MainActivity extends Activity {
                     btn_mobilePay.setBackgroundColor(Color.parseColor("#ffc700"));
                 }
                 return false;
-            }
-        });
-
-        //[모바일] 버튼 클릭시
-        btn_mobilePay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                appPaymentJSON();
-                m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYETC);
-                frameviewchange(5);
-
-                m_Service.m_timsdtg._sendTIMSEventCash();
             }
         });
 
@@ -3386,65 +3401,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        btn_payingCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(true)
-                {
-                    continue_board();
-
-                    if(false) {
-                        m_Service.mDrivemode = AMBlestruct.MeterState.EMPTY;
-                        m_Service.mCardmode = AMBlestruct.MeterState.NONE;
-                        Info.end_rundata(mlocation, Info.PAYMENT_COST, 0, mAddfare, Info.MOVEDIST, mnseconds);
-                        m_Service.set_drivestate(false);
-                        frameviewchange(1);
-                    }
-                }
-
-            }
-        });
-
-        btn_cancelpayment.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-
-                if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_cancelpayment.setBackgroundColor(Color.parseColor("#5c5c5c"));
-                    btn_cancelpayment.setTextColor(Color.parseColor("#ffffff"));
-                }
-                if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_cancelpayment.setBackgroundResource(R.drawable.grey_gradi_btn);
-                    btn_cancelpayment.setTextColor(Color.parseColor("#ffffff"));
-                }
-                return false;
-            }
-        });
-        //주행/취소
-//        btn_cancelpayment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                btn_emptyCar_d.setEnabled(true);
-//
-//                tv_pay_card.setVisibility(View.GONE);
-//
-//                mAddfare = 0;
-//                LocService.CDrive_val.setmFareAdd(0);
-//
-//                if(m_Service.mCardmode == AMBlestruct.MeterState.MANUALPAY || m_Service.mbDrivestart == false)
-//                {
-//                    Info.sqlite.delete(Info.g_nowKeyCode); //20210611
-//                    frameviewchange(1);
-//                    m_Service.update_BLEmeterstate("20");
-//                    m_Service.drive_state(AMBlestruct.MeterState.EMPTYBYEMPTY);
-//                }
-//                else
-//                    continue_board();
-//
-//            }
-//        });
 
         btn_cashReceipt.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -3459,13 +3415,7 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        btn_cashReceipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cashReceipt_ = 0;
-                get_Cashreceipts();
-            }
-        });
+
 
         btn_receipt.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -3480,21 +3430,8 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        btn_receipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if(AMBlestruct.AMCardResult.msOpercode.equals(""))
-                {
-                    Info.makeDriveCode();
-                    AMBlestruct.AMCardResult.msOpercode = Info.g_nowKeyCode;
-                }
-                m_Service.writeBLE("26");
 
-                m_Service.m_timsdtg._sendTIMSEventReceipt();
-
-            }
-        });
         btn_emptyCar_ep.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -3511,21 +3448,18 @@ public class MainActivity extends Activity {
             }
         });
 
-
         //결제완료- 빈차버틀 클릭
         btn_emptyCar_ep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                btn_emptyCar_ep_process(); //20220411 tra..sh
-
+                btn_emptyCar_ep_process();
             }
         });
         btn_drive_ep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //frameviewchange(2);
-
             }
         });
         btn_reserv_ep.setOnTouchListener(new View.OnTouchListener() {
@@ -3550,7 +3484,6 @@ public class MainActivity extends Activity {
 //                m_Service.update_BLEmeterstate("40");
             }
         });
-
 
 
         /* 메인화면 onTouch */
@@ -3665,12 +3598,12 @@ public class MainActivity extends Activity {
         });
 
         //앱자동실행
-        menu_app_control_setting.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
+//        menu_app_control_setting.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return false;
+//            }
+//        });
 
         //설정상태/ 환경설정
         menu_env_setting.setOnTouchListener(new View.OnTouchListener() {
@@ -3839,7 +3772,6 @@ public class MainActivity extends Activity {
 
             }
         });
-
 
 
         menu_todayRecord.setOnClickListener(new View.OnClickListener() {
@@ -4220,7 +4152,7 @@ public class MainActivity extends Activity {
         menu_drvHistory = (LinearLayout)findViewById(R.id.menu_drvhistory);  //거래집계
         menu_submenu = (LinearLayout)findViewById(R.id.menu_submenu);        //거래집계 sub 메뉴
         menu_setting = (LinearLayout)findViewById(R.id.menu_setting);        //빈차등메뉴
-        menu_app_control_setting = (LinearLayout)findViewById(R.id.menu_app_control_setting);  //앱자동실행
+//        menu_app_control_setting = (LinearLayout)findViewById(R.id.menu_app_control_setting);  //앱자동실행
         menu_env_setting = (LinearLayout)findViewById(R.id.menu_env_setting);  //설정상태/ 환경설정
         menu_menualpay = (LinearLayout)findViewById(R.id.menu_menualpay);      //수기결제
         menu_getReceipt = (LinearLayout)findViewById(R.id.menu_getreceipt);    //영수증출력
@@ -4255,7 +4187,7 @@ public class MainActivity extends Activity {
         menu_home.setOnClickListener(menuBtnClickListener);
         menu_drvHistory.setOnClickListener(menuBtnClickListener);
         menu_setting.setOnClickListener(menuBtnClickListener);
-        menu_app_control_setting.setOnClickListener(menuBtnClickListener);
+//        menu_app_control_setting.setOnClickListener(menuBtnClickListener);
         menu_env_setting.setOnClickListener(menuBtnClickListener);
         menu_menualpay.setOnClickListener(menuBtnClickListener);
         menu_getReceipt.setOnClickListener(menuBtnClickListener);
@@ -4537,7 +4469,7 @@ public class MainActivity extends Activity {
 
             if (Build.VERSION.SDK_INT <= 25){  //네비게이션 해상도 (가로)
 
-                    //상세보기- 운행거리 0.00km
+                //상세보기- 운행거리 0.00km
                 textView5new.setTextSize(2.5f * setting.gTextDenst);  //상세보기- 운행거리
                 showEmptyIcon.setTextSize(2.5f * setting.gTextDenst); //상세보기
                 tv_todayTotalDist.setTextSize(5.0f * setting.gTextDenst);  //돌아가기- 운행거리 0.00km
@@ -4825,11 +4757,11 @@ public class MainActivity extends Activity {
                     Log.d("payDivCheck", payDiv+"");
 //                                payDiv = 0;  //카드
                     addPay = Integer.parseInt(splt[4]);  //추가요금
-                    Log.d("today_data[0]", todayData[0]);
-                    Log.d("today_data_drvCode", drvCode+"");  //null
-                    Log.d("today_data_payDivision", payDiv+"");
-                    Log.d("today_data_drvPay", drvPay+"");
-                    Log.d("today_data_addPay", addPay+"");
+//                    Log.d("today_data[0]", todayData[0]);
+//                    Log.d("today_data_drvCode", drvCode+"");  //null
+//                    Log.d("today_data_payDivision", payDiv+"");
+//                    Log.d("today_data_drvPay", drvPay+"");
+//                    Log.d("today_data_addPay", addPay+"");
 
                     String strDrvPay = drvPay+"";
                     if (strDrvPay.contains("-")){
@@ -5818,12 +5750,11 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 imm.hideSoftInputFromWindow(editReceiptInfo.getWindowToken(), 0);
-//                editReceiptInfo.setText("");
             }
         });
 
 
-        // this는Activity의this//160919
+        // this는Activity의this
         // 여기서 부터는 알림창의 속성 설정
 
         btn_cancel.setOnTouchListener(new View.OnTouchListener() {
@@ -5844,13 +5775,12 @@ public class MainActivity extends Activity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//20220413                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                m_Service.drive_state(AMBlestruct.MeterState.EMPTYBYEMPTY); //20211019
+                m_Service.drive_state(AMBlestruct.MeterState.EMPTYBYEMPTY);
                 list.removeAll(list);
 
                 cashreceipt_dg.dismiss();
 
-                cashreceipt_dg = null; //20220425
+                cashreceipt_dg = null;
             }
 
         });
@@ -5860,13 +5790,9 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    //btn_ok.setBackgroundColor(Color.parseColor("#2e2e6a"));
-//                    btn_ok.setBackgroundResource(R.drawable.ok_btn_blue_round_bg);
                     btn_ok.setBackgroundResource(R.drawable.yellow_gradi_btn);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    //btn_ok.setBackgroundColor(Color.parseColor("#2e2eae"));
-//                    btn_ok.setBackgroundResource(R.drawable.ok_btn_blue_round_clicked_bg);
                     btn_ok.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 return false;
@@ -5879,34 +5805,28 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                //todo: 20220119
                 hidenKeyboard(editReceiptInfo);
-//                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                //todo: end
 
                 if(cashReceipt_ == 1 || cashReceipt_ == 2) {
 
                     if (cashReceipt_ == 1) {
 
-//                    m_Service.send_CashReceiptType(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASHRECEIPT_G, editReceiptInfo.getText().toString().replaceAll("-", ""));
                         m_Service.send_CashReceiptType(AMBlestruct.AMCardResult.msOpercode, AMBlestruct.PaymentType.BYCASHRECEIPT_G, editReceiptInfo.getText().toString().replaceAll("-", ""));
                     } else if (cashReceipt_ == 2) {
-//                    m_Service.send_CashReceiptType(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASHRECEIPT_C, editReceiptInfo.getText().toString().replaceAll("-", ""));
+
                         m_Service.send_CashReceiptType(AMBlestruct.AMCardResult.msOpercode, AMBlestruct.PaymentType.BYCASHRECEIPT_C, editReceiptInfo.getText().toString().replaceAll("-", ""));
                     }
                 }
-//20211019                cashreceipt_dg.dismiss();
 
-                //todo: 20220119
                 cashreceipt_dg.dismiss();
 
-                cashreceipt_dg = null; //20220425
-                //todo: end
+                cashreceipt_dg = null;
+
             }
 
         });
     }
-    //todo: end
+
 
     private void getReceiptInputDialog() {
         LayoutInflater inflater = getLayoutInflater();
@@ -5921,7 +5841,7 @@ public class MainActivity extends Activity {
         final Button btn_cancel = (Button) dialogView.findViewById(R.id.btn_cancel);
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-///////////////////
+
         AMBlestruct.AMCardFare.msOpercode = Info.g_cashKeyCode; //20220411 tra..sh Info.g_nowKeyCode;
         AMBlestruct.AMCardFare.mbCard = true;
         AMBlestruct.AMCardFare.mstype = "01";
@@ -5932,12 +5852,8 @@ public class MainActivity extends Activity {
         AMBlestruct.AMCardFare.mMoveDistance = 0; //승차거리
 
         m_Service.writeBLE("21");
-//        m_Service.update_BLEmeterstate("01"); //20211220 TODO.
 
-        Log.d("==receive(--------", Info.g_cashKeyCode + " " + mnlastcashfare + "원");
-////////////////////
 
-        //
         String dlgTitle = "";
         if(cashReceipt_ == 1) {
             tv_CardReceipt.setVisibility(View.INVISIBLE);
@@ -5948,8 +5864,7 @@ public class MainActivity extends Activity {
         } else {
             dlgTitle = "CARD인식";
             editReceiptInfo.setVisibility(View.GONE);
-            btn_ok.setVisibility(View.INVISIBLE); //20210923
-//            m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASHRECEIPTCARD);
+            btn_ok.setVisibility(View.INVISIBLE);
 
             m_Service.send_BLEpaymenttype(AMBlestruct.AMCardResult.msOpercode, AMBlestruct.PaymentType.BYCASHRECEIPTCARD);
         }
@@ -5958,12 +5873,6 @@ public class MainActivity extends Activity {
         builder.setView(dialogView);
 
 
-//        editReceiptInfo.setImeOptions(EditorInfo.IME_ACTION_DONE);
-//20220413        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//
-//        if(cashReceipt_ != 3)
-//            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-//
         builder.setCancelable(false);
         builder.create();
         PopupDlg = builder.show();
@@ -6034,7 +5943,7 @@ public class MainActivity extends Activity {
         });
 
 
-        // this는Activity의this//160919
+        // this는Activity의this
         // 여기서 부터는 알림창의 속성 설정
 
         btn_cancel.setOnTouchListener(new View.OnTouchListener() {
@@ -6085,26 +5994,21 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                //todo: 20220119
                 hidenKeyboard(editReceiptInfo);
-//                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                //todo: end
 
                 if(cashReceipt_ == 1 || cashReceipt_ == 2) {
 
                     if (cashReceipt_ == 1) {
 
-//                    m_Service.send_CashReceiptType(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASHRECEIPT_G, editReceiptInfo.getText().toString().replaceAll("-", ""));
                         m_Service.send_CashReceiptType(AMBlestruct.AMCardResult.msOpercode, AMBlestruct.PaymentType.BYCASHRECEIPT_G, editReceiptInfo.getText().toString().replaceAll("-", ""));
                     } else if (cashReceipt_ == 2) {
-//                    m_Service.send_CashReceiptType(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASHRECEIPT_C, editReceiptInfo.getText().toString().replaceAll("-", ""));
+
                         m_Service.send_CashReceiptType(AMBlestruct.AMCardResult.msOpercode, AMBlestruct.PaymentType.BYCASHRECEIPT_C, editReceiptInfo.getText().toString().replaceAll("-", ""));
                     }
                 }
-//20211019                PopupDlg.dismiss();
-                //todo: 20220119
+
                 PopupDlg.dismiss();
-                //todo: end
+
             }
 
         });
@@ -6608,7 +6512,7 @@ public class MainActivity extends Activity {
 
     }
 
-//20220110
+
     private void show_drvhistory()
     {
         if(AMBlestruct.mBTConnected) {
@@ -6667,10 +6571,10 @@ public class MainActivity extends Activity {
         }
     }
 
-//20220411 tra..sh
+
     private void btn_emptyCar_ep_process()
     {
-//20220411 firtst 지불 DTG
+        //firtst 지불 DTG
         if(m_Service != null) {
             if(AMBlestruct.AMCardResult.msType.equals("01")) {
                 m_Service.m_timsdtg._sendPayDTGData("2");
@@ -6679,49 +6583,41 @@ public class MainActivity extends Activity {
             } else if(AMBlestruct.AMCardResult.msType.equals("06")) {
                 m_Service.m_timsdtg._sendPayDTGData("3");
             }
-//20220425 현금영수증            else m_Service.m_timsdtg._sendPayDTGData("1"); /////////???
+        //현금영수증            else m_Service.m_timsdtg._sendPayDTGData("1"); /////////???
 
         }
-//second 빈차  DTG
+        //빈차  DTG
         // Log.d("empty_btn_final", "결제완료 빈차 클릭");
         m_Service.drive_state(AMBlestruct.MeterState.EMPTY);
-//                Log.d("mndrvPayDiv", "1 " + mndrvPayDiv);
-        if(mndrvPayDiv != 9 || mndrvtotal) //20211019
+        if(mndrvPayDiv != 9 || mndrvtotal)
         {
             Info.end_rundata(mlocation, Info.PAYMENT_COST, mndrvPayDiv, mAddfare + Info.CALL_PAY, Info.MOVEDIST, mnseconds);
 
             bInsertDB = false;
 
-//20220421 Info.g_nowKeyCode for 마지막키값읽어오기위힘
+            //Info.g_nowKeyCode for 마지막키값읽어오기위힘
             if(Info.g_nowKeyCode.equals(Info.g_cashKeyCode) == false)
                 Info.g_cashKeyCode = "00000000"; //초기화
 
                 save_state_pref(Info.g_nowKeyCode, 1, System.currentTimeMillis(), 0, 0, 0, 0, 0, 0, 0);
-
-///////////////////////
-
-//20211229                    sendbroadcast_state(5001, 1, Info.PAYMENT_COST + mAddfare + Info.CALL_PAY,
-///                            Info.MOVEDIST, 0); //20210823 20210827
-
-//                    Log.d("mndrvPayDiv", "2 " + mndrvPayDiv);
-
         }
 
-//20211229
+
         sendbroadcast_state(5001, 1, Info.PAYMENT_COST + mAddfare + Info.CALL_PAY,
                 Info.MOVEDIST, 0); //20210823 20210827
 
-///////////////////////////
-        Info.ADDFARE = mAddfare; //20220503 tra..sh
+
+        Info.ADDFARE = mAddfare;
         m_Service.m_timsdtg._sendTIMSAfterDrive();
 
-//////////////////
+        Log.d("setSendTIMSVO","setSendTIMSVO");
 
-        Info.CALL_PAY = 0; //20210909
-        mndrvPayDiv = 0; //20211015
+
+        Info.CALL_PAY = 0;
+        mndrvPayDiv = 0;
 
         if(cashreceipt_dg != null)
-            cashreceipt_dg.dismiss(); //20220425
+            cashreceipt_dg.dismiss();
 
         frameviewchange(1);
 
@@ -6764,12 +6660,43 @@ public class MainActivity extends Activity {
                 Info._displayLOG(Info.LOGDISPLAY, "시계할증 종료", "");
 
             m_Service.m_timsdtg._sendTIMSEventSuburb(false, suburbUseAuto);
-            Log.d("sub_check","off");
+            Log.d("sub_check","out");
+            Log.d("sub_check_auto", suburbUseAuto+"");
+
+            Date time = new Date();
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+
+            subConn = "Off, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
+            sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf1.format(time), "시외", subConn);
+
+            if (Info.ERRORLOG == true) {
+                m_Service.m_timsdtg._sendTIMSConnStatus();
+            }
 
         } else {
             m_Service.mbSuburb = true;
             suburbUse = true;
-            Log.d("sub_check","on");
+            Log.d("sub_check","in");
+
+            Date time2 = new Date();
+            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            subConn = "On, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
+            sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf2.format(time2), "시외", subConn);
+
+            if (Info.ERRORLOG == true) {
+                m_Service.m_timsdtg._sendTIMSConnStatus();
+            }
+
+//            gpsVal = AMdtgform.gpsx
+
+            Log.d("subconnAuto", suburbUseAuto+"");
+//            Log.d("subConnGPS", AMdtgform.gpsx)
+            Log.d("subConnGPS-start", AMBlestruct.AMReceiveFare.mgpsstartx+", "+AMBlestruct.AMReceiveFare.mgpsstarty);
+            Log.d("subConnGPS-end", AMBlestruct.AMReceiveFare.mgpsendx+", "+AMBlestruct.AMReceiveFare.mgpsendy);
+
             btn_suburb.setText("시외 켜짐");
             btn_suburb.setTextColor(Color.parseColor("#ffffff"));
             btn_suburb.setBackgroundResource(R.drawable.radius_extra_button_on_pink);

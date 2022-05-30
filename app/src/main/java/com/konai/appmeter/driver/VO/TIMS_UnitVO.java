@@ -20,6 +20,61 @@ public class TIMS_UnitVO {
     private String isNight;
     private String isOutside;
     private String isOutGps;
+    private String phoneNo;
+    private String carno;
+    private String logs;
+    private String logtime;
+    private String logtype;
+    private String log;
+
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
+    public String getCarno() {
+        return carno;
+    }
+
+    public void setCarno(String carno) {
+        this.carno = carno;
+    }
+
+    public String getLogs() {
+        return logs;
+    }
+
+    public void setLogs(String logs) {
+        this.logs = logs;
+    }
+
+    public String getLogtime() {
+        return logtime;
+    }
+
+    public void setLogtime(String logtime) {
+        this.logtime = logtime;
+    }
+
+    public String getLogtype() {
+        return logtype;
+    }
+
+    public void setLogtype(String logtype) {
+        this.logtype = logtype;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
 
     public int getIdx() {
         return idx;

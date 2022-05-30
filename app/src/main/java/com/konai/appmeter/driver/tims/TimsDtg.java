@@ -1,25 +1,34 @@
 package com.konai.appmeter.driver.tims;
 
 import android.location.Location;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.konai.appmeter.driver.DB.SQLiteControl;
+import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.VO.TIMS_UnitVO;
 import com.konai.appmeter.driver.service.LocService;
 import com.konai.appmeter.driver.setting.Info;
-import com.konai.appmeter.driver.socket.AMBluetoothLEManager;
 import com.konai.appmeter.driver.struct.AMBlestruct;
 import com.konai.appmeter.driver.struct.CalFareBase;
 import com.konai.appmeter.driver.struct.DTGQueue;
 import com.konai.appmeter.driver.struct.TIMSQueue;
+import com.konai.appmeter.driver.view.InfoActivity;
+import com.konai.appmeter.driver.view.MemberCertActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.logging.LogRecord;
 
 public class TimsDtg {
 
@@ -35,6 +45,8 @@ public class TimsDtg {
     private static boolean bSendingTIMS = true; //전송진행중TIMS
     private String DTG_PATH = "";
     private String DTG_PARAMS = "";
+
+    public MemberCertActivity memberCertActivity;
 
     private LocService mService = null;
 
@@ -45,11 +57,14 @@ public class TimsDtg {
 //tims
     public BlockingQueue<TIMSQueue> mTIMSsendQ = new ArrayBlockingQueue<TIMSQueue>(20);
 
+    public BlockingQueue<DTGQueue> mLogSendQ = new ArrayBlockingQueue<DTGQueue>(4);
+
 //////////////
     Thread TimsSendThread = null;
     Thread DtgSendThread = null;
     Thread TimsResendThread = null;
     Thread DtgResendThread = null;
+    Thread LogSendThread = null;
 
 
     private String TIMS_BASEURL = "https://tims-help.kotsa.or.kr";
@@ -60,25 +75,58 @@ public class TimsDtg {
     private String TIMS_VEHICLE = ":55000/app-meter/auth/vehicle?CAR_REG_NO=";
     private String TIMS_DRIVER = ":55000/app-meter/auth/driver?QUALF_NO=";
 
+
+    //me: TimsDtg 의 쓰레드들은 자동으로 계속 돌아감
+
     public TimsDtg(LocService service)
     {
         mService = service;
 
+        ///todo: 2022-05-20
+        TimsSendThread = new Thread(new n_TIMS_Thread());  //팀스 쓰레드에.. -> 6번(연결상태) 케이스 만들어주기
+        TimsSendThread.start();
+        //todo: end
+
+
         if(Info.TIMSUSE) {
+            Log.d("tt","tttt timsuses");
             TimsSendThread = new Thread(new n_TIMS_Thread());
             TimsSendThread.start();
 
             TimsResendThread = new Thread(new TimsResendThread());
             TimsResendThread.start();
+
         }
 
-        if(Info.SENDDTG) {
+
+
+        //errorLog 값 확인
+
+//        try{
+//            if (Info.ERRORlOG_CONN_PARAMS != null) {
+////            Log.d("params_check11", Info.CONN_PARAMS.size()+"");
+////            for (int i=0; i<Info.CONN_PARAMS.size(); i++) {
+////                Log.d("params_check--", i+") "+Info.CONN_PARAMS.get(i).getLogtime());
+////            }
+//                SendTIMS_Data(6, 0, Info.ERRORlOG_CONN_PARAMS, "");
+//            }
+//        }catch (Exception e){
+//            Log.e("errorLogggg", e.toString());
+//            e.toString();
+//        }
+
+
+
+        if(Info.SENDDTG) {  //send DTG to interpass aka 타코
+            Log.d("tt","tttt send dtg");
             DtgSendThread = new Thread(new DTG_NetworkThread());
             DtgSendThread.start();
+
 
             DtgResendThread = new Thread(new DtgResendThread());
             DtgResendThread.start();
         }
+
     }
 
     public void ThreadExit()
@@ -201,20 +249,38 @@ public class TimsDtg {
 //        Log.d("TimsDtg", "전송실패DB저장 " + Info.sqlite.selectLastDtgdata()[0] +" " + Info.sqlite.selectLastDtgdata()[3]);
     }
 
-////////////////
+
     synchronized public void add_TIMSQueue(TIMSQueue que) {
 
         if(bTimsSendFail && que.mResend == false && que.mSendType == 1)
         {
-
-//전송실패는 파일보관하고 전송하지않음 재전송진행해야함
-                _after_sendTIMS_fail(que.mURLs, que.mData, que.mSubType);
+            //전송실패는 파일보관하고 전송하지않음 재전송진행해야함
+            _after_sendTIMS_fail(que.mURLs, que.mData, que.mSubType);
             Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS TIMS전송direct 재전송DB입력", "");
+
+
+
+            Log.d("finalObj_que", que.mURLs);
+            Log.d("finalObj_que", que.mData);
+            Log.d("finalObj_que", que.mdrvtime);
+            Log.d("finalObj_que", que.mResend+"");  //
+            Log.d("finalObj_que", que.mSubType+"");
+            Log.d("finalObj_que", que.mSendType+"");  //
+            Log.d("finalObj_que", que.mtrytime+"");
+
             return;
         }
 
+
+        //연결상태 case 6 은 이 2 조건문을 태워야함
         if (mTIMSsendQ.remainingCapacity() > 0)
+
+            Log.d("finalObj_capacity > 0", mTIMSsendQ.toString());
+
             mTIMSsendQ.add(que);
+
+
+
     }
 
 
@@ -363,6 +429,8 @@ public class TimsDtg {
 
                 Info.sqlite.deleteDtgdata();
                 Info.sqlite.updateDtgdataClear();
+                Info.sqlite.deleteConnStatus();
+
             } catch (InterruptedException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -430,20 +498,20 @@ public class TimsDtg {
                 try {
                     if (mTIMSsendQ.remainingCapacity() < 20 || errorque != null) {
 
+                        //capacity 저장공간 20개 일 때 - que
+
                         _check_sending_TIMS(true, false);
 
-                        que = mTIMSsendQ.take();
+                        que = mTIMSsendQ.take(); //
                         que.mtrycount = 0;
 
-                        que.mtrytime = System.currentTimeMillis(); //20210419
+                        que.mtrytime = System.currentTimeMillis();
                         que.mtrycount++;
 
                         mSendFlag = true;
-                        if (que.mSendType == 1) {
 
-//for test. 20210504 임시.
+                        if (que.mSendType == 1) {  //post //참조
 
-//                            if (Info.TIMSUSE_TEST)
                             if(false)
                             {
                                 if (que.mSubType == 1) { //영업정보.
@@ -471,14 +539,16 @@ public class TimsDtg {
                                 } else if (que.mSubType == 3) { //power정보.
 //                                Info.Savedata(Info.gTimsLastDate + "_power.txt", que.mData, "TIMS");
 //                                    mCallback.serviceMessage(3, "TIMS 버튼DATA보관 OK");
-
+                                } else if (que.mSendType == 6) {  //블루투스 & 시경계 연결상태
+                                    //재전송 할 필요없음. 그냥 바로 전송.
+                                    Log.d("finalObj_timsuses","false");
                                 }
-
 
                                 continue;
                             }
 
                             URL url = new URL(que.mURLs);
+                            Log.d("finalObj_url", url.toString());
 
                             {
                                 SimpleDateFormat transFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -498,7 +568,6 @@ public class TimsDtg {
                                         break;
 
                                 }
-
                             }
 
                             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -516,16 +585,22 @@ public class TimsDtg {
                                 os.write(que.mData.getBytes("UTF-8"));
                                 os.flush();
 
+                                Log.d("mfinalObj_mData_1", que.mData);   //{"phoneNo":"01050564465","carno":"서울02가0001","logs":{"logtime":"2022-05-23 09:18:49","logtype":"블루투스","log":"On\/  km"}}
+
                                 if (Info.REPORTREADY)
                                     Info._displayLOG(Info.LOGDISPLAY, "" + que.mData.length(), "TIMS SEND-");
 
                                 if (conn != null) {
+
+                                    Log.d("finalObj_timsuses_conn","conn not null");
 
                                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                                         try {
                                             BufferedReader br = new BufferedReader(
                                                     new InputStreamReader((conn.getInputStream()), "UTF-8"));
                                             String connres = br.readLine().toUpperCase();
+
+                                            Log.d("mfinalObj_connres", que.mData);
 
                                             if (connres.contains("SUCCESS")) {
                                                 if (true)
@@ -542,13 +617,11 @@ public class TimsDtg {
                                                         Info.mEventTIMSok = "성공";
 //                                                        mService.mCallback.serviceMessage(0, "TIMS 버튼DATA전송 OK");
                                                         Info._displayLOG(Info.LOGDISPLAY," TIMS 버튼DATA전송 OK", connres);
-
                                                         break;
 
                                                     case 3:
                                                         Info.mPowerTIMSok = true;
 //                                                        mService.mCallback.serviceMessage(0, "TIMS POWER DATA전송 OK");
-
                                                         break;
                                                 }
 
@@ -763,19 +836,139 @@ public class TimsDtg {
         }
     }
 
-////////////////////
+
+    //연결상태 인터패스 서버 aka DTG/ 타코로 보내기
+    class n_Log_Thread implements Runnable {
+        @Override
+        public void run() {
+
+            DTGQueue que = null;
+
+            try {
+
+                if (mLogSendQ.remainingCapacity() < 6) {
+
+                    que = mLogSendQ.take();
+                    que.mtrycount = 0;
+                    que.mtrytime = System.currentTimeMillis();
+                    que.mtrycount++;
+
+                    if (que.mSendType == 1) {  //POST
+                        URL url = null;
+                        try {
+                            url = new URL(que.mURLs);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+//                        Log.d("logSendFinalUrl", url.toString()); //
+//                        Log.d("logSendFinalData", que.mData);
+                        try {
+                            //http client
+                            HttpURLConnection conn = null;
+                            conn = (HttpURLConnection) url.openConnection();
+                            if (conn != null) {
+
+                                //연결방법 설정
+                                conn.setRequestMethod("POST");
+                                //charset 설정
+                                conn.setRequestProperty("Accept", "application/json");
+                                conn.setRequestProperty("Content-type", "application/json");
+                                conn.setUseCaches(false);
+                                //연결하는데 시간이 오래 걸리는 경우 time out 설정
+                                conn.setConnectTimeout(2000);
+                                conn.setDoOutput(true);
+                                conn.setDoInput(true);
+                                //POST 로 넘겨 줄 파라미터 생성
+                                OutputStream os = conn.getOutputStream();
+                                os.write(que.mData.toString().getBytes("UTF-8"));
+                                os.flush();
+//                                Log.d("logSendConn","통신코드: "+conn.getResponseCode());  //200
+
+                                if (conn != null) {
+                                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                                        //결과값을 받아온다
+                                        BufferedReader br = new BufferedReader(
+                                                new InputStreamReader((conn.getInputStream()), "UTF-8"));
+                                        String connres = br.readLine();
+//                                        Log.d("logSendConres", "(수신) " +connres);
+
+                                        if (connres.contains("SUCCESS")) {
+
+                                            if (true) {
+//                                                threadToast("전송을 완료하였습니다.");
+//                                                Log.d("logsend","전송 성공");
+                                                Info._displayLOG(Info.LOGDISPLAY, connres, "DTG RECEIVE(POST)-" + que.mSubType);
+                                            }else {}
+
+                                        } else {
+//                                            threadToast("전송할 데이터가 없습니다.");
+                                            Info._displayLOG(Info.LOGDISPLAY, " 전송값 체크- ", connres);
+                                            Thread.sleep(300);
+                                        }
+//                                            conn.disconnect();
+                                    }
+                                }else {
+//                                    Log.d("logsendNull", "null");
+                                }
+
+                            }else {
+//                                Log.d("logSendConn-null", "null");
+                            }
+
+                        }catch (Exception e) {
+//                            Log.e("logsendExcept", e.toString());
+                        }
+
+                    }//else/ que.mSendType != 1
+                }// !mLogSendQ.remainingCapacity < 6
+
+
+
+
+            }catch (Exception e) {}
+
+        }//run
+
+
+        void stopThread(){
+
+        }
+    }
+
+    public void threadToast(final String msg) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mService.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    //me: 인터패스 서버로 가는 타코 쓰레드
     class DTG_NetworkThread implements Runnable {
         public void run() {
 
             DTGQueue que = null;
             URL url = null;
+
+            Log.d("kkkkkkkk-11", mSendDTGQ.remainingCapacity()+"");  //5
+
             while (!Thread.currentThread().isInterrupted()) {
                 try {
+
                         if (mSendDTGQ.remainingCapacity() < 5) {
+
+                            Log.d("kkkkkkkk-2", mSendDTGQ.remainingCapacity()+"");
+
                             que = mSendDTGQ.take();
 
                             try {
                                 url = new URL(que.mData);
+//                                url = new URL("http://192.168.0.21:8080/AppMeterApi/Drive1MinAPI?info_dtti=220530141438&car_num=서울02가0004&driver_id=00068291855&speed=50&dist=0&car_x=37.481525690586&car_y=126.91843833014202&statte=1&office_id=8388801872");
+                                Log.d("check_que_data", que.mData);   //이벤트값.. ex) 버튼값, 시외비용, 결제비용, 추가비용, 주행거리.. etc
                             }
                             catch(Exception ex)
                             {
@@ -785,7 +978,9 @@ public class TimsDtg {
                                 continue;
                             }
 
-//                            Log.d("TimsDtg", "uri " + url.toString());
+                            Log.d("TimsDtg", "uri " + url.toString());
+
+
 
                             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                             if (conn != null) {
@@ -797,7 +992,7 @@ public class TimsDtg {
                                             BufferedReader br = new BufferedReader(
                                                     new InputStreamReader((conn.getInputStream()), "UTF-8"));
                                             String connres = br.readLine();
-//                                            Log.d("TimsDtg", "(수신)" + connres);
+                                            Log.d("TimsDtg", "(수신)" + connres);
 
                                             if(connres.equals("Y") && que.mSubType == 1 && que.mResend == false)
                                                 _after_sendDTG_ok(que.mKeycode, url.toString());
@@ -814,7 +1009,7 @@ public class TimsDtg {
                                     }
                                 } catch (Exception e) {
 
-//                                    Log.d("TimsDtg---", e.getMessage());
+                                    Log.d("TimsDtg---", e.getMessage());
                                     if(que.mSubType == 1 && que.mResend == false)
                                         _after_sendDTG_fail(que.mKeycode, url.toString());
 
@@ -854,7 +1049,6 @@ public class TimsDtg {
 //for TIMS.
 //=======================================//
 
-////////////
     void SendTIMS_Data(int div, int payType, List<TIMS_UnitVO> Params, String subParams) {
 
         /**
@@ -870,25 +1064,20 @@ public class TimsDtg {
          * GET :55000/app-meter/auth/driver   | 8: 운전자 정보 확인 API
          */
 
-        if (Info.TIMSUSE == false) {
-
-            return;
-
-        }
-
-        //for test 20210504.
-        //        if(div > 2)
-        //            return;
+        //todo: 2022-05-20
+//        if (Info.TIMSUSE == false) {
+//
+//            return;
+//        }
 
         double latitude = 0;
         double longitude = 0;
 
 
-        //20210701        if(mLastLocation != null)
         if (Info.m_Service.mCalLocation != null) {
 
-            //            latitude = mLastLocation.getLatitude();
-            //            longitude = mLastLocation.getLongitude();
+            Log.d("finalObj_location", "not null");
+
             latitude = mService.mCalLocation.getLatitude();
             longitude = mService.mCalLocation.getLongitude();
         }
@@ -913,6 +1102,9 @@ public class TimsDtg {
         try {
             JSONObject infoObj = new JSONObject();
             JSONObject iObj = new JSONObject();
+
+            Log.d("finalObj_div", div+"");
+
             switch (div) {
 
                 case 1:
@@ -922,24 +1114,22 @@ public class TimsDtg {
                     mSendTYPE = 1;
                     mSubtype = 1;
 
-                    int nextra = 0; //20210520
+                    int nextra = 0;
 
                     //main { }
                     infoObj.put("appId", AMBlestruct.AMLicense.timscode);
                     infoObj.put("license", AMBlestruct.AMLicense.timslicense);
-                    //infoObj.put("license", AMBlestruct.AMLicense.licensecode);
                     infoObj.put("brn", AMBlestruct.AMLicense.companynum);
                     //infoObj.put("brn", "운수사업자 등록번호");
                     infoObj.put("regNo", AMBlestruct.AMLicense.timstaxinum);
-                    //infoObj.put("regNo", AMBlestruct.AMLicense.taxinumber);
                     infoObj.put("phone", AMBlestruct.AMLicense.phonenumber);
-                    //infoObj.put("phone", AMBlestruct.AMLicense.phonenumber);
                     infoObj.put("type", 21);
                     infoObj.put("dailySeq", Info.gTimsDayIdxtmp);
 
 
                     JSONArray unitArray = new JSONArray();
                     for (int i = 0; i < Params.size(); i++) {
+
                         if (i == 0) {
                             sTIME = Params.get(i).getDt();
                             sXPOS = Params.get(i).getLongitude();
@@ -949,10 +1139,8 @@ public class TimsDtg {
                             eTIME = Params.get(i).getDt();
                             eXPOS = Params.get(i).getLongitude();
                             eYPOS = Params.get(i).getLatitude();
-
                             mDIST = Params.get(i).getSumdist();
                             ePAY = Params.get(i).getSumPay();
-
                         }
 
                         JSONObject uObj = new JSONObject();
@@ -1014,7 +1202,6 @@ public class TimsDtg {
                     break;
 
                 case 2:
-
                     mService.mCallback.serviceMessage(2, "TIMS 버튼DATA전송 시작");
 
                     Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS TIMS 버튼DATA전송idx " + Info.gTimsDayEventIdx, "");
@@ -1023,13 +1210,10 @@ public class TimsDtg {
                     mSubtype = 2;
                     infoObj.put("appId", AMBlestruct.AMLicense.timscode);
                     infoObj.put("license", AMBlestruct.AMLicense.timslicense);
-                    //infoObj.put("license", AMBlestruct.AMLicense.licensecode);
                     infoObj.put("brn", AMBlestruct.AMLicense.companynum);
                     //infoObj.put("brn", "운수사업자 등록번호");
                     infoObj.put("regNo", AMBlestruct.AMLicense.timstaxinum);
-                    //infoObj.put("regNo", AMBlestruct.AMLicense.taxinumber);
                     infoObj.put("phone", AMBlestruct.AMLicense.phonenumber);
-                    //infoObj.put("phone", AMBlestruct.AMLicense.phonenumber);
                     infoObj.put("type", 21);
                     infoObj.put("dailySeq", Info.gTimsDayEventIdx);
 
@@ -1091,9 +1275,7 @@ public class TimsDtg {
                     infoObj.put("brn", AMBlestruct.AMLicense.companynum);
                     //infoObj.put("brn", "운수사업자 등록번호");
                     infoObj.put("regNo", AMBlestruct.AMLicense.timstaxinum);
-                    //infoObj.put("regNo", AMBlestruct.AMLicense.taxinumber);
                     infoObj.put("phone", AMBlestruct.AMLicense.phonenumber);
-                    //infoObj.put("phone", AMBlestruct.AMLicense.phonenumber);
                     infoObj.put("type", 21);
                     infoObj.put("dailySeq", Info.gTimsDayPowerIdx);
 
@@ -1105,7 +1287,6 @@ public class TimsDtg {
                     break;
 
                 case 4:
-                    //TIMS_ADDURL = TIMS_VEHICLE +  + "&APPMETER_ID=" + + "&KEY=" + ;
                     TIMS_ADDURL = TIMS_VEHICLE + AMBlestruct.AMLicense.timstaxinum +
                             "&APPMETER_ID=" + AMBlestruct.AMLicense.timscode + "&KEY=" + Info.TIMSKEY;
                     mSendTYPE = 4;
@@ -1121,22 +1302,69 @@ public class TimsDtg {
 
                     break;
 
+                case 6:
+                    //get 아니고 post 방식으로..
+                {
+                    infoObj.put("phoneNo", AMBlestruct.AMLicense.phonenumber);
+                    infoObj.put("carno", AMBlestruct.AMLicense.taxinumber);
+                    infoObj.put("logs", "");
+
+
+                    JSONArray logArray = new JSONArray();
+                    for (int i = 0; i < Params.size(); i++) {
+                        iObj = new JSONObject();
+                        iObj.put("logtime", Params.get(i).getLogtime());
+                        iObj.put("logtype", Params.get(i).getLogtype());
+                        iObj.put("log", Params.get(i).getLog());
+
+                        logArray.put(iObj);
+                    }
+
+                    infoObj.put("logs", logArray);  //하위 -> 상위에 붙이기
+
+//                    Log.d("finalObj_highObj", infoObj.toString());
+
+                    DTGQueue que = new DTGQueue();
+
+                    que.mData = infoObj.toString();
+
+//                    que.mURLs = "http://192.168.0.21:8080/AppMeterApi/log-data"; //이안수 로컬주소
+
+                    //인터패스 서버
+                    que.mURLs = "http://49.50.165.75/AppMeterApi/log-data";  //인터패스 공인 ip 서버
+
+                    que.mSendType = 1;
+                    que.mSubType = mSubtype;
+
+                    que.mResend = false;
+                    que.mdrvtime = "";
+
+                    if (mLogSendQ.remainingCapacity() > 0)
+                        mLogSendQ.add(que);
+
+                    LogSendThread = new Thread(new n_Log_Thread());
+                    LogSendThread.start();
+
+
+                    return;
+                }
             }
 
             TIMSQueue que = new TIMSQueue();
 
             que.mURLs = TIMS_BASEURL + TIMS_ADDURL;
-//20220425            que.mJson = infoObj;
-
-            que.mData = infoObj.toString(); //20220425
+//            Log.e("check_mURl", que.mURLs+"");  //https://tims-help.kotsa.or.kr:55000/app-meter/auth/driver?QUALF_NO=464989868&APPMETER_ID=0000000019&KEY=f4bbc1d0b067002e527e535338668b29164404fd18a4e5c331c70fcb9b07fd62
+            que.mData = infoObj.toString();
 
             que.mSendType = mSendTYPE;
             que.mSubType = mSubtype;
 
-            que.mResend = false; //20220425
+            que.mResend = false;
             que.mdrvtime = "";
 
             add_TIMSQueue(que);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1250,26 +1478,23 @@ public class TimsDtg {
                 + isNight + "|"
                 + isOutside + "|"
                 + isOutGps + "|"
-                + String.format("%.2f", tdist) + "&"; //????????????????
+                + String.format("%.2f", tdist) + "&";
 
 
-//            if(Info.TIMSUSE_TEST)
-///                Info._displayLOG(Info.LOGDISPLAY, stemp, "MAKE TIMS-");
-
-//        Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS 영업정보저장", "");
         Info.Savedata(Info.g_nowKeyCode + ".txt", stemp, "TIMS");
 
     }
 
     public void _sendTIMSAfterDrive() {
+
         if(Info.TIMSUSE == false)
+
             return;
 
         String result = Info.ReadTextFile(Info.g_nowKeyCode + ".txt", "TIMS");
 
-//        Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS 읽은값", result);
+        if (!result.equals("noFile")) { ///
 
-        if (!result.equals("noFile")) {
             setSendTIMSVO(result);
         }
         else
@@ -1277,11 +1502,9 @@ public class TimsDtg {
             Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS 영업정보파일없슴", "");
         }
 
-//20220429
         Info.Deletefile(Info.g_nowKeyCode + ".txt", "TIMS");
 
         _sendTIMSEventEmpty();
-
     }
 
     public void setSendTIMSVO(String data) {
@@ -1328,13 +1551,10 @@ public class TimsDtg {
             }
 
             SendTIMS_Data(1, npaytype, params, semptydist);
-
         }
         catch (Exception e)
         {
-
             return;
-
         }
     }
 
@@ -1410,7 +1630,61 @@ public class TimsDtg {
     {
         if(Info.TIMSUSE == false)
             return;
+
+            Log.d("_sendTIMSEventCash",Info.TIMSUSE+""); //false
+
             SendTIMS_Data(2, 0, null, "01&0");
+    }
+
+    //블루투스 & 시경계데이터 - TIMS
+    public void _sendDTGErrorLog(List<TIMS_UnitVO> params) {
+
+    }
+
+    public void _sendTIMSConnStatus()
+    {
+//        if (Info.TIMSUSE == false)
+//            return;
+        SQLiteHelper helper = new SQLiteHelper(mService.getBaseContext());
+        SQLiteControl sqlite = new SQLiteControl(helper);
+        String[] splt;
+
+        List<TIMS_UnitVO> conn_params  = new ArrayList<>();
+        TIMS_UnitVO unit;
+
+        //1. 저장된 데이터 DB에서 뽑아오기..
+        String connList[] = sqlite.selectConnStatus();
+
+        if (connList.length > 0) {
+
+            for ( int i=0; i<connList.length; i++ ) {
+
+                splt = connList[i].split("#"); //한줄 당 # 을 기준으로 split
+
+                unit = new TIMS_UnitVO();  //unit 객체를 계속 생성하지 않으면 connList[] 데이터 한줄만 들어감.
+
+                //2. 서버에 전송할 데이터 vo 에 담기
+                unit.setLogtime(splt[3]);  //logtime
+                unit.setLogtype(splt[4]);  //logtype
+                unit.setLog(splt[5]);      //log
+
+                //3. 전송할 connList 데이터 add
+                conn_params.add(i, unit);
+            }//for
+        }
+
+        //4. tims 전송데이터 보내기
+        SendTIMS_Data(6, 0, conn_params, "");
+
+        //5. 데이터 전체 삭제 -> 다음에 insert 할 데이터의 중복을 막기위한 것.
+        sqlite.deleteConnStatus();
+    }
+
+    //블루투스 & 시경계데이터 - DTG
+    public void _sendDTGConnStatus(String[] params) {
+
+        Send_DTGData(6, params, 6);
+
     }
 
 //영수증
@@ -1480,10 +1754,10 @@ public class TimsDtg {
 
     public void Send_DTGData(int div, String[] subParam, int event) {
         if (Info.SENDDTG == true) {
-//            Log.d("send_dtg", Info.SENDDTG + "");
-//            Log.d("send_dtg", div + "");
-//            Log.d("send_dtg", subParam + "");
-
+            Log.d("send_dtg", Info.SENDDTG + "");
+            Log.d("send_dtg", div + "");
+            Log.d("send_dtg", subParam + "");
+            Log.d("send_dtg","event- "+event+"");
             ;
         } else {
             return;
@@ -1593,14 +1867,29 @@ public class TimsDtg {
                         "&time_fare=" + "0" + //◇계산 방법=시속 l5km를 기준으로 그 이상 속도일 때는 거리가 요금으로 나오고 그 이하일 때는 시간이 요금으로 계산되는 상호병산제. 시간 요금은 15km 이하 속도일 때는 l5km 속도로 계속 달린 것으로 상정해 그때 나올 거리 요금을 시간으로 쪼갠 1분 36초에 50원씩이다
                         "&fee_counter=" + "0" +
                         "&office_id=" + AMBlestruct.AMLicense.companynum; //20220103
-//                        "&office_id=" + "9876543211";
                 DTG_PATH = "EventAPI?" + DTG_PARAMS;
-//                Log.d("final_distance", subParam[1]+"");  //거리
-//                Log.d("final_distance", subParam[3]+"");  //요금
-//                Log.d("final_distance", subParam[5]+"");  //추가요금
-//                Log.d("TimsDtg", div + " " + subParam[0] + " " + mSendDTGQ.remainingCapacity());
 
                 break;
+
+            case 6:  //블루투스 & 시경계 연결상태 DTG
+
+                for (int i=0; i<subParam.length; i++) {
+
+                    Info.gSplt = subParam[i].split("#");
+                }
+                Log.d("gSplt", Info.gSplt[0]+": "+Info.gSplt[1]+": "+Info.gSplt[2]+": "+Info.gSplt[3]+": "+Info.gSplt[4]+": "+Info.gSplt[5]);
+
+                DTG_PARAMS = "phoneNo=" + Info.gSplt[0] +
+                        "&carno=" + Info.gSplt[1] +
+                        "&logs=" + Info.gSplt[2] +
+                        "&logtime=" + Info.gSplt[3] +
+                        "&logtype=" + Info.gSplt[4] +
+                        "&log=" + Info.gSplt[5];
+                DTG_PATH = "ConnStatusAPI?" + DTG_PARAMS;
+                Log.d("ddddd_path", DTG_PATH);  //ConnStatusAPI?phoneNo=01050564465&carno=서울02가0001&logs=log ble&logtime=2022-05-23 08:55:19&logtype=블루투스&log=On/  km
+
+                break;
+
             default:
                 DTG_PATH = "empty";
                 break;
@@ -1616,20 +1905,37 @@ public class TimsDtg {
         }
 
         DTGQueue que = new DTGQueue();
-        que.mKeycode = Info.g_nowKeyCode;
-        que.mData = DTG_BASEURL + DTG_PATH;
-        que.mSendType = 1;
-        que.mSubType = event;
-        que.mResend = false;
-        que.mdrvtime = "";
-        add_DTGQueue(que);
 
-//        if (!setURL) {
-//            setURL = true;
-//        }
-//        Log.d("TimsDtg ", "("  + mSendDTGQ.remainingCapacity() + ")" + DTG_PATH);
-    }
-////////////////
+        if (div != 6) {
+            que.mKeycode = Info.g_nowKeyCode;
+            que.mData = DTG_BASEURL + DTG_PATH;
+            que.mSendType = 1;
+            que.mSubType = event;
+            que.mResend = false;
+            que.mdrvtime = "";
+
+            add_DTGQueue(que);
+
+        }else {
+
+            Log.d("check_dtg_path", DTG_PATH);  //ConnStatusAPI?phoneNo=01050564465&carno=서울02가0001&logs=log ble&logtime=2022-05-23 09:08:31&logtype=블루투스&log=On/  km
+
+            DTG_BASEURL = "인터패스서버주소/";
+            que.mData = DTG_BASEURL + DTG_PATH;
+
+            Log.d("check_dtg_url", que.mData);
+
+//            que.mURLs = "http://was_server/";
+            que.mSubType = 6;
+            que.mSendType = 1;
+            que.mResend = false;
+            add_DTGQueue(que);
+
+        }
+
+
+    }//Send_DTGData
+
 
     //20220413
     public void _sendPayDTGData(String payType)
