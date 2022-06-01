@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,12 +38,12 @@ public class SettingActivity extends Activity {
 
     private boolean isChecked = true;
 
-    private FontFitTextView bleText, oriText, gubunText, appControlTitle, appControlText;
+    private TextView bleText, oriText, gubunText, appControlTitle, appControlText;
 
     private SwitchButton ble, serialInabi, serialArtview, serialAtlan
-                        , oriHorizontal, oriVertical
-                        , gubunPersonal , gubunCorporate
-                        , appControl;
+            , oriHorizontal, oriVertical
+            , gubunPersonal , gubunCorporate
+            , appControl;
 
     private Button cancelBtn, saveBtn;
 
@@ -86,6 +87,10 @@ public class SettingActivity extends Activity {
         serialArtview.setOnClickListener(clickListener);
         cancelBtn.setOnClickListener(clickListener);
         saveBtn.setOnClickListener(clickListener);
+        oriHorizontal.setOnClickListener(clickListener);
+        oriVertical.setOnClickListener(clickListener);
+        gubunPersonal.setOnClickListener(clickListener);
+        gubunCorporate.setOnClickListener(clickListener);
         appControl.setOnClickListener(clickListener);
 
 
@@ -106,31 +111,47 @@ public class SettingActivity extends Activity {
                 com.konai.appmeter.driver.setting.setting.gSerialUnit = 0;
                 bleText.setText("블루투스");
                 ble.setChecked(true);
+                serialInabi.setChecked(false);
+                serialArtview.setChecked(false);
+                serialAtlan.setChecked(false);
                 break;
             case "1":  //아이나비
                 com.konai.appmeter.driver.setting.setting.gUseBLE = false;
                 com.konai.appmeter.driver.setting.setting.gSerialUnit = 1;
                 bleText.setText("시리얼 아이나비");
                 serialInabi.setChecked(true);
+                ble.setChecked(false);
+                serialArtview.setChecked(false);
+                serialAtlan.setChecked(false);
                 break;
             case "2": //아트뷰
                 com.konai.appmeter.driver.setting.setting.gUseBLE = false;
                 com.konai.appmeter.driver.setting.setting.gSerialUnit = 2;
                 bleText.setText("시리얼 아트뷰");
                 serialArtview.setChecked(true);
+                ble.setChecked(false);
+                serialInabi.setChecked(false);
+                serialAtlan.setChecked(false);
                 break;
             case "3": //아틀란
                 com.konai.appmeter.driver.setting.setting.gUseBLE = false;
                 com.konai.appmeter.driver.setting.setting.gSerialUnit = 3;
                 bleText.setText("시리얼 아틀란");
                 serialAtlan.setChecked(true);
+                ble.setChecked(false);
+                serialInabi.setChecked(false);
+                serialArtview.setChecked(false);
                 break;
             default:
                 com.konai.appmeter.driver.setting.setting.gUseBLE = true;
                 com.konai.appmeter.driver.setting.setting.gSerialUnit = 0;
                 bleText.setText("블루투스");
                 ble.setChecked(true);
+                serialInabi.setChecked(false);
+                serialArtview.setChecked(false);
+                serialAtlan.setChecked(false);
         }
+
 
         //해상도 설정
         switch (oriValue) {
@@ -138,11 +159,13 @@ public class SettingActivity extends Activity {
                 com.konai.appmeter.driver.setting.setting.gOrient = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                 oriText.setText("가로");
                 oriHorizontal.setChecked(true);
+                oriVertical.setChecked(false);
                 break;
             case "2": //세로
                 com.konai.appmeter.driver.setting.setting.gOrient = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
                 oriText.setText("세로");
                 oriVertical.setChecked(true);
+                oriHorizontal.setChecked(false);
                 break;
             default:
                 //me: 먼저 display 의 사이즈로 판단하고 세팅해주기
@@ -151,13 +174,16 @@ public class SettingActivity extends Activity {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     oriText.setText("세로");
                     oriVertical.setChecked(true);
+                    oriHorizontal.setChecked(false);
                 }else {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     oriText.setText("가로");
                     oriHorizontal.setChecked(true);
+                    oriVertical.setChecked(false);
                 }
                 break;
         }
+
 
         //소속 설정
         switch (gubunValue) {
@@ -165,16 +191,19 @@ public class SettingActivity extends Activity {
                 com.konai.appmeter.driver.setting.setting.gGubun = 1;
                 gubunText.setText("개인");
                 gubunPersonal.setChecked(true);
+                gubunCorporate.setChecked(false);
                 break;
             case "2": //법인
                 com.konai.appmeter.driver.setting.setting.gGubun = 2;
                 gubunText.setText("법인");
                 gubunCorporate.setChecked(true);
+                gubunPersonal.setChecked(false);
                 break;
             default:
                 com.konai.appmeter.driver.setting.setting.gGubun = 0;
                 gubunText.setText("개인/법인 선택");
                 gubunPersonal.setChecked(true);
+                gubunCorporate.setChecked(false);
                 break;
         }
 
@@ -219,6 +248,7 @@ public class SettingActivity extends Activity {
 //                    appControlTitle.
                     break;
                 case R.id.ble:
+                    ble.setChecked(true);
                     serialInabi.setChecked(false);
                     serialArtview.setChecked(false);
                     serialAtlan.setChecked(false);
@@ -226,6 +256,7 @@ public class SettingActivity extends Activity {
                     bleText.setText("블루투스");
                     break;
                 case R.id.serial_inabi:
+                    serialInabi.setChecked(true);
                     ble.setChecked(false);
                     serialArtview.setChecked(false);
                     serialAtlan.setChecked(false);
@@ -233,6 +264,7 @@ public class SettingActivity extends Activity {
                     bleText.setText("시리얼 아이나비");
                     break;
                 case R.id.serial_artview:
+                    serialArtview.setChecked(true);
                     ble.setChecked(false);
                     serialInabi.setChecked(false);
                     serialAtlan.setChecked(false);
@@ -240,6 +272,7 @@ public class SettingActivity extends Activity {
                     bleText.setText("시리얼 아트뷰");
                     break;
                 case R.id.serial_atlan:
+                    serialAtlan.setChecked(true);
                     ble.setChecked(false);
                     serialInabi.setChecked(false);
                     serialArtview.setChecked(false);
@@ -247,11 +280,13 @@ public class SettingActivity extends Activity {
                     bleText.setText("시리얼 아틀란");
                     break;
                 case R.id.ori_horizontal:
+                    oriHorizontal.setChecked(true);
                     oriVertical.setChecked(false);
                     oriValue = "1";
                     oriText.setText("가로");
                     break;
                 case R.id.ori_vertical:
+                    oriVertical.setChecked(true);
                     oriHorizontal.setChecked(false);
                     oriValue = "2";
                     oriText.setText("세로");

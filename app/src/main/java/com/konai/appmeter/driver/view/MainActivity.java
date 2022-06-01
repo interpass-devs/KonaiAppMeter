@@ -640,6 +640,9 @@ public class MainActivity extends Activity {
             } else if (nType == AMBlestruct.MeterState.BLELEDON) {
 
                 bleConn = "On, " + Info.CAR_SPEED+" km";
+
+//                checkConnStatusDB();
+
                 sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf.format(date), "블루투스", bleConn);
 
                 if (Info.ERRORLOG == true) {
@@ -1635,6 +1638,7 @@ public class MainActivity extends Activity {
         //현재날짜 구하기
         date = new Date();
         sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
         //위치정보 구하기
 
@@ -6665,8 +6669,7 @@ public class MainActivity extends Activity {
 
             Date time = new Date();
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-
+//            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
 
             subConn = "Off, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
             sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf1.format(time), "시외", subConn);
@@ -6682,6 +6685,7 @@ public class MainActivity extends Activity {
 
             Date time2 = new Date();
             SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmss");
 
             subConn = "On, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
             sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf2.format(time2), "시외", subConn);
@@ -6715,6 +6719,42 @@ public class MainActivity extends Activity {
 //20220503 tra..sh        suburbUseAuto = false;
         chkExtraUse();
     }
+
+    public void checkConnStatusDB() {
+
+        Log.d("logtimeSplt", "checkConnStatusDB");
+
+        String[] logtimeSplt;
+        List<TIMS_UnitVO> params = new ArrayList<>();
+        TIMS_UnitVO unit = null;
+
+        String connList[] = sqlite.selectConnStatus();
+
+        if (connList.length > 0) {
+
+            for (int i=0; i<connList.length; i++) {
+
+                logtimeSplt = connList[i].split("#");
+
+                unit = new TIMS_UnitVO();
+
+                unit.setLogtime(logtimeSplt[3]);
+
+                params.add(i, unit);
+
+                Log.d("logtimeSpltU", unit.getLogtime());
+            }
+
+
+            Log.d("logtimeSplt", params.toString());
+
+            Log.d("logtimeSpltUnit", unit.getLogtime());
+        }
+
+    }
+
+
+
 
 //20210827
     class SoundThread implements Runnable {

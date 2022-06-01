@@ -99,24 +99,6 @@ public class TimsDtg {
         }
 
 
-
-        //errorLog 값 확인
-
-//        try{
-//            if (Info.ERRORlOG_CONN_PARAMS != null) {
-////            Log.d("params_check11", Info.CONN_PARAMS.size()+"");
-////            for (int i=0; i<Info.CONN_PARAMS.size(); i++) {
-////                Log.d("params_check--", i+") "+Info.CONN_PARAMS.get(i).getLogtime());
-////            }
-//                SendTIMS_Data(6, 0, Info.ERRORlOG_CONN_PARAMS, "");
-//            }
-//        }catch (Exception e){
-//            Log.e("errorLogggg", e.toString());
-//            e.toString();
-//        }
-
-
-
         if(Info.SENDDTG) {  //send DTG to interpass aka 타코
             Log.d("tt","tttt send dtg");
             DtgSendThread = new Thread(new DTG_NetworkThread());
@@ -260,13 +242,13 @@ public class TimsDtg {
 
 
 
-            Log.d("finalObj_que", que.mURLs);
-            Log.d("finalObj_que", que.mData);
-            Log.d("finalObj_que", que.mdrvtime);
-            Log.d("finalObj_que", que.mResend+"");  //
-            Log.d("finalObj_que", que.mSubType+"");
-            Log.d("finalObj_que", que.mSendType+"");  //
-            Log.d("finalObj_que", que.mtrytime+"");
+//            Log.d("finalObj_que", que.mURLs);
+//            Log.d("finalObj_que", que.mData);
+//            Log.d("finalObj_que", que.mdrvtime);
+//            Log.d("finalObj_que", que.mResend+"");  //
+//            Log.d("finalObj_que", que.mSubType+"");
+//            Log.d("finalObj_que", que.mSendType+"");  //
+//            Log.d("finalObj_que", que.mtrytime+"");
 
             return;
         }
@@ -275,7 +257,7 @@ public class TimsDtg {
         //연결상태 case 6 은 이 2 조건문을 태워야함
         if (mTIMSsendQ.remainingCapacity() > 0)
 
-            Log.d("finalObj_capacity > 0", mTIMSsendQ.toString());
+//            Log.d("finalObj_capacity > 0", mTIMSsendQ.toString());
 
             mTIMSsendQ.add(que);
 
@@ -369,7 +351,7 @@ public class TimsDtg {
                         que.mdrvtime = ssecode[0];
                         add_TIMSQueue(que);
 
-                        Thread.sleep(3000);
+                        Thread.sleep(5000);
                     }
                     else
                     {
@@ -383,7 +365,6 @@ public class TimsDtg {
                 } catch (InterruptedException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
-//                    Log.d("TimsTIMS2", "false");
 
                     try {
 
@@ -418,7 +399,7 @@ public class TimsDtg {
         }
     }
 
-//////////////////
+
     class DtgResendThread implements Runnable { //20201112
 
         public void run() {
@@ -843,9 +824,7 @@ public class TimsDtg {
         public void run() {
 
             DTGQueue que = null;
-
             try {
-
                 if (mLogSendQ.remainingCapacity() < 6) {
 
                     que = mLogSendQ.take();
@@ -860,8 +839,8 @@ public class TimsDtg {
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }
-//                        Log.d("logSendFinalUrl", url.toString()); //
-//                        Log.d("logSendFinalData", que.mData);
+                        Log.d("logSendFinalUrl", url.toString()); //
+                        Log.d("logSendFinalData", que.mData);
                         try {
                             //http client
                             HttpURLConnection conn = null;
@@ -882,7 +861,7 @@ public class TimsDtg {
                                 OutputStream os = conn.getOutputStream();
                                 os.write(que.mData.toString().getBytes("UTF-8"));
                                 os.flush();
-//                                Log.d("logSendConn","통신코드: "+conn.getResponseCode());  //200
+                                Log.d("logSendConn","통신코드: "+conn.getResponseCode());  //200
 
                                 if (conn != null) {
                                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -890,7 +869,7 @@ public class TimsDtg {
                                         BufferedReader br = new BufferedReader(
                                                 new InputStreamReader((conn.getInputStream()), "UTF-8"));
                                         String connres = br.readLine();
-//                                        Log.d("logSendConres", "(수신) " +connres);
+                                        Log.d("logSendConres", "(수신) " +connres);
 
                                         if (connres.contains("SUCCESS")) {
 
@@ -988,6 +967,8 @@ public class TimsDtg {
                                 conn.setUseCaches(false);
                                 try {
                                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+                                        Log.d("TimsDtg_responseCode", conn.getResponseCode()+"");
 
                                             BufferedReader br = new BufferedReader(
                                                     new InputStreamReader((conn.getInputStream()), "UTF-8"));
@@ -1328,7 +1309,7 @@ public class TimsDtg {
 
                     que.mData = infoObj.toString();
 
-//                    que.mURLs = "http://192.168.0.21:8080/AppMeterApi/log-data"; //이안수 로컬주소
+//                    que.mURLs = "http://192.168.0.21:8080/AppMeterApi/log-data"; //이안수 대리 로컬주소
 
                     //인터패스 서버
                     que.mURLs = "http://49.50.165.75/AppMeterApi/log-data";  //인터패스 공인 ip 서버
@@ -1636,13 +1617,9 @@ public class TimsDtg {
             SendTIMS_Data(2, 0, null, "01&0");
     }
 
-    //블루투스 & 시경계데이터 - TIMS
-    public void _sendDTGErrorLog(List<TIMS_UnitVO> params) {
 
-    }
 
-    public void _sendTIMSConnStatus()
-    {
+    public void _sendTIMSConnStatus() {
 //        if (Info.TIMSUSE == false)
 //            return;
         SQLiteHelper helper = new SQLiteHelper(mService.getBaseContext());
@@ -1664,9 +1641,9 @@ public class TimsDtg {
                 unit = new TIMS_UnitVO();  //unit 객체를 계속 생성하지 않으면 connList[] 데이터 한줄만 들어감.
 
                 //2. 서버에 전송할 데이터 vo 에 담기
-                unit.setLogtime(splt[3]);  //logtime
-                unit.setLogtype(splt[4]);  //logtype
-                unit.setLog(splt[5]);      //log
+                unit.setLogtime(splt[3]);
+                unit.setLogtype(splt[4]);
+                unit.setLog(splt[5]);
 
                 //3. 전송할 connList 데이터 add
                 conn_params.add(i, unit);
@@ -1871,28 +1848,28 @@ public class TimsDtg {
 
                 break;
 
-            case 6:  //블루투스 & 시경계 연결상태 DTG
-
-                for (int i=0; i<subParam.length; i++) {
-
-                    Info.gSplt = subParam[i].split("#");
-                }
-                Log.d("gSplt", Info.gSplt[0]+": "+Info.gSplt[1]+": "+Info.gSplt[2]+": "+Info.gSplt[3]+": "+Info.gSplt[4]+": "+Info.gSplt[5]);
-
-                DTG_PARAMS = "phoneNo=" + Info.gSplt[0] +
-                        "&carno=" + Info.gSplt[1] +
-                        "&logs=" + Info.gSplt[2] +
-                        "&logtime=" + Info.gSplt[3] +
-                        "&logtype=" + Info.gSplt[4] +
-                        "&log=" + Info.gSplt[5];
-                DTG_PATH = "ConnStatusAPI?" + DTG_PARAMS;
-                Log.d("ddddd_path", DTG_PATH);  //ConnStatusAPI?phoneNo=01050564465&carno=서울02가0001&logs=log ble&logtime=2022-05-23 08:55:19&logtype=블루투스&log=On/  km
-
-                break;
-
-            default:
-                DTG_PATH = "empty";
-                break;
+//            case 6:  //블루투스 & 시경계 연결상태 DTG
+//
+//                for (int i=0; i<subParam.length; i++) {
+//
+//                    Info.gSplt = subParam[i].split("#");
+//                }
+//                Log.d("gSplt", Info.gSplt[0]+": "+Info.gSplt[1]+": "+Info.gSplt[2]+": "+Info.gSplt[3]+": "+Info.gSplt[4]+": "+Info.gSplt[5]);
+//
+//                DTG_PARAMS = "phoneNo=" + Info.gSplt[0] +
+//                        "&carno=" + Info.gSplt[1] +
+//                        "&logs=" + Info.gSplt[2] +
+//                        "&logtime=" + Info.gSplt[3] +
+//                        "&logtype=" + Info.gSplt[4] +
+//                        "&log=" + Info.gSplt[5];
+//                DTG_PATH = "ConnStatusAPI?" + DTG_PARAMS;
+//                Log.d("ddddd_path", DTG_PATH);  //ConnStatusAPI?phoneNo=01050564465&carno=서울02가0001&logs=log ble&logtime=2022-05-23 08:55:19&logtype=블루투스&log=On/  km
+//
+//                break;
+//
+//            default:
+//                DTG_PATH = "empty";
+//                break;
 
         }
 
@@ -1906,32 +1883,34 @@ public class TimsDtg {
 
         DTGQueue que = new DTGQueue();
 
-        if (div != 6) {
-            que.mKeycode = Info.g_nowKeyCode;
-            que.mData = DTG_BASEURL + DTG_PATH;
-            que.mSendType = 1;
-            que.mSubType = event;
-            que.mResend = false;
-            que.mdrvtime = "";
+        que.mKeycode = Info.g_nowKeyCode;
+        que.mData = DTG_BASEURL + DTG_PATH;
+        que.mSendType = 1;
+        que.mSubType = event;
+        que.mResend = false;
+        que.mdrvtime = "";
 
-            add_DTGQueue(que);
+        add_DTGQueue(que);
 
-        }else {
-
-            Log.d("check_dtg_path", DTG_PATH);  //ConnStatusAPI?phoneNo=01050564465&carno=서울02가0001&logs=log ble&logtime=2022-05-23 09:08:31&logtype=블루투스&log=On/  km
-
-            DTG_BASEURL = "인터패스서버주소/";
-            que.mData = DTG_BASEURL + DTG_PATH;
-
-            Log.d("check_dtg_url", que.mData);
-
-//            que.mURLs = "http://was_server/";
-            que.mSubType = 6;
-            que.mSendType = 1;
-            que.mResend = false;
-            add_DTGQueue(que);
-
-        }
+//        if (div != 6) {
+//
+//
+//        }else {
+//
+//            Log.d("check_dtg_path", DTG_PATH);  //ConnStatusAPI?phoneNo=01050564465&carno=서울02가0001&logs=log ble&logtime=2022-05-23 09:08:31&logtype=블루투스&log=On/  km
+//
+//            DTG_BASEURL = "인터패스서버주소/";
+//            que.mData = DTG_BASEURL + DTG_PATH;
+//
+//            Log.d("check_dtg_url", que.mData);
+//
+////            que.mURLs = "http://was_server/";
+//            que.mSubType = 6;
+//            que.mSendType = 1;
+//            que.mResend = false;
+//            add_DTGQueue(que);
+//
+//        }
 
 
     }//Send_DTGData

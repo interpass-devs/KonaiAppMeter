@@ -137,6 +137,7 @@ public class SQLiteControl {
 
         Date time = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String logtime = sdf.format(time) + "";
 
         sqlite.delete(helper.CONN_STATUS_TABLE_NAME, "logtime<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{logtime});
@@ -156,6 +157,7 @@ public class SQLiteControl {
 
         Date time = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Calendar cal = Calendar.getInstance();
         cal.setTime(time);
 
@@ -165,8 +167,6 @@ public class SQLiteControl {
         today_3 = sdf.format(cal.getTime());
 
 //        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, null, null,null,null,null); //모든 데이터 fetch
-
-//        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, "logtime BETWEEN '" + sdf.format(time) + " 00:00:00' AND '" + sdf.format(time) + " 23:59:59'", null, null, null, null, null);
 
         // 3일전 ~ 오늘
         Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, "logtime BETWEEN '" + today_3 + " 00:00:00' AND '" + today + " 23:59:59'", null, null, null, null);

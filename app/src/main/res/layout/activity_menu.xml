@@ -273,7 +273,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"
                 android:gravity="center_vertical|left"
-                android:text="설정상태"
+                android:text="환경설정"
                 android:textColor="@color/white"
                 android:textSize="25dp"
                 android:textStyle="bold"/>
@@ -450,7 +450,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-
                     android:textSize="20dp"
                     android:text="앱 설정변경"
                     android:textColor="@color/white"

@@ -391,7 +391,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:paddingLeft="20dp"
-                            android:text="설정상태"
+                            android:text="환경설정"
                             android:textColor="@color/white"
                             android:textSize="25dp"
                             android:textStyle="bold"/>
@@ -623,9 +623,9 @@
                         android:text="금일 영업 마감"
                         android:textSize="25dp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:layout_marginBottom="10dp"
-                        android:background="@drawable/yellow_gradi_btn"
+                        android:background="@drawable/red_gradi_btn"
                         android:layout_marginTop="20dp"
                         android:padding="5dp"/>
 

@@ -79,24 +79,17 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-//import android.support.annotation.NonNull;
-//import android.support.v4.content.FileProvider;
-//import android.support.v4.widget.TextViewCompat;
-
 public class MemberCertActivity extends Activity {
 
     com.konai.appmeter.driver.setting.setting setting = new setting();
 
-    //todo: 20211117
     public Dlg_Env_setting dlg_env_setting;   //환경설정 다이얼로그
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Boolean isClicked = true;
     Context context;
-    //todo: end
-
     private boolean m_bSkipLogin = false; //false;
-    private final int mMaxFail = 10; //20211109
+    private final int mMaxFail = 10;
     private String CertURL = setting.BASEDOMAIN;
     private String Domain = "";
     private String ResultData;
@@ -107,8 +100,8 @@ public class MemberCertActivity extends Activity {
     private SQLiteControl sqlite;
     private SQLiteHelper helper;
     private String[] splt;
-    private String preResultData; //20211109
-    private String prePhoneno = "0"; //20211109
+    private String preResultData;
+    private String prePhoneno = "0";
     private String blueOn, blueOff;
     private String verticalOn, horizontalOn;
     private String totData;
@@ -134,11 +127,11 @@ public class MemberCertActivity extends Activity {
     private FrameLayout frame2 = null;
     int dialog_idx = 0;
 
-    ProgressDialog dlgbox; //20210823
-    private static Thread MainThread = null; //20210823
-    private BroadcastReceiver mReceiver = null; //20210823
+    ProgressDialog dlgbox;
+    private static Thread MainThread = null;
+    private BroadcastReceiver mReceiver = null;
 
-    //20210823 getphonenum
+    // getphonenum
     class MainThreads implements Runnable {
         public void run() {
 
@@ -146,23 +139,23 @@ public class MemberCertActivity extends Activity {
                 boolean certifications = false;
                 int nFail = 0;
 
-                initHandler.sendEmptyMessage(1); //20211109 TODO 통신확인중
+                initHandler.sendEmptyMessage(1); // me 통신확인중
 
-                while (!Thread.currentThread().isInterrupted()) { //20210823
+                while (!Thread.currentThread().isInterrupted()) {
 
                     if (checknetwork()) {
 
                         Thread.sleep(1 * 1000);
 
                         nFail++;
-                        Log.d("last_login_info", "a " + nFail);
+//                        Log.d("last_login_info", "a " + nFail);
                         if (setting.phoneNumber.equals("0")) {
 
                             getPhonenum();
 
                             Thread.sleep(1 * 1000);
                             nFail++;
-                            Log.d("last_login_info", "b " + nFail);
+//                            Log.d("last_login_info", "b " + nFail);
                         } else {
                             chkCertificatiojn();
 
@@ -175,7 +168,7 @@ public class MemberCertActivity extends Activity {
                             } else {
                                 initHandler.sendEmptyMessage(0);
 //20211229
-                                initHandler.sendEmptyMessage(2); //20211109 TODO 통신확인성공
+                                initHandler.sendEmptyMessage(2); //20211109 me 통신확인성공
 
                                 break;
                             }
@@ -899,7 +892,6 @@ public class MemberCertActivity extends Activity {
                         Info._displayLOG(Info.LOGDISPLAY, "현재앱미터 버전  Local" + Info.APP_VERSION + " Server" + Info.SV_APP_VERSION +
                                 " cserver" + Info.SV_APP_CVERSION, "");
 
-                        //todo: 20220104
 //                        Info.APP_VERSION = 1.0;
 //                        Info.SV_APP_VERSION = 2.0;
 
@@ -916,24 +908,23 @@ public class MemberCertActivity extends Activity {
                         }//20220126
 
                     }
-//                    initHandler.sendEmptyMessage(2); //20211229 20211109 TODO 통신확인성공
+//                    initHandler.sendEmptyMessage(2); //20211229 20211109 me 통신확인성공
                 }
 
-            } else if (msg.what == 1) //20211109 TODO 통신확인중입니다.
+            } else if (msg.what == 1) //20211109 me 통신확인중입니다.
             {
 
                 Log.d("last_login_info", "통신확인증");
                 connStatus.setVisibility(View.VISIBLE);
                 connStatus.setText("통신확인중입니다...");
 
-            } else if (msg.what == 2) //20211109 TODO 통신확인성공
+            } else if (msg.what == 2) //20211109 me 통신확인성공
             {
 
                 Log.d("last_login_info", "통신확인성공");
                 connStatus.setVisibility(View.VISIBLE);
                 connStatus.setText("통신확인성공!");
 
-                //todo: 20211230
                 if (gubunVal.equals("1")) {  //개인택시 일 때만
 
                     Toast.makeText(context, "개인택시", Toast.LENGTH_SHORT).show();
@@ -944,7 +935,7 @@ public class MemberCertActivity extends Activity {
                         initHandler.sendEmptyMessageDelayed(10, 3000);
                     }
                 }
-            } else if (msg.what == 10) //todo: 20211230 개인택시 자동로그인
+            } else if (msg.what == 10) //me: 20211230 개인택시 자동로그인
             {
 //                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //                startActivity(intent);
@@ -960,13 +951,12 @@ public class MemberCertActivity extends Activity {
                 }
 
 
-            } else if (msg.what == 3) //20211109 TODO 통신확인실패
+            } else if (msg.what == 3) //20211109 me 통신확인실패
             {
                 Log.d("last_login_info", "통신확인실패");
                 connStatus.setVisibility(View.VISIBLE);
                 connStatus.setText("통신확인실패 X");
 //              자동로그인 확인 후 btn
-                //todo: 20211230
                 if (gubunVal.equals("1")) {  //개인택시 일 때만
 
 //                    Toast.makeText(context, "개인택시", Toast.LENGTH_SHORT).show();
@@ -1022,7 +1012,7 @@ public class MemberCertActivity extends Activity {
 
     }
 
-    //20210823
+
     public boolean checknetwork() {
         try {
             boolean isMobileAvail = false;
@@ -1116,35 +1106,6 @@ public class MemberCertActivity extends Activity {
                     ResultData = jsonData.toString();  //json 결과값
 //                    Log.d("resultData>>1", ResultData);
 
-                    //회원인증시 json 결과값의 errorLog 의 값을 (Y/N) 판단하여 서버에 연결상태 값 보내기
-                    try {
-                        JsonParser jsonPase = new JsonParser();
-                        JsonObject jsonObject = (JsonObject) jsonPase.parse(ResultData);
-                        Log.d("getJSonData", "errorLog: "+jsonObject.get("errorLog"));  //"N"
-
-                        //GSON JsonElement to String
-                        Gson gson = new GsonBuilder().create();
-                        String errorLog = gson.toJson(jsonObject.get("errorLog"));
-
-
-                        if (errorLog.contains("Y")) {
-
-                        }else if (errorLog.contains("N")) {
-
-                            Log.d("errorLog","errorLog check111");
-
-                            connParams();
-//                            sendParams = connParams();
-                            Info.ERRORlOG_CONN_PARAMS = connParams();
-                            Info.ERRORLOG = true;
-
-                        }
-
-
-
-                    }catch (Exception e) {e.printStackTrace();}
-
-
                 } else {
                     ResultData = "Fail";
                 }
@@ -1164,33 +1125,8 @@ public class MemberCertActivity extends Activity {
         }
     }
 
-    public List connParams() {
 
-        helper = new SQLiteHelper(context);
-        sqlite = new SQLiteControl(helper);
-
-        List<TIMS_UnitVO> params = new ArrayList<>();
-        TIMS_UnitVO unit;
-
-        String connList[] = sqlite.selectConnStatus();
-
-        if (connList.length > 0) {
-            for (int i=0; i<connList.length; i++) {
-
-                splt = connList[i].split("#");
-
-                unit = new TIMS_UnitVO();
-                unit.setLogtime(splt[3]);
-                unit.setLogtype(splt[4]);
-                unit.setLog(splt[5]);
-
-                params.add(i, unit);
-            }
-        }
-        return params;
-    }
-
-
+    //서버에서 받아온 json 데이터 -> 특정 데이터 뽑기
     public String parsingCert(String json) {
 
         if (json.equals("Fail")) {
@@ -1210,7 +1146,7 @@ public class MemberCertActivity extends Activity {
             String drvReg = jsonObject.getString("drvRegno");
             String group_code = jsonObject.getString("group_code");
 
-            Info.AREA_CODE = jsonObject.getString("area"); //20211029
+            Info.AREA_CODE = jsonObject.getString("area");
 
             int basePay = Integer.parseInt(jsonObject.getString("Bpay"));
             int baseDist = Integer.parseInt(jsonObject.getString("Bdist"));
@@ -1225,27 +1161,17 @@ public class MemberCertActivity extends Activity {
             AMBlestruct.AMLicense.companynum = jsonObject.getString("biz_no"); //20211109
             try {
                 Info.SV_SUBURBSVER = Double.parseDouble(jsonObject.getString("Suburbs")); //20220419 version 1.58
-            }
-            catch (Exception e) {
-                ;
-            }
+            } catch (Exception e) {}
+
             try {
                 Info.SV_APP_CVERSION = Double.parseDouble(jsonObject.getString("c_version")); //20220506 tra..sh
-            }
-            catch (Exception e)
-            {
-                ;
-            }
+            } catch (Exception e) {}
+
             try {
                 String stims = jsonObject.getString("tims"); //20220506 tra..sh
                 if(stims != null && stims.equals("N"))
                     Info.TIMSUSE = false;
-            }
-            catch (Exception e)
-            {
-                ;
-
-            }
+            } catch (Exception e) {}
 
             try{
                 String errorLog = jsonObject.getString("errorLog");
@@ -1258,12 +1184,11 @@ public class MemberCertActivity extends Activity {
                         Info.ERRORLOG = false;
                         break;
                 }
-            }catch (Exception e) {
 
-            }
+            }catch (Exception e) {}
 
 
-//20220520 parsing added
+//parsing added
             int d_distextra= Integer.parseInt(jsonObject.getString("Dlimit"));
             Double d_distextrarate = Double.parseDouble(jsonObject.getString("Drate"));
             try {
@@ -1272,13 +1197,9 @@ public class MemberCertActivity extends Activity {
                     Info.SENDERRLOG = true;
                 else
                     Info.SENDERRLOG = false;
-            }
-            catch (Exception e)
-            {
-                ;
-            }
+            } catch (Exception e) {}
 
-///////////////////
+
 
             Log.d(logtag + "_사업자번호", AMBlestruct.AMLicense.companynum + " suburbs " + Info.SV_SUBURBSVER + " " + Info.TIMSUSE);
 

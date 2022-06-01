@@ -29,7 +29,6 @@ public class BroadCastManager extends BroadcastReceiver {
 		mContext = context;
 
 
-		//todo: 2022-05-12
 		//단말이 켜졌을 때 -> 앱미터 실행시키기 위해 연결
 		if (action.equals("android.intent.action.BOOT_COMPLETED")) {
 

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.SettingActivity">
+    tools:context=".view.SettingActivity"
+    android:background="@color/background_new">
 
 
     <LinearLayout
@@ -13,8 +14,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
 
 
@@ -41,382 +42,395 @@
 
 
 
-            <!-- 연결설정 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="연결 설정"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/yellow"/>
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:id="@+id/ble_text"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="블루투스0"
-                    android:textSize="20dp"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-
-
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
+                android:orientation="vertical"
+                android:background="@drawable/empty_bg_black"
+                android:padding="15dp">
+                <!-- 연결설정 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="블루투스"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <!--                <androidx.appcompat.widget.SwitchCompat-->
-                <!--                    android:id="@+id/switchTest"-->
-                <!--                    android:layout_weight="0.5"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    app:kswTintColor="@color/yellow"-->
-                <!--                    style="@style/SwitchButtonStyle"-->
-                <!--                    android:checked="false"-->
-                <!--                    android:textOff="OFF"-->
-                <!--                    android:textOn="ON"-->
-                <!--                    android:background="@color/blue_btn"-->
-                <!--                    android:layout_gravity="right"-->
-                <!--                    android:gravity="right"/>-->
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/ble"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="right"
-                    android:gravity="right"/>
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="연결 설정"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:textColor="@color/yellow"/>
+                    <TextView
+                        android:id="@+id/ble_text"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="블루투스0"
+                        android:textSize="25dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="블루투스"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <!--                <androidx.appcompat.widget.SwitchCompat-->
+                    <!--                    android:id="@+id/switchTest"-->
+                    <!--                    android:layout_weight="0.5"-->
+                    <!--                    android:layout_width="0dp"-->
+                    <!--                    android:layout_height="match_parent"-->
+                    <!--                    app:kswTintColor="@color/yellow"-->
+                    <!--                    style="@style/SwitchButtonStyle"-->
+                    <!--                    android:checked="false"-->
+                    <!--                    android:textOff="OFF"-->
+                    <!--                    android:textOn="ON"-->
+                    <!--                    android:background="@color/blue_btn"-->
+                    <!--                    android:layout_gravity="right"-->
+                    <!--                    android:gravity="right"/>-->
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/ble"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="right"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="시리얼 (아이나비)"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/serial_inabi"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="시리얼 (아트뷰)"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/serial_artview"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="시리얼 (아틀란)"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/serial_atlan"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#4C3C04"/>
+
+
+
+
+
+
+                <!-- 해상도설정 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="해상도 설정"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:textColor="@color/yellow"/>
+                    <TextView
+                        android:id="@+id/ori_text"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="가로0"
+                        android:textSize="25dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="가로"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/ori_horizontal"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="세로"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/ori_vertical"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#4C3C04"/>
+
+
+
+
+
+
+                <!-- 소속설정 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="소속 설정"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:textColor="@color/yellow"/>
+                    <TextView
+                        android:id="@+id/gubun_text"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="법인0"
+                        android:textSize="25dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="개인"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/gubun_personal"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="법인"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/gubun_corporate"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+
+
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#4C3C04"/>
+
+
+
+
+
+
+                <!-- 앱 자동실행 설정 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/app_control_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="앱 자동실행 설정"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:textColor="@color/yellow"/>
+                    <TextView
+                        android:id="@+id/app_control_text"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right|center_vertical"
+                        android:text="ON/OFF"
+                        android:textSize="25dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+                    <com.konai.appmeter.driver.util.FontFitTextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:textColor="@color/yellow"/>
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/app_control"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:kswTintColor="@color/yellow"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"/>
+                </LinearLayout>
             </LinearLayout>
 
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="시리얼 (아이나비)"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/serial_inabi"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="시리얼 (아트뷰)"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/serial_artview"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="시리얼 (아틀란)"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/serial_atlan"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4C3C04"/>
-
-
-
-
-
-
-            <!-- 해상도설정 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="해상도 설정"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/yellow"/>
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:id="@+id/ori_text"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="가로0"
-                    android:textSize="20dp"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="가로"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/ori_horizontal"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="세로"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/ori_vertical"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4C3C04"/>
-
-
-
-
-
-
-            <!-- 소속설정 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="소속 설정"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/yellow"/>
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:id="@+id/gubun_text"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="법인0"
-                    android:textSize="20dp"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="개인"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/gubun_personal"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="법인"
-                    android:textSize="18dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/gubun_corporate"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
-
-
-
-
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4C3C04"/>
-
-
-
-
-
-
-            <!-- 앱 자동실행 설정 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:id="@+id/app_control_title"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="앱 자동실행 설정"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/yellow"/>
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:id="@+id/app_control_text"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right|center_vertical"
-                    android:text="ON/OFF"
-                    android:textSize="20dp"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-                <com.konai.appmeter.driver.util.FontFitTextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/yellow"/>
-                <com.kyleduo.switchbutton.SwitchButton
-                    android:id="@+id/app_control"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:kswTintColor="@color/yellow"
-                    style="@style/SwitchButtonStyle"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"/>
-            </LinearLayout>
 
 
 
@@ -431,7 +445,8 @@
             android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="40dp">
             <com.konai.appmeter.driver.util.ButtonFitText
                 android:id="@+id/cancel_btn"
                 android:layout_weight="1"
