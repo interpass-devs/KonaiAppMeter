@@ -753,8 +753,8 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void serviceLbsControllEvent(int nLastState, int nType) {
-            Log.e("LbsContollEvt", nLastState + "/" + nType);
+        public void serviceLbsControllEvent(int nType, int nLastState) {
+            Log.e("LbsContollEvt", nType + "/" + nLastState);
 
 //            nType 1 빈차 2 주행 3 호출
             switch (nLastState) {
@@ -4973,6 +4973,7 @@ public class MainActivity extends Activity {
             }
         });
 //ㅇㄹㄴㄹ
+        //깃헙테스트  //깃헙테스트2222
         btn_businum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

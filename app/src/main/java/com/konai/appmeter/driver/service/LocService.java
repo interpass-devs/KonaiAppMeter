@@ -1102,7 +1102,7 @@ a
             @Override
             public void onClick(View view) {
                 Log.d("checkbtn", m_lbsLastState+"");
-                mCallback.serviceLbsControllEvent(m_lbsLastState, 2); // 1/2
+                mCallback.serviceLbsControllEvent(2, m_lbsLastState); // 1/2
                 show_mainActivity(); //20210823
                 _lbsBtnSet(2);
 

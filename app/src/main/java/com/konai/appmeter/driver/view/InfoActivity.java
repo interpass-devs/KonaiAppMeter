@@ -50,6 +50,8 @@ import java.util.concurrent.BlockingQueue;
 
 public class InfoActivity extends Activity {
 
+    //깃헙테스트333??????????????????????
+
     private TextView textView9, rtv_name, phone_title, unique_title, carno_title, company_title, gps_title, bluetooth_title, obd_title, osver_title, maker_title;
     private TextView tv_name, tv_phoneno, tv_unique, tv_carno, tv_company, tv_gps, tv_bluetooth, tv_obd, tv_osver, tv_maker, tv_version, area_name, basic_fare, basic_dist, after_fare;
     private TextView tv_area_name, tv_base_cost, tv_base_drvdist, tv_dist_cost, tv_interval_dist, tv_night_time_rate;
