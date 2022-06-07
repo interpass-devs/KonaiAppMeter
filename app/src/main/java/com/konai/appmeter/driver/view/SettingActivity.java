@@ -464,8 +464,10 @@ public class SettingActivity extends Activity {
 
     private void initializecontents(int ntp) {
         if (ntp == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //20220531
             setContentView(R.layout.activity_setting);
         }else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //20220531
             setContentView(R.layout.activity_setting_h);
         }
     }

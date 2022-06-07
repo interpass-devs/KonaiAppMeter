@@ -21,7 +21,13 @@ public class comments {
 //version 1.6 ~
 //UPFILENAME = "appmeter.apk"로(appmeter_h.apk, appmeter_l.apk 사용안함)
 
+//20220511
+//version 1.71
+//시경계적용 update by server
 
+//20220531
+//version 1.74
+//시경계 빈차등gps이용
 
 
 

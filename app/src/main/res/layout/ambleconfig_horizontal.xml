@@ -4,28 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="26.8"
     android:background="@color/background_new">
-
+    <!-- android:background="@drawable/radius_batangshape" -->
+    <!--깃 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10sp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5sp"
         android:layout_marginRight="5sp"
         android:orientation="horizontal"
         android:layout_weight="2.3">
+        <!--    android:background="@drawable/radius_top" -->
 
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="horizontal" >
+
             <ImageView
                 android:id="@+id/imageView31"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/launcher_icon" />
+                android:src="@drawable/launcher_icon"
+                android:layout_marginLeft="5dp"/>
+            <!-- android:src="@drawable/activity_icon" -->
+            <!--   android:src="@mipmap/ic_appmeter_icon" -->
             <TextView
                 android:id="@+id/TextViewTitle"
                 android:layout_width="wrap_content"
@@ -51,7 +56,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|end"
-                android:background="@drawable/ic_menu"/>
+                android:background="@drawable/ic_menu"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"/>
+            <!-- android:src="@drawable/btn_gomain" -->
 
         </LinearLayout>
 
@@ -65,7 +73,9 @@
         android:layout_marginRight="5sp"
         android:layout_marginTop="5sp"
         android:gravity="top"
-        android:layout_weight="2.5">
+        android:layout_weight="3">
+        <!--    android:background="@drawable/yellow_gradi_btn" -->
+        <!-- android:textColor="#ff820316" -->
         <!--20220407 tra..sh -->
         <com.konai.appmeter.driver.util.ButtonFitText
             android:id="@+id/Btnback"
@@ -75,10 +85,10 @@
             android:layout_marginRight="5sp"
             android:background="@drawable/grey_gradi_btn"
             android:text="이전"
+            android:textSize="20dp"
             android:autoSizeTextType="uniform"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:padding="5dp"
             android:layout_weight="1"/>
 
         <com.konai.appmeter.driver.util.ButtonFitText
@@ -89,10 +99,10 @@
             android:layout_marginLeft="5sp"
             android:layout_marginRight="5sp"
             android:text="닫기"
+            android:textSize="20dp"
             android:autoSizeTextType="uniform"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:padding="5dp"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -106,18 +116,18 @@
         android:layout_marginTop="5sp"
         android:layout_marginBottom="10sp"
         android:layout_weight="22">
+        <!--  android:background="@drawable/yellow_gradi_btn" -->
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent" >
 
             <LinearLayout
                 android:id="@+id/layoutlist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginBottom="20dip"
+                android:layout_marginBottom="10dip"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="10dip"
@@ -126,11 +136,15 @@
                     android:id="@id/android:list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:cacheColorHint="#ffffff"
-                    android:layout_weight="1">
+                    android:cacheColorHint="#00000000"
+                    android:layout_weight="1" >
                 </ListView>
-
             </LinearLayout>
+
+
+
+
+
 
             <LinearLayout
                 android:id="@+id/layoutinfoinput"
@@ -140,7 +154,6 @@
                 android:layout_marginBottom="10dip"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
-                android:layout_marginTop="10dip"
                 android:orientation="vertical" >
 
                 <LinearLayout
@@ -148,10 +161,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dip"
                     android:layout_marginLeft="0dip"
                     android:layout_marginRight="0dip"
+                    android:layout_marginTop="10dip"
                     android:orientation="vertical" >
-
                     <TextView
                         android:id="@+id/textinfo"
                         android:layout_width="match_parent"
@@ -160,171 +174,145 @@
                         android:paddingLeft="10dip"
                         android:textSize="25dp"
                         android:text="AM설정information"
-                        android:textColor="@color/white"
+                        android:textColor="#ffffff"
                         android:scrollbars="vertical"/>
                 </LinearLayout>
 
 
 
+
+
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="22"
-                    android:weightSum="2.2"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <LinearLayout
                         android:id="@+id/layoutinput"
                         android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dip"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginRight="5dip"
-                        android:layout_marginTop="5dip"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:background="@drawable/empty_bg_black"
-                        android:paddingTop="15dp"
-                        android:paddingBottom="20dp">
+                        android:paddingTop="10dp"
+                        android:paddingBottom="15dp"
+                        android:layout_marginRight="5dp">
 
                         <LinearLayout
                             android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/textinput"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="3"
-                                android:gravity="center"
-                                android:paddingLeft="20dp"
-                                android:text="날짜입력(6자리)"
-                                android:textColor="@color/white"
-                                android:textSize="25dp" />
-
-                            <TextView
-                                android:id="@+id/m_keyboard"
-                                android:layout_weight="1"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:layout_gravity="center_vertical"
-                                android:textSize="18dp"
-                                android:text="영문"
-                                android:textStyle="bold"
-                                android:textColor="@color/white"
-                                android:background="@drawable/red_gradi_btn"
-                                android:layout_marginRight="10dp"/>
-                        </LinearLayout>
-
-
-                        <EditText
-                            android:layout_weight="1.5"
-                            android:id="@+id/editinput"
-                            android:layout_width="250dp"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="15dip"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:textSize="30dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
-                            android:paddingLeft="20dp"
-                            android:inputType="number"
-                            android:background="@drawable/dlg_edit_box">
-                            <requestFocus/>
-                        </EditText>
-
-                        <LinearLayout
-                            android:layout_weight="2"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:orientation="horizontal"
-                            android:layout_marginLeft="5sp"
-                            android:layout_marginRight="5sp"
-                            android:layout_marginTop="20dp"
-                            android:gravity="top">
-
-                            <Button
-                                android:id="@+id/Btninputsend"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="5sp"
-                                android:layout_marginRight="5sp"
-                                android:background="@drawable/yellow_gradi_btn"
-                                android:text="전송"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="35dp"
-                                android:layout_weight="1"/>
-
-                            <Button
-                                android:id="@+id/Btninputcancel"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/grey_gradi_btn"
-                                android:layout_marginLeft="5sp"
-                                android:layout_marginRight="5sp"
-                                android:text="취소"
-                                android:textColor="@color/white"
-                                android:textStyle="bold"
-                                android:textSize="35dp"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-
-                    <!-- 영문 키패드 new -->
-                    <!--                        <com.konai.appmeter.driver.MyKeyboard-->
-                    <!--                            android:id="@+id/keyboard"-->
-                    <!--                            android:layout_weight="1.2"-->
-                    <!--                            android:layout_width="match_parent"-->
-                    <!--                            android:layout_height="0dp"-->
-                    <!--                            android:orientation="vertical"-->
-                    <!--                            android:visibility="gone"/>-->
-                    <!--                        &lt;!&ndash; 영문 키패드 new end.....&ndash;&gt;-->
-
-
-
-
-                    <!-- 영문 키패드 -->
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/customkeyboardviewLayout"
-                        android:layout_weight="1.2"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:orientation="vertical">
-                        <com.konai.appmeter.driver.view.CustomKeyboardView
-                            android:id="@+id/customkeyboardview"
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="1dp"/>
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                android:layout_marginBottom="10dp">
+                                <TextView
+                                    android:layout_weight="3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:gravity="center"
+                                    android:text="값 입력"
+                                    android:textColor="@color/white"/>
+                                <TextView
+                                    android:id="@+id/m_keyboard"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:gravity="center"
+                                    android:text="영문"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/white"
+                                    android:background="@drawable/red_gradi_btn"
+                                    android:paddingTop="2dp"
+                                    android:paddingBottom="2dp"/>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="6"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/editinput"
+                                    android:layout_width="0dp"
+                                    android:layout_height="70dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="20dp"
+                                    android:layout_weight="1.2"
+                                    android:background="@drawable/dlg_edit_box"
+                                    android:ems="10"
+                                    android:focusable="false"
+                                    android:gravity="center_vertical"
+                                    android:inputType="number"
+                                    android:paddingLeft="20dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="25sp"
+                                    android:textStyle="bold">
+
+                                    <requestFocus />
+                                </EditText>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="150dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <Button
+                                        android:id="@+id/Btninputsend"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_marginBottom="5dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/yellow_gradi_btn"
+                                        android:text="전송"
+                                        android:textColor="@color/black"
+                                        android:textSize="30sp"
+                                        android:textStyle="bold" />
+
+                                    <Button
+                                        android:id="@+id/Btninputcancel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/grey_gradi_btn"
+                                        android:text="취소"
+                                        android:textColor="@color/white"
+                                        android:textSize="30sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
-                    <!-- 영문 키패드 end -->
-                    <!--
-                    android:keyBackground="@drawable/yellow_gradi_btn"
-                    android:keyTextColor="@color/black"
-                    -->
-
-
 
 
                     <!-- 숫자 키패드 -->
                     <LinearLayout
                         android:visibility="visible"
                         android:id="@+id/radio_button_layout"
-                        android:layout_weight="1.2"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="5dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -336,7 +324,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:gravity="center"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
@@ -354,7 +341,6 @@
                                 android:layout_margin="3dp"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
-                                android:gravity="center"
                                 android:text="2"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
@@ -367,7 +353,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="3"
@@ -389,7 +374,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="4"
@@ -404,7 +388,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="5"
@@ -419,7 +402,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="6"
@@ -440,7 +422,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:gravity="center"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
@@ -456,7 +437,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="8"
@@ -471,7 +451,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="9"
@@ -493,7 +472,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="C"
@@ -508,7 +486,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:layout_margin="3dp"
-                                android:gravity="center"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
                                 android:text="0"
@@ -522,7 +499,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:gravity="center"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/yellow_gradi_btn"
                                 android:button="@null"
@@ -535,7 +511,113 @@
                     </LinearLayout>
                     <!-- 숫자 키패드 end -->
 
+
+
+
+
+
+                    <!-- 영문 키패드 -->
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/customkeyboardviewLayout"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="5dp">
+                        <com.konai.appmeter.driver.view.CustomKeyboardView
+                            android:id="@+id/customkeyboardview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+                    <!-- 영문 키패드 end -->
+                    <!--
+                    android:keyBackground="@drawable/yellow_gradi_btn"
+                    android:keyTextColor="@color/black"
+                    -->
+
+
+
+
                 </LinearLayout>
+
+
+
+
+                <!--                    <LinearLayout-->
+                <!--                        android:id="@+id/layoutinput"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_gravity="center"-->
+                <!--                        android:layout_marginBottom="10dip"-->
+                <!--                        android:layout_marginLeft="5dip"-->
+                <!--                        android:layout_marginRight="5dip"-->
+                <!--                        android:layout_marginTop="10dip"-->
+                <!--                        android:orientation="vertical" >-->
+
+                <!--                        <TextView-->
+                <!--                            android:id="@+id/textinput"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_gravity="center_horizontal"-->
+                <!--                            android:paddingLeft="10dip"-->
+                <!--                            android:textSize="25dp"-->
+                <!--                            android:text="값입력"-->
+                <!--                            android:textColor="#000000" />-->
+
+                <!--                        <EditText-->
+                <!--                            android:id="@+id/editinput"-->
+                <!--                            android:layout_width="250dp"-->
+                <!--                            android:layout_height="60dp"-->
+                <!--                            android:layout_marginTop="30dip"-->
+                <!--                            android:layout_gravity="center_horizontal"-->
+                <!--                            android:gravity="center"-->
+                <!--                            android:ems="10"-->
+                <!--                            android:textSize="30dp"-->
+                <!--                            android:paddingLeft="10dip"-->
+                <!--                            android:inputType="number"-->
+                <!--                            android:background="@drawable/yellow_gradi_btn"/>-->
+
+                <!--                        <LinearLayout-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="0dp"-->
+                <!--                            android:orientation="horizontal"-->
+                <!--                            android:layout_marginLeft="5sp"-->
+                <!--                            android:layout_marginRight="5sp"-->
+                <!--                            android:layout_marginTop="20sp"-->
+                <!--                            android:gravity="top"-->
+                <!--                            android:layout_weight="3">-->
+
+                <!--                            <Button-->
+                <!--                                android:id="@+id/Btninputsend"-->
+                <!--                                android:layout_width="0dp"-->
+                <!--                                android:layout_height="match_parent"-->
+                <!--                                android:layout_marginLeft="5sp"-->
+                <!--                                android:layout_marginRight="5sp"-->
+                <!--                                android:background="@drawable/yellow_gradi_btn"-->
+                <!--                                android:text="전송"-->
+                <!--                                android:textColor="#ff820316"-->
+                <!--                                android:textStyle="bold"-->
+                <!--                                android:textSize="40sp"-->
+                <!--                                android:layout_weight="1"/>-->
+
+                <!--                            <Button-->
+                <!--                                android:id="@+id/Btninputcancel"-->
+                <!--                                android:layout_width="0dp"-->
+                <!--                                android:layout_height="match_parent"-->
+                <!--                                android:background="@drawable/yellow_gradi_btn"-->
+                <!--                                android:layout_marginLeft="5sp"-->
+                <!--                                android:layout_marginRight="5sp"-->
+                <!--                                android:text="취소"-->
+                <!--                                android:textColor="#ff820316"-->
+                <!--                                android:textStyle="bold"-->
+                <!--                                android:textSize="40sp"-->
+                <!--                                android:layout_weight="1"/>-->
+                <!--                        </LinearLayout>-->
+                <!--                    </LinearLayout>-->
+
+
+
 
             </LinearLayout>
 
@@ -563,9 +645,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="5dip"
+                android:layout_marginBottom="10dip"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
+                android:layout_marginTop="10dip"
                 android:orientation="vertical" >
 
                 <LinearLayout
@@ -579,21 +662,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="2.5"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:layout_marginTop="10sp"
                     android:gravity="bottom">
 
                     <TableLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        >
 
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_marginBottom="2sp"
                             android:layout_weight="1">
+
                             <Button
                                 android:id="@+id/btn_1"
                                 android:layout_width="0dp"
@@ -606,8 +690,9 @@
                                 android:text="1"
                                 android:autoSizeTextType="uniform"
                                 android:textStyle="bold"
-                                android:textSize="30sp"
+                                android:textSize="30dp"
                                 android:layout_weight="1"/>
+
                             <Button
                                 android:id="@+id/btn_2"
                                 android:layout_width="0dp"
@@ -619,8 +704,9 @@
                                 android:text="2"
                                 android:autoSizeTextType="uniform"
                                 android:textStyle="bold"
-                                android:textSize="30sp"
+                                android:textSize="30dp"
                                 android:layout_weight="1"/>
+
                             <Button
                                 android:id="@+id/btn_3"
                                 android:layout_width="0dp"
@@ -632,8 +718,10 @@
                                 android:text="3"
                                 android:autoSizeTextType="uniform"
                                 android:textStyle="bold"
-                                android:textSize="30sp"
+                                android:textSize="30dp"
                                 android:layout_weight="1"/>
+
+
                             <Button
                                 android:id="@+id/btn_6"
                                 android:layout_width="0dp"
@@ -645,7 +733,7 @@
                                 android:text="6"
                                 android:autoSizeTextType="uniform"
                                 android:textStyle="bold"
-                                android:textSize="30sp"
+                                android:textSize="30dp"
                                 android:layout_weight="1"/>
 
                             <Button
@@ -660,8 +748,9 @@
                                 android:text="0"
                                 android:autoSizeTextType="uniform"
                                 android:textStyle="bold"
-                                android:textSize="30sp"
+                                android:textSize="30dp"
                                 android:layout_weight="1"/>
+
                         </TableRow>
 
                     </TableLayout>

@@ -1,6 +1,7 @@
 package com.konai.appmeter.driver.view;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -77,13 +78,13 @@ public class TimsInfoActivity extends Activity {
     private void initializecontents(int nTP)
     {
         if(nTP == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //20220531
             setContentView(R.layout.activity_timsinfo);
             set_frame_orient(0);
-
         }
         else
         {
-
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //20220531
             setContentView(R.layout.activity_timsinfo);
             set_frame_orient(1);
         }

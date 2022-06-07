@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -127,11 +128,13 @@ public class InfoActivity extends Activity {
     private void initializecontents(int nTP)
     {
         if(nTP == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //20220531
             setContentView(R.layout.activity_info);  //세로
             set_frame_orient(0);
         }
         else
         {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //20220531
             setContentView(R.layout.activity_info_h);  //가로
             set_frame_orient(1);
         }

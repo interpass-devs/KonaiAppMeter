@@ -319,8 +319,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="aaa7a7" />
-                            <entry key="outputName" value="ic_cancel" />
+                            <entry key="outputName" value="ic__cancel_24" />
                             <entry key="sourceFile" value="C:\Users\Interpass\AndroidStudioProjects\KonaiAppMeter20210819_1117\app\src\main\res\drawable\ic_deal_list.svg" />
                           </map>
                         </option>

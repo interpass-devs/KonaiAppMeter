@@ -94,24 +94,6 @@
                         android:background="@drawable/pointer"
                         android:backgroundTint="@color/white"
                         android:layout_margin="6dp"/>
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:layout_marginTop="2dp"-->
-<!--                        android:layout_marginBottom="2dp"-->
-<!--                        android:layout_marginLeft="40dp"-->
-<!--                        android:layout_marginRight="40dp">-->
-<!--                        <ImageView-->
-<!--                            android:id="@+id/lbs_home"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:background="@drawable/ic_home"-->
-<!--                            android:backgroundTint="@color/white" />-->
-<!--                    </LinearLayout>-->
-
 
 
                     <LinearLayout
@@ -186,50 +168,61 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-                    android:layout_weight="6"
+                    android:layout_weight="8"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:background="@drawable/edit_backgroud_radius_rightbottom">
 
+                    <com.konai.appmeter.driver.util.FontFitTextView
+                        android:visibility="gone"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/radius_btn_bottom_right_grey_gradi"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="빈  차"
+                        android:textColor="#ffffff"
+                        android:textStyle="bold"/>
                     <com.konai.appmeter.driver.util.FontFitTextView
                         android:id="@+id/transfer_final_payment"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1.5"
                         android:autoSizeTextType="uniform"
-                        android:background="@drawable/touched_up_pay_btn_yellow"
+                        android:background="@drawable/radius_btn_bottom_left"
                         android:gravity="center"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:text="지  불"
                         android:textColor="#000000"
                         android:textStyle="bold"/>
-
                     <com.konai.appmeter.driver.util.FontFitTextView
                         android:id="@+id/lbs_payment"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="5"
-                        android:layout_marginRight="10dp"
-
-                        android:gravity="right|center_vertical"
+                        android:gravity="center"
                         android:text="0"
                         android:textColor="#ffffff"
                         android:textStyle="bold" />
+                    <com.konai.appmeter.driver.util.FontFitTextView
+                        android:id="@+id/transfer_final_empty"
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/radius_btn_bottom_right_grey_gradi"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="빈  차"
+                        android:textColor="#ffffff"
+                        android:textStyle="bold"/>
                 </LinearLayout>
-
-                <!-- <TextView
-                     android:id="@+id/lbs_payment"
-                     android:layout_width="match_parent"
-                     android:layout_height="0dp"
-                     android:layout_marginRight="10sp"
-                     android:layout_weight="6"
-                     android:autoSizeTextType="uniform"
-                     android:gravity="right|center_vertical"
-                     android:text="0"
-                     android:textStyle="bold"
-                     android:textColor="#ffffff" />-->
 
                 <TextView
                     android:id="@+id/lbs_remaindist"
@@ -242,7 +235,6 @@
                     android:text="0"
                     android:textColor="#ffffff"
                     android:visibility="gone" />
-
             </LinearLayout>
 
             <LinearLayout

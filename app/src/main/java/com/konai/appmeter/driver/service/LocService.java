@@ -46,11 +46,11 @@ import androidx.core.app.NotificationCompat;
 
 import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
-import com.konai.appmeter.driver.setting.Info;
-import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.view.MainActivity;
 import com.konai.appmeter.driver.R;
 import com.konai.appmeter.driver.VO.TIMS_UnitVO;
+import com.konai.appmeter.driver.setting.Info;
+import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.socket.AMBluetoothLEManager;
 import com.konai.appmeter.driver.struct.AMBlestruct;
@@ -115,7 +115,7 @@ public class LocService extends Service implements LocationListener {
     View m_Lbsview = null;
     LinearLayout m_lbslayoutimg = null;
     LinearLayout m_lbslayoutBottom = null;
-    FontFitTextView transferToFinalPay, transferToFinalEmpty;
+    FontFitTextView transferToFinalPay, transferToFinalEmpty; //todo: 2022-05-04
 
     private double touch_interval_X = 0; // X 터치 간격
     private double touch_interval_Y = 0; // Y 터치 간격
@@ -262,9 +262,6 @@ public class LocService extends Service implements LocationListener {
         static String mStarttime = ""; //AMBlestruct.getCurDateString(); //20201110
         static String mEndtime = "";
         static boolean mbStartExtra = false; //할증포함기본요금적용
-        static boolean mbExtraTime = false; //심야할증시간
-        static boolean mbExtraComplex = false; //복합.
-        static boolean mbExtraSuburb = false; //시외.
         static int mDTGFirstDist = 0; //20210325 dtg거리. for  주행중강제종료, 주행으로앱미터시작
         static int TIMSIDX = 0;
         static double mLastDTGdist = 0; //20210701 dtg사용이 gps로바뀔때 마지막 dtg이동거리를 이용.
@@ -277,9 +274,10 @@ public class LocService extends Service implements LocationListener {
             mDrivedistanceT = 0;
             mFaredistanceT = 0;
 
-            mbExtraTime = false;
-            mbExtraComplex = false;
-            mbExtraSuburb = false;
+            CalFareBase.mbExtraTime = false;
+            CalFareBase.mbExtraComplex = false;
+            CalFareBase.mbExtraSuburb = false;
+            CalFareBase.mbExtraDist = false; //20220520
 
             TIMSIDX = 0; //20210512
 
@@ -351,11 +349,11 @@ public class LocService extends Service implements LocationListener {
             mFaresubdistT = 0;
             m30cnt = -1;
 //20210823            mFareDiscount = 0;
-            mFareAdd = 0;
-            mStarttime = AMBlestruct.getCurDateString();
-            mEndtime = AMBlestruct.getCurDateString();
+            mFareAdd = 0; //20210823
+            mStarttime = AMBlestruct.getCurDateString(); //20201110
+            mEndtime = AMBlestruct.getCurDateString(); //20201110
 
-            mCallPay = 0;
+            mCallPay = 0; //20210909
 
         }
 
@@ -374,7 +372,7 @@ public class LocService extends Service implements LocationListener {
 
         }
 
-
+        //20210823
         public static void setmFareAdd(int nfareadd) {
 
             mFareAdd = nfareadd;
@@ -392,12 +390,12 @@ public class LocService extends Service implements LocationListener {
             mCallPay = ncallpay;
 
         }
-
+//////////////
 
     }
 
-
-
+    //////////
+//20220120
     public class CalQueue {
         public long icurtime;
         public long ilasttime;
@@ -406,13 +404,13 @@ public class LocService extends Service implements LocationListener {
         public double altitude;
         public long itimet; //경과시간.
         public int nType; //1 gps 2 dtg
-        public double nowlong;   // x position
-        public double nowlat;    // y position
-        public double lastlong;  // x 이전position
-        public double lastlat;   // y 이전position
-        public boolean bused;    // carculate_fare() 반영됐는지 아닌지
+        public double nowlong; //20210701 x position
+        public double nowlat; //20210710 y position
+        public double lastlong; //20210701 x 이전position
+        public double lastlat; //20210701 y 이전position
+        public boolean bused; //20210701 carculate_fare() 반영됐는지 아닌지
 
-
+        //20220120
         public void init() {
             distance = 0;
             speed = 0;
@@ -423,24 +421,26 @@ public class LocService extends Service implements LocationListener {
         }
     }
 
-    CalQueue mCalque = new CalQueue();
-    CalQueue mLastCalque = new CalQueue();
-    CalQueue mLastDTGque = new CalQueue();
+    CalQueue mCalque = new CalQueue(); //20210701
+    CalQueue mLastCalque = new CalQueue(); //20210701
+    CalQueue mLastDTGque = new CalQueue(); //20210701
 
+/////////////////////////
 
     public AMdtgform mLastDTGform = new AMdtgform();
     AMdtgform mFirstDTGform = new AMdtgform();
 
-    public static int mnReadyToGPS = 0;
-    int mCalwhich = 2; // after gps 5count, 5seconnd 1; // 1 gps 2 dtg
+    public static int mnReadyToGPS = 0; //20201211
+    int mCalwhich = 2; //20201112 after gps 5count, 5seconnd 1; // 1 gps 2 dtg
     long mLasttime = 0;
     long mLastGPStime = 0;
     long mLastDTGtime = 0;
     long mLastCaltime = 0;
+//    Location mLastLocation = null;
 
-    private boolean mbNeedDTGFirst = false;
+    private boolean mbNeedDTGFirst = false; //20210325
     public boolean mbDrivestart = false;
-    public boolean mbPayView = false;     // 지불화면. 빈차등연결check여부
+    public boolean mbPayView = false; //20220120 지불화면. 빈차등연결check여부
     public int mDrivemode = 0;
     public int mCardmode = AMBlestruct.MeterState.NONE;
     static String mDriveCode = "";
@@ -449,7 +449,7 @@ public class LocService extends Service implements LocationListener {
     static double mDTGspeed = 0;
     static double mLastspeed = 0;
 
-
+//////////////////////////
 
     public class ServiceBinder extends Binder {
 
@@ -686,7 +686,7 @@ a
             SimpleDateFormat dttiFormat = new SimpleDateFormat("yyyyMMddHHmmss");
             String dtti = dttiFormat.format(date);
                 m_timsdtg._makeTIMSDriveData(CDrive_val.TIMSIDX, dtti, mCalLocation, 0, "", 0, (int) CalFareBase.BASEDRVDIST,
-                        CDrive_val.mFareT, 1, 0, 0, CDrive_val.mbExtraTime, CDrive_val.mbExtraSuburb);
+                        CDrive_val.mFareT, 1, 0, 0, CalFareBase.mbExtraTime, CalFareBase.mbExtraSuburb);
         } else {
 
             if (mCalque.bused == true) {
@@ -811,7 +811,7 @@ a
 
         m_lbsLastState = 1;
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        m_Lbsview = (View) inflater.inflate(R.layout.lbsmsg2, null);
+        m_Lbsview = (View) inflater.inflate(R.layout.lbsmsg, null);
 
         final LinearLayout lbslayouttop = (LinearLayout) m_Lbsview.findViewById(R.id.lbslayouttop);
         m_lbslayoutimg = (LinearLayout) m_Lbsview.findViewById(R.id.lbslayout);
@@ -1026,8 +1026,8 @@ a
             }
         });
 
-        //todo: 20210831
-        //todo: 홈버튼
+
+        //홈버튼
         m_lbsIvHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1036,10 +1036,8 @@ a
 
             }
         });
-        //todo: 20210831 end
 
 
-        //todo: 20220209
         m_lbsTvPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1069,7 +1067,7 @@ a
             }
         });
 
-        //todo: 20210831
+
         //빈차 버튼
         m_lbsBtnEmpty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1079,7 +1077,7 @@ a
 
             }
         });
-        //todo: 20210831 end
+
 
         m_lbsBtnDrive.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -1099,18 +1097,18 @@ a
             }
         });
 
-        //todo: 20210831
         //주행버튼
         m_lbsBtnDrive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCallback.serviceLbsControllEvent(2, m_lbsLastState);
+                Log.d("checkbtn", m_lbsLastState+"");
+                mCallback.serviceLbsControllEvent(m_lbsLastState, 2); // 1/2
                 show_mainActivity(); //20210823
                 _lbsBtnSet(2);
 
             }
         });
-        //todo: 20210831 end
+
 
         m_lbsBtnReserv.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -1354,12 +1352,12 @@ a
 
             Log.d("m_lbsTvBleConn", "m_lbsTvBleConn");
 
-
-            //me: blooth on
+            //todo: 20210831
+            //todo: blooth on
             m_lbsTvBleConn.setBackgroundResource(R.drawable.btn_bles_on);
             // m_lbsTvBleConn.setText("");
 
-
+            //todo: 20210831 end
         }
 
         payHandler.sendEmptyMessage(2);
@@ -2026,7 +2024,7 @@ a
 //메뉴모드아니고 지불아니고 빈차나 손님탑승일경우 1초data수신으로 블루투스빈차등 연결 확인
                         if (AMBlestruct.mBTConnected == true && mbPayView == false && AMBlestruct.AMmenu.mMenu == false)
                         {
-                            if(setCount_BleReceiveCheck(true))
+                            if(false) //20220511 1.71 setCount_BleReceiveCheck(true))
                             {
                                 Log.d("1초데이터", "timeout15sec 재연결");
                                 AMBlestruct.mBTConnected = false;
@@ -2199,7 +2197,16 @@ a
 
                 mCallback.serviceMeterState(AMBlestruct.MeterState.SUBURBSOUT, 0);
 
-            } else if (msg.what == AMBlestruct.MeterState.BLELEDON) {
+            }
+//20220520
+            else if (msg.what == AMBlestruct.MeterState.EXTRADIST)
+            {
+
+                mCallback.serviceMeterState(AMBlestruct.MeterState.EXTRADIST, 0);
+
+            }
+/////////////////
+            else if (msg.what == AMBlestruct.MeterState.BLELEDON) {
                 mCallback.serviceMeterState(AMBlestruct.MeterState.BLELEDON, 0);
 
                 m_timsdtg._sendDTGPowerON();
@@ -2243,18 +2250,19 @@ a
 
         if (Integer.parseInt(Info.getCurHourString()) < 4) {
 
-            if (CDrive_val.mbExtraTime == false)
+            if (CalFareBase.mbExtraTime == false)
                 set_meterhandler.sendEmptyMessage(AMBlestruct.MeterState.EXTRATIME);
 
-            CDrive_val.mbExtraTime = true;
+            CalFareBase.mbExtraTime = true;
         } else {
-            if (CDrive_val.mbExtraTime == true)
+            if (CalFareBase.mbExtraTime == true)
                 set_meterhandler.sendEmptyMessage(AMBlestruct.MeterState.EXTRATIMEOFF);
 
-            CDrive_val.mbExtraTime = false;
+            CalFareBase.mbExtraTime = false;
 
         }
     }
+
 
     private void _checkSuburbs(double lon, double lat) {
 
@@ -2281,14 +2289,14 @@ a
                 if (bResult == true) {
                     if (mbSuburb == true) {
                         mbSuburb = false;
-                        CDrive_val.mbExtraSuburb = false;
+                        CalFareBase.mbExtraSuburb = false;
                         set_meterhandler.sendEmptyMessage(AMBlestruct.MeterState.SUBURBSIN);
                     }
 
                 } else if (bResult == false) {
                     if (mbSuburb == false) {
                         mbSuburb = true;
-                        CDrive_val.mbExtraSuburb = true;
+                        CalFareBase.mbExtraSuburb = true;
                         set_meterhandler.sendEmptyMessage(AMBlestruct.MeterState.SUBURBSOUT);
                     }
                 }
@@ -2370,15 +2378,18 @@ a
             }
 
         }
-        _checkExtraTime();
 
-        if(mNowLocation != null)
+//        _checkExtraTime();
+//
+//        if(mNowLocation != null)
+//            _checkSuburbs(mNowLocation.getLongitude(), mNowLocation.getLatitude());
+//
+///////////////////
+////20220520
+//        _checkExtraDistance();
 
-//            Log.d("mNowLocation>>", mNowLocation.getLatitude()+", "+mNowLocation.getLongitude());
-
-            Info.mGps = mNowLocation.getLatitude()+", "+mNowCalLocation.getLongitude();
-
-            _checkSuburbs(mNowLocation.getLongitude(), mNowLocation.getLatitude());
+//20200523
+        _checkExtraMode();
 
         CDrive_val.mDrivetimeT = (int) (System.currentTimeMillis() - CDrive_val.mDrivestart);
 
@@ -2440,14 +2451,19 @@ a
             while (CDrive_val.mFaresubdistT >= CalFareBase.INTERVAL_DIST) {
                 nCalfare = CalFareBase.DISTCOST; // TIMECOST;
 
-                if (CDrive_val.mbExtraTime == true)
-                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mNightTimerate / 10) * 10;
-
-                if (CDrive_val.mbExtraComplex == true)
-                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mComplexrate / 10) * 10;
-
-                if (CDrive_val.mbExtraSuburb == true)
-                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mSuburbrate / 10) * 10;
+//                if (CalFareBase.mbExtraTime == true)
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mNightTimerate / 10) * 10;
+//
+//                if (CalFareBase.mbExtraComplex == true)
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mComplexrate / 10) * 10;
+//
+//                if (CalFareBase.mbExtraSuburb == true)
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mSuburbrate / 10) * 10;
+//
+//                if(CalFareBase.mbExtraDist == true) //20220520
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mDistExtrarate / 10) * 10;
+//20200523
+                nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mTotalExtrarate / 10) * 10;
 
                 CDrive_val.mFareT += nCalfare;
 
@@ -2472,7 +2488,7 @@ a
 
                 }
 
-                if (false) //CDrive_val.mbStartExtra == false && CDrive_val.mbExtraTime == true)
+                if (false) //CDrive_val.mbStartExtra == false && CalFareBase.mbExtraTime == true)
                 {
 
                     distance = distance + distance * 0.2;
@@ -2486,7 +2502,7 @@ a
 
             } else {
 
-                if (false) //CDrive_val.mbStartExtra == false && CDrive_val.mbExtraTime == true)
+                if (false) //CDrive_val.mbStartExtra == false && CalFareBase.mbExtraTime == true)
                 {
                     distance = distance + distance * 0.2;
                 }
@@ -2533,14 +2549,19 @@ a
             while (CDrive_val.mFaresubdistT - CalFareBase.BASEDRVDIST >= 0) {
                 nCalfare = CalFareBase.DISTCOST;
 
-                if (CDrive_val.mbExtraTime == true)
-                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mNightTimerate / 10) * 10;
-
-                if (CDrive_val.mbExtraComplex == true)
-                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mComplexrate / 10) * 10;
-
-                if (CDrive_val.mbExtraSuburb == true)
-                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mSuburbrate / 10) * 10;
+//                if (CalFareBase.mbExtraTime == true)
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mNightTimerate / 10) * 10;
+//
+//                if (CalFareBase.mbExtraComplex == true)
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mComplexrate / 10) * 10;
+//
+//                if (CalFareBase.mbExtraSuburb == true)
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mSuburbrate / 10) * 10;
+//
+//                if(CalFareBase.mbExtraDist == true) //20220520
+//                    nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mDistExtrarate / 10) * 10;
+//20220523
+                nCalfare += Math.round(CalFareBase.DISTCOST * CalFareBase.mTotalExtrarate / 10) * 10;
 
                 CDrive_val.mFaresubdistT = CDrive_val.mFaresubdistT - CalFareBase.BASEDRVDIST; //20210319 Math.abs(distanceLimit);
 
@@ -2562,7 +2583,7 @@ a
             String dtti = dttiFormat.format(date);
 //            mCallback.serviceTIMSDataEvent(TIMSIDX, dtti, mLastLocation, curSpeed, "", distance, (int) distanceLimit, CDrive_val.mFareT, que.nType + "");
             m_timsdtg._makeTIMSDriveData(CDrive_val.TIMSIDX, dtti, mNowCalLocation, curSpeed, "", distance, distanceLimit,
-                    CDrive_val.mFareT, que.nType - 1, nCalfare, CDrive_val.mDrivedistanceT, CDrive_val.mbExtraTime, CDrive_val.mbExtraSuburb);
+                    CDrive_val.mFareT, que.nType - 1, nCalfare, CDrive_val.mDrivedistanceT, CalFareBase.mbExtraTime, CalFareBase.mbExtraSuburb);
 
         }
 
@@ -2575,18 +2596,19 @@ a
             Info._displayLOG(Info.LOGDISPLAY, "현재 요금 " + CDrive_val.mFareT, "");
         }
 
-        if (Info.TIMSUSE) {
+//20220509 tra..sh Info.TIMSUSE to Info.REPORTREADY
+        if (Info.REPORTREADY) {
             if (mNowCalLocation != null && mLastLocation != null) {
                 if (que.nType == 1) {
                     mCallback.serviceLog(1, mNowCalLocation, (int) mLastLocation.getAccuracy(), (int) que.distance,
                             Integer.parseInt(String.valueOf(Math.round(CDrive_val.mDrivedistanceT))), "",
                             mbDrivestart, (int) (curSpeed * 3.6), (timet / 1000.0), deltaDistance, distance, deltaDistance + distance,
-                            distanceLimit, nCalfare, CDrive_val.mFareT, CDrive_val.mbExtraTime, CDrive_val.mbExtraSuburb, CDrive_val.mFaredistanceT);
+                            distanceLimit, nCalfare, CDrive_val.mFareT, CalFareBase.mbExtraTime, CalFareBase.mbExtraSuburb, CDrive_val.mFaredistanceT);
                 } else {
                     mCallback.serviceLog(2, mNowCalLocation, (int) mLastLocation.getAccuracy(), (int) que.distance,
                             Integer.parseInt(String.valueOf(Math.round(CDrive_val.mDrivedistanceT))), "",
                             mbDrivestart, (int) (curSpeed * 3.6), (timet / 1000.0), deltaDistance, distance, deltaDistance + distance,
-                            distanceLimit, nCalfare, CDrive_val.mFareT, CDrive_val.mbExtraTime, CDrive_val.mbExtraSuburb, CDrive_val.mFaredistanceT);
+                            distanceLimit, nCalfare, CDrive_val.mFareT, CalFareBase.mbExtraTime, CalFareBase.mbExtraSuburb, CDrive_val.mFaredistanceT);
                 }
             }
         }
@@ -2664,7 +2686,7 @@ a
 
     }
 
-    public String get_gps(Location location) {
+    public void get_gps(Location location) {
 
         mngpserror = 0;
 
@@ -2679,7 +2701,7 @@ a
         if (Info.g_appmode == Info.APP_PAYMENT) {
 
             mCallback.serviceDisplayState(0, 0, 0, 0, 0, 0, location, 0, 0, true);
-            return null;
+            return;
         }
 
         location.getTime();
@@ -2810,7 +2832,6 @@ a
 
         mLastLocation = location;
         mLastGPStime = curtime;
-        return null;
     }
 
 
@@ -2846,7 +2867,8 @@ a
         que.icurtime = curtime;
         que.ilasttime = mLastDTGtime;
         que.itimet = 1000; //timet;
-
+        que.nowlong = dtgform.gpsx;
+        que.nowlat = dtgform.gpsy;
         que.nType = 2;
 
         CDrive_val.mLastDTGdist = que.distance;
@@ -3124,16 +3146,16 @@ a
             writeBLE("21");
 
         } else if (nmode == AMBlestruct.MeterState.EXTRACOMPLEX) {
-            CDrive_val.mbExtraComplex = true;
+            CalFareBase.mbExtraComplex = true;
             m_timsdtg._sendDTGEventComplexON();
         } else if (nmode == AMBlestruct.MeterState.EXTRACOMPLEXOFF) {
-            CDrive_val.mbExtraComplex = false;
+            CalFareBase.mbExtraComplex = false;
             m_timsdtg._sendDTGEventComplexOFF();
 
         } else if (nmode == AMBlestruct.MeterState.EXTRASUBURB) {
-            CDrive_val.mbExtraSuburb = true;
+            CalFareBase.mbExtraSuburb = true;
         } else if (nmode == AMBlestruct.MeterState.EXTRASUBURBOFF) {
-            CDrive_val.mbExtraSuburb = false;
+            CalFareBase.mbExtraSuburb = false;
         } else if (nmode == 777) { //todo: 20210831 1758
             writeBLE("777");
         }
@@ -3564,4 +3586,31 @@ a
 
     }
 
+    private void _checkExtraDistance()
+    {
+        if(CalFareBase.mDistExtra > 0 && CDrive_val.mDrivedistanceT > CalFareBase.mDistExtra) {
+            if (CalFareBase.mbExtraDist == false) {
+
+                CalFareBase.mbExtraDist = true;
+                set_meterhandler.sendEmptyMessage(AMBlestruct.MeterState.EXTRADIST);
+            }
+        }
+    }
+
+    private void _checkExtraMode() {
+        _checkExtraTime();
+
+        if(mNowLocation != null)
+//20220527            _checkSuburbs(mNowLocation.getLongitude(), mNowLocation.getLatitude());
+            _checkSuburbs(mLastDTGform.gpsx, mLastDTGform.gpsy);
+
+/////////////////
+//20220520
+        _checkExtraDistance();
+
+        CalFareBase._getExtTotalrate();
+
+    }
+
+///////////////////////
 }

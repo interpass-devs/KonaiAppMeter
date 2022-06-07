@@ -144,14 +144,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:background="@drawable/layout_line_round_radius_dark"
+                        android:background="@drawable/layout_line_white"
                         android:gravity="center"
                         android:paddingLeft="15dp"
                         android:paddingTop="5dp"
                         android:paddingRight="15dp"
                         android:paddingBottom="5dp"
                         android:text="상세보기"
-                        android:textSize="25dp" />
+                        android:textSize="25dp"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
             <!-- 빈차 화면 end -->
@@ -361,7 +362,7 @@
                                     android:textStyle="bold"
                                     android:textSize="20dp"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/layout_line_round_radius_dark_pink"
+                                    android:background="@drawable/layout_line_pink"
                                     android:paddingTop="5dp"
                                     android:paddingBottom="5dp"
                                     android:paddingLeft="10dp"
@@ -538,7 +539,6 @@
                         android:gravity="right|bottom"
                         android:text="+ 할증 30%"
                         android:textColor="#E91E63"
-
                         android:paddingLeft="15dp"
 
                         android:background="@color/black" />
@@ -619,7 +619,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:background="@drawable/layout_line_round_radius_dark"
+                        android:background="@drawable/layout_line_white"
                         android:gravity="center"
                         android:text="할증 꺼짐"
                         android:textSize="20dp"
@@ -632,7 +632,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:background="@drawable/layout_line_round_radius_dark"
+                        android:background="@drawable/layout_line_white"
                         android:gravity="center"
                         android:text="시외 꺼짐"
                         android:textSize="20dp"
@@ -646,7 +646,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:background="@drawable/layout_line_round_radius_dark"
+                        android:background="@drawable/layout_line_white"
                         android:gravity="center"
                         android:text="복합 꺼짐"
                         android:textSize="20dp"
@@ -834,7 +834,6 @@
                         android:text="0"
                         android:textColor="@color/colorAccent"
                         android:autoSizeTextType="uniform"
-
                         android:paddingRight="5dp"/>
                     <TextView
                         android:id="@+id/textView14"

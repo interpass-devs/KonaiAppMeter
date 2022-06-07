@@ -195,18 +195,187 @@ public class AMBleConfigActivity extends ListActivity {
 		button_back.setOnClickListener(mCalculatorListener);
 		button_clear.setOnClickListener(mCalculatorListener);
 
+		button_0.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_0.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_0.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_0.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_1.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_1.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_1.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_1.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_2.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_2.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_2.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_2.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_3.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_3.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_3.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_3.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_4.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_4.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_4.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_4.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_5.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_5.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_5.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_5.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_6.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_6.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_6.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_6.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_7.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_7.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_7.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_7.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_8.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_8.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_8.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_8.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_9.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_9.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_9.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_9.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+		button_clear.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_clear.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_clear.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_clear.setTextColor(Color.parseColor("#811212"));
+				}
+				return false;
+			}
+		});
+
+		button_back.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					button_back.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					button_back.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					button_back.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
+
+
 		final Button Btnback = (Button)findViewById(R.id.Btnback);
 		Btnback.setOnTouchListener(new OnTouchListener() { // 터치 이벤트 리스너 등록(누를때와
 			// 뗐을때를 구분)
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-//					Btnback.setBackgroundResource(R.drawable.payment_subbtn2_p);
-					Btnback.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+					Btnback.setBackgroundResource(R.drawable.unselected_btn);
+					Btnback.setTextColor(getResources().getColor(R.color.black));
 				}
 				if (arg1.getAction() == MotionEvent.ACTION_UP) {
-//					Btnback.setBackgroundResource(R.drawable.payment_subbtn2);
-					Btnback.setBackgroundResource(R.drawable.unselected_btn);
+					Btnback.setBackgroundResource(R.drawable.grey_gradi_btn);
+					Btnback.setTextColor(getResources().getColor(R.color.white));
 				}
 				return false;
 			}
@@ -226,29 +395,23 @@ public class AMBleConfigActivity extends ListActivity {
 			}
 		});
 
-		//전송버튼
-		final Button Btninputsend = (Button)findViewById(R.id.Btninputsend);
-		Btninputsend.setOnTouchListener(new OnTouchListener() { // 터치 이벤트 리스너 등록(누를때와
-			// 뗐을때를 구분)
+
+		//영문버튼
+		mCustomKeyboard.setOnTouchListener(new OnTouchListener() {
 			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-//					Btninputsend.setBackgroundResource(R.drawable.payment_subbtn2_p);
-					Btninputsend.setBackgroundResource(R.drawable.ok_btn_blue_round_clicked_bg);
-					Btninputsend.getResources().getColor(R.color.btn_grey);
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					mCustomKeyboard.setBackgroundResource(R.drawable.red_gradi_btn_down);
+					mCustomKeyboard.setTextColor(getResources().getColor(R.color.black));
 				}
-				if (arg1.getAction() == MotionEvent.ACTION_UP) {
-//					Btninputsend.setBackgroundResource(R.drawable.payment_subbtn2);
-					Btninputsend.setBackgroundResource(R.drawable.yellow_gradi_btn);
-					Btninputsend.getResources().getColor(R.color.btn_grey);
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					mCustomKeyboard.setBackgroundResource(R.drawable.red_gradi_btn);
+					mCustomKeyboard.setTextColor(getResources().getColor(R.color.white));
 				}
 				return false;
 			}
 		});
 
-
-
-		//todo: 2022-05-04
 		mCustomKeyboard.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -269,9 +432,25 @@ public class AMBleConfigActivity extends ListActivity {
 				}
 			}
 		});
-		//todo: end
 
 
+
+		//전송버튼
+		final Button Btninputsend = (Button)findViewById(R.id.Btninputsend);
+		Btninputsend.setOnTouchListener(new OnTouchListener() { // 터치 이벤트 리스너 등록(누를때와
+			// 뗐을때를 구분)
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
+					Btninputsend.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+				}
+				if (arg1.getAction() == MotionEvent.ACTION_UP) {
+					Btninputsend.setBackgroundResource(R.drawable.yellow_gradi_btn);
+					Btninputsend.setTextColor(getResources().getColor(R.color.black));
+				}
+				return false;
+			}
+		});
 
 		Btninputsend.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -292,14 +471,12 @@ public class AMBleConfigActivity extends ListActivity {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-//					Btninputcancel.setBackgroundResource(R.drawable.payment_subbtn2_p);
-					Btninputcancel.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-					Btninputcancel.getResources().getColor(R.color.btn_grey);
+					Btninputcancel.setBackgroundResource(R.drawable.unselected_btn);
+					Btninputcancel.setTextColor(getResources().getColor(R.color.black));
 				}
 				if (arg1.getAction() == MotionEvent.ACTION_UP) {
-//					Btninputcancel.setBackgroundResource(R.drawable.payment_subbtn2);
-					Btninputcancel.setBackgroundResource(R.drawable.unselected_btn);
-					Btninputcancel.getResources().getColor(R.color.grey);
+					Btninputcancel.setBackgroundResource(R.drawable.grey_gradi_btn);
+					Btninputcancel.setTextColor(getResources().getColor(R.color.white));
 				}
 				return false;
 			}
@@ -319,12 +496,12 @@ public class AMBleConfigActivity extends ListActivity {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-//					Btnclose.setBackgroundResource(R.drawable.payment_subbtn2_p);
-					Btnclose.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+					Btnclose.setBackgroundResource(R.drawable.unselected_btn);
+					Btnclose.setTextColor(getResources().getColor(R.color.black));
 				}
 				if (arg1.getAction() == MotionEvent.ACTION_UP) {
-//					Btnclose.setBackgroundResource(R.drawable.payment_subbtn2);
-					Btnclose.setBackgroundResource(R.drawable.unselected_btn);
+					Btnclose.setBackgroundResource(R.drawable.grey_gradi_btn);
+					Btnclose.setTextColor(getResources().getColor(R.color.white));
 				}
 				return false;
 			}
@@ -368,7 +545,7 @@ public class AMBleConfigActivity extends ListActivity {
 
 
 
-	//todo: 2022-05-04
+
 	private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {		@Override
 	public void onKey(int primaryCode, int[] keyCodes) {
 

@@ -116,13 +116,13 @@
             android:configChanges="orientation|keyboardHidden|screenLayout" />
         <activity
             android:name=".view.InfoActivity"
-            android:configChanges="orientation|keyboardHidden|screenLayout" />
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize" />
         <activity
             android:name=".view.TimsInfoActivity"
-            android:configChanges="orientation|keyboardHidden|screenLayout" />
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize" />
         <activity
             android:name=".view.SettingActivity"
-            android:configChanges="orientation|keyboardHidden|screenLayout" />
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize" />
         <service
             android:name=".service.LocService"
             android:enabled="true"

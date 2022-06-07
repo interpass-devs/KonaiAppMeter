@@ -75,7 +75,6 @@ import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.Suburbs;
 import com.konai.appmeter.driver.setting.setting;
 import com.konai.appmeter.driver.struct.AMBlestruct;
-import com.konai.appmeter.driver.struct.AMdtgform;
 import com.konai.appmeter.driver.struct.CalFareBase;
 import com.konai.appmeter.driver.struct.CircleProgressBar;
 import com.konai.appmeter.driver.struct.GetDecimalForm;
@@ -107,9 +106,23 @@ import java.util.TimerTask;
 
 //import android.support.v4.app.ActivityCompat;
 //import android.support.v4.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MainActivity extends Activity {
+    public RadioButton btn_0,
+                        btn_1,
+                        btn_2,
+                        btn_3,
+                        btn_4,
+                        btn_5,
+                        btn_6,
+                        btn_7,
+                        btn_8,
+                        btn_9,
+                        btn_clear,
+                        btn_back;
+
     String logtag = "logtag_";
     Context context;
     SharedPreferences pref;
@@ -236,7 +249,7 @@ public class MainActivity extends Activity {
     /**할증**/
     boolean extraUse = false;
     boolean suburbUse = false;
-    boolean suburbUseAuto = false;
+    boolean suburbUseAuto = true; //20220531 false;
     String gpsVal = "";
     boolean complexUse = false;
     boolean extraDistUse = false; //20220520
@@ -265,7 +278,7 @@ public class MainActivity extends Activity {
     private SimpleDateFormat sdf;
 
     private Button btn_connBLE;
-//    private ImageView btn_connBLE;
+    //    private ImageView btn_connBLE;
     private Button btn_menu;
     private Button btn_connBLEMachine;
     //20210823
@@ -323,7 +336,7 @@ public class MainActivity extends Activity {
     private TextView tv_resPayment;
     private View view_line;
     private LinearLayout tv_restotpayment_layout;  //todo: 20220209
-//20220303 tra..sh    private TextView tv_restotpayment_title;
+    //20220303 tra..sh    private TextView tv_restotpayment_title;
     private FontFitTextView tv_restotpayment;
     private TextView edt_addpayment;
     private TextView tv_rescallpay; //20210909
@@ -383,7 +396,6 @@ public class MainActivity extends Activity {
     private Button menu_reset_app;
     private Button menu_close;
     private Boolean isClicked = true;
-    private Boolean menuClicked = true;
     private TextView menu_ble, menu_ble_status, menu_ori, menu_ori_status, menu_gubun, menu_gubun_stauts, menu_auto_login, menu_auto_login_status, menu_modem, menu_modem_status;         //todo: 20211230
     private LinearLayout menu_cashReceipt, menu_env_setting, submenu_env_setting, menu_app_control_setting; //todo: 2022-05-12
 
@@ -408,11 +420,11 @@ public class MainActivity extends Activity {
     int mtfare;
     int mtcnt;
 
-//20220303
+    //20220303
     String ori_Status = "-1";
     GetDecimalForm decimalForm = null;
 
-//20220425
+    //20220425
     Dialog cashreceipt_dg = null;
     Dialog cancelcard_dg = null;
 
@@ -642,8 +654,11 @@ public class MainActivity extends Activity {
                 bleConn = "On, " + Info.CAR_SPEED+" km";
 
 //                checkConnStatusDB();
-
-                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf.format(date), "블루투스", bleConn);
+//20220531
+                Date time = new Date();
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSS");
+                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf1.format(time), "블루투스", bleConn);
+/////////////
 
                 if (Info.ERRORLOG == true) {
                     m_Service.m_timsdtg._sendTIMSConnStatus();
@@ -654,8 +669,11 @@ public class MainActivity extends Activity {
             } else if (nType == AMBlestruct.MeterState.BLELEDOFF) {
 
                 bleConn = "Off, " + Info.CAR_SPEED+" km";
-                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf.format(date), "블루투스", bleConn);
-
+//220531
+                Date time = new Date();
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSS");
+                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf1.format(time), "블루투스", bleConn);
+//////////////
                 if (Info.ERRORLOG == true) {
                     m_Service.m_timsdtg._sendTIMSConnStatus();
                 }
@@ -664,9 +682,9 @@ public class MainActivity extends Activity {
 
             } else if (nType == AMBlestruct.MeterState.SUBURBSIN)
             {
-                suburbUseAuto = true;
+//20220531                suburbUseAuto = true;
 
-                if (suburbUse == true)   //자동으로
+                if (suburbUse == true && suburbUseAuto == true)   //20220531 자동으로
                     _setSuburbState();
             } else if (nType == AMBlestruct.MeterState.SUBURBSOUT)
             {
@@ -726,19 +744,16 @@ public class MainActivity extends Activity {
                 stemp += String.format("x:%.6f,y:%.6f,보정:%s,속도:%d", latitude, longitude, GPSUse, speed);
                 stemp += String.format(",시간:%.2f,시간요금:%.2f,거리:%.2f,요금합:%.2f,잔여:%.2f,할증:%d,시계:%d,이후:%d,총이동:%d,현재:%d, 총요금거리: %.4f", dtime, dtfare,
                         ddist, dcfare, dremain, nextra, nsuburb, nafterfare, ndtgtot, nfare, tfaredist);
-
             }
-
         }
 
         @Override
         public void serviceFarebyMeter(int nseconds, int ndist, int nfare, int naddfare) {
 
-
         }
 
         @Override
-        public void serviceLbsControllEvent(int nType, int nLastState) {
+        public void serviceLbsControllEvent(int nLastState, int nType) {
             Log.e("LbsContollEvt", nLastState + "/" + nType);
 
 //            nType 1 빈차 2 주행 3 호출
@@ -751,19 +766,20 @@ public class MainActivity extends Activity {
                     } else if(nType == 3) {*/
 
                     switch (nType) {
+
                         case 1:
                             if (reservUse) {
-                                btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
+                                btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
                                 m_Service.update_BLEmeterstate("41");
                                 reservUse = false;
 
                                 setCallpay(0);
-
                             }
                             break;
 
                         case 2:
                             setStateDrive();
+                            btn_emptyCar_d.setEnabled(true);  //todo: 20220603
                             break;
 
                         case 3:
@@ -771,8 +787,8 @@ public class MainActivity extends Activity {
                                 btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                                 reservUse = true;
 
-//20211216                                setCallpay(1000);
-                                do_CallPay_other(); //20211229
+//                               setCallpay(1000);
+                                do_CallPay_other();
                             }
                             m_Service.update_BLEmeterstate("40");
                             break;
@@ -998,7 +1014,7 @@ public class MainActivity extends Activity {
 
     }
 
-//20220411 tra..sh
+    //20220411 tra..sh
     private void get_state_pref() {
 
         if (Info.g_state_done)
@@ -1758,13 +1774,13 @@ public class MainActivity extends Activity {
         complexUse = false;
         btn_extra.setText("할증 꺼짐"); //20201215
         btn_extra.setTextColor(Color.parseColor("#ffffff")); //20201215
-        btn_extra.setBackgroundResource(R.drawable.layout_line_round_radius_dark); //20201215
+        btn_extra.setBackgroundResource(R.drawable.layout_line_white); //20201215
         btn_suburb.setText("시외 꺼짐");
         btn_suburb.setTextColor(Color.parseColor("#ffffff"));
-        btn_suburb.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
+        btn_suburb.setBackgroundResource(R.drawable.layout_line_white);
         btn_complex.setText("복합 꺼짐");
         btn_complex.setTextColor(Color.parseColor("#ffffff"));
-        btn_complex.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
+        btn_complex.setBackgroundResource(R.drawable.layout_line_white);
 
         extraDistUse = false; //20220520
     }
@@ -1787,7 +1803,7 @@ public class MainActivity extends Activity {
             extraUse = false;
             btn_extra.setText("할증 꺼짐");
             btn_extra.setTextColor(Color.parseColor("#ffffff")); //20220318 tra..sh
-            btn_extra.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
+            btn_extra.setBackgroundResource(R.drawable.layout_line_white);
 
             if (Info.REPORTREADY) {
 
@@ -1873,13 +1889,13 @@ public class MainActivity extends Activity {
                 endFrame1.setVisibility(View.INVISIBLE);
                 endFrame2.setVisibility(View.INVISIBLE);
 
-                tv_pay_card.setVisibility(View.GONE); //20220318 tra..sh
+                tv_pay_card.setVisibility(View.GONE);
                 break;
 
             case 2:
                 if (m_Service != null)
                     m_Service.set_payviewstate(false);
-//20210909
+
                 if (Info.CALL_PAY > 0) {
 
                     tv_callfare.setText("+" + Info.CALL_PAY);
@@ -1887,11 +1903,11 @@ public class MainActivity extends Activity {
                 } else
                     tv_callfare.setText("");
 
-                chkExtraUse(); //20210917
+                chkExtraUse();
 
-//20210917                btn_status.setVisibility(View.INVISIBLE);
+//               btn_status.setVisibility(View.INVISIBLE);
                 emptyFrame1.setVisibility(View.INVISIBLE);
-                emptyFrame1_new.setVisibility(View.INVISIBLE); //todo: 20210917
+                emptyFrame1_new.setVisibility(View.INVISIBLE);
                 emptyFrame2.setVisibility(View.INVISIBLE);
                 driveFrame1.setVisibility(View.VISIBLE);
                 driveFrame2.setVisibility(View.VISIBLE);
@@ -1905,17 +1921,17 @@ public class MainActivity extends Activity {
             case 3:  //결제화면
                 if (m_Service != null)
                     m_Service.set_payviewstate(true);
-//20210909
+
                 if (Info.CALL_PAY > 0) {
 
                     btn_callPayment.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
 
                 } else
-                    btn_callPayment.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
+                    btn_callPayment.setBackgroundResource(R.drawable.grey_gradi_btn);
 
                 edt_addpayment.setText("0");
                 emptyFrame1.setVisibility(View.INVISIBLE);
-                emptyFrame1_new.setVisibility(View.INVISIBLE); //todo: 20210917
+                emptyFrame1_new.setVisibility(View.INVISIBLE);
                 emptyFrame2.setVisibility(View.INVISIBLE);
                 driveFrame1.setVisibility(View.INVISIBLE);
                 driveFrame2.setVisibility(View.INVISIBLE);
@@ -1925,7 +1941,7 @@ public class MainActivity extends Activity {
                 payingFrame2.setVisibility(View.INVISIBLE);
                 endFrame1.setVisibility(View.INVISIBLE);
                 endFrame2.setVisibility(View.INVISIBLE);
-                //todo: 20220209
+
                 if (m_Service.mbDrivestart){
                     btn_cancelpayment.setText("주 행");
                     tv_pay_card.setVisibility(View.GONE);
@@ -1940,15 +1956,14 @@ public class MainActivity extends Activity {
                 }else{
                     btn_cancelpayment.setText("빈 차");
                 }
-                //todo: 20220209
-///////////////////////
                 break;
+
             case 4:
                 if (m_Service != null)
                     m_Service.set_payviewstate(true);
 
                 emptyFrame1.setVisibility(View.INVISIBLE);
-                emptyFrame1_new.setVisibility(View.INVISIBLE); //todo: 20210917
+                emptyFrame1_new.setVisibility(View.INVISIBLE);
                 emptyFrame2.setVisibility(View.INVISIBLE);
                 driveFrame1.setVisibility(View.INVISIBLE);
                 driveFrame2.setVisibility(View.INVISIBLE);
@@ -1958,8 +1973,7 @@ public class MainActivity extends Activity {
                 payingFrame2.setVisibility(View.VISIBLE);
                 endFrame1.setVisibility(View.INVISIBLE);
                 endFrame2.setVisibility(View.INVISIBLE);
-                //20220107
-                //todo: 20220209
+
                 if (m_Service.mbDrivestart){
                     btn_cancelpayment.setText("주 행");
                     tv_pay_card.setVisibility(View.GONE);
@@ -1975,10 +1989,8 @@ public class MainActivity extends Activity {
                 }else {
                     btn_cancelpayment.setText("빈 차");
                 }
-                //todo: 20220209
-
-///////////////////////
                 break;
+
             case 5:
                 if (m_Service != null)
                     m_Service.set_payviewstate(false);
@@ -1991,7 +2003,7 @@ public class MainActivity extends Activity {
                 }
                 payExtraDefault();
                 emptyFrame1.setVisibility(View.INVISIBLE);
-                emptyFrame1_new.setVisibility(View.INVISIBLE); //todo: 20210917
+                emptyFrame1_new.setVisibility(View.INVISIBLE);
                 emptyFrame2.setVisibility(View.INVISIBLE);
                 driveFrame1.setVisibility(View.INVISIBLE);
                 driveFrame2.setVisibility(View.INVISIBLE);
@@ -2004,7 +2016,7 @@ public class MainActivity extends Activity {
 
                 String stemp = String.format(Locale.getDefault(), "%.2fkm", Info.MOVEDIST / 1000.0);
                 tv_finDistance.setText(stemp);
-//20210607                tv_finPayment.setText(mnfare + " 원");
+//                tv_finPayment.setText(mnfare + " 원");
 //                tv_finAddPay.setText(mAddfare + " 원");
 //                tv_finEndPay.setText((mnfare + mAddfare) +" 원");
                 tv_finPayment.setText(Info.PAYMENT_COST + " 원");
@@ -2012,10 +2024,7 @@ public class MainActivity extends Activity {
                 tv_fincallpay.setText(Info.CALL_PAY + " 원");
                 tv_finEndPay.setText((Info.PAYMENT_COST + mAddfare + Info.CALL_PAY) + " 원");
                 mnlastcashfare = (Info.PAYMENT_COST + mAddfare + Info.CALL_PAY); //20211019
-
-                //todo: 20210831 1758 ???
                 m_Service.drive_state(777);
-                //todo: end
 
                 break;
 
@@ -2024,7 +2033,7 @@ public class MainActivity extends Activity {
                     m_Service.set_payviewstate(false);
 
                 emptyFrame1.setVisibility(View.INVISIBLE);
-                emptyFrame1_new.setVisibility(View.INVISIBLE); //todo: 20210917
+                emptyFrame1_new.setVisibility(View.INVISIBLE);
                 emptyFrame2.setVisibility(View.INVISIBLE);
                 driveFrame1.setVisibility(View.INVISIBLE);
                 driveFrame2.setVisibility(View.INVISIBLE);
@@ -2044,9 +2053,8 @@ public class MainActivity extends Activity {
         public void onClick(View v) {
 
             switch (v.getId()) {
-
+                //메인버튼
                 case R.id.nbtn_drivestart:   //손님탑승
-                    Log.d("메인버튼", "손님탑승");
                     btn_emptyCar_d.setEnabled(true);
 
                     setStateDrive();
@@ -2059,25 +2067,21 @@ public class MainActivity extends Activity {
                     break;
 
                 case R.id.nbtn_emptycar_e:   //빈차
-                    Log.d("메인버튼","빈차");
                     if(reservUse) {
                         btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
                         m_Service.update_BLEmeterstate("41");
                         reservUse = false;
                         setCallpay(0);
                     }
-
-                    Info.CALL_PAY = 0; //20210909
+                    Info.CALL_PAY = 0;
                     break;
 
                 case R.id.nbtn_manualpay_e:  //수기
-                    Log.d("메인버튼","수기");
                     mChangefare = 0;
                     get_manualfare(1);
                     break;
 
                 case R.id.nbtn_reserv_e:  //호출
-                    Log.d("메인버튼","호출");
                     if(!reservUse) {
                         btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                         reservUse = true;
@@ -2105,7 +2109,7 @@ public class MainActivity extends Activity {
             switch (v.getId()) {
 
                 case R.id.nbtn_driveend:  //지불
-                    Log.d("메인버튼","지불");
+//                    Log.d("메인버튼","지불");
                     btn_cashPayment.setEnabled(true); //20220411 tra..sh
 
                     frameviewchange(3);
@@ -2170,7 +2174,7 @@ public class MainActivity extends Activity {
                     break;
 
                 case R.id.nbtn_emptycar_d:  //빈차
-                    Log.d("메인버튼","빈차");
+//                    Log.d("메인버튼","빈차");
                     btn_emptyCar_d.setEnabled(false); //20220411 tra..sh
 
                     m_Service.drive_state(AMBlestruct.MeterState.PAY); //20211210 추가
@@ -2195,7 +2199,7 @@ public class MainActivity extends Activity {
                     break;
 
                 case R.id.nbtn_complex_d: //복합
-                    Log.d("메인버튼","복합");
+//                    Log.d("메인버튼","복합");
                     btn_complex.performClick();
                     break;
 
@@ -2280,7 +2284,7 @@ public class MainActivity extends Activity {
                     cashPay = true;
                     m_Service.send_BLEpaymenttype(Info.g_nowKeyCode, AMBlestruct.PaymentType.BYCASH);
                     m_Service.m_timsdtg._sendTIMSEventCash();
-                break;
+                    break;
 
                 case R.id.btn_mobilepay: //[모바일]버튼
                     appPaymentJSON();
@@ -2376,7 +2380,7 @@ public class MainActivity extends Activity {
                         complexUse = false;
                         btn_complex.setText("복합 꺼짐");
                         btn_complex.setTextColor(Color.parseColor("#000000"));
-                        btn_complex.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
+                        btn_complex.setBackgroundResource(R.drawable.layout_line_white);
                         m_Service.drive_state(AMBlestruct.MeterState.EXTRACOMPLEXOFF);
                         m_Service.m_timsdtg._sendTIMSEventComplex(false);
                     } else {
@@ -2441,9 +2445,9 @@ public class MainActivity extends Activity {
                     }
                     break;
 
-                case R.id.menu_btnclose:   //메뉴닫기 버튼
-                    menu.closeDrawer(drawerView);
-                    break;
+//                case R.id.menu_btnclose:   //메뉴닫기 버튼
+//                    Toast.makeText(context, "메뉴닫기 클릭", Toast.LENGTH_SHORT).show();
+//                    menu.closeDrawer(drawerView);
 
                 case R.id.menu_home:  //정보
                     menu.closeDrawer(drawerView);
@@ -2681,12 +2685,12 @@ public class MainActivity extends Activity {
                     }
                     m_Service.m_timsdtg._sendPowerOnoff();
                 }
-                    break;
+                break;
 
                 case R.id.menu_endapp:  //앱종료
 
                     exitprocess();
-                break;
+                    break;
             }
         }
     };
@@ -2975,7 +2979,7 @@ public class MainActivity extends Activity {
         /* 메인버튼 onTouch */
 
         /* 빈차 emptylayouts  */
-       //손님탑승/주행
+        //손님탑승/주행
         btn_driveStart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -3178,7 +3182,50 @@ public class MainActivity extends Activity {
         btn_gpstext.setOnClickListener(mClickListener); // OBD
 
 
+        showEmptyIcon.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    showEmptyIcon.setBackgroundResource(R.drawable.layout_line_grey);
+                    showEmptyIcon.setTextColor(getResources().getColor(R.color.grey));
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    showEmptyIcon.setBackgroundResource(R.drawable.layout_line_white);
+                    showEmptyIcon.setTextColor(getResources().getColor(R.color.white));
+                }
+                return false;
+            }
+        });
 
+        hideEmptyIcon.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    hideEmptyIcon.setBackgroundResource(R.drawable.layout_line_pink_dark);
+                    hideEmptyIcon.setTextColor(getResources().getColor(R.color.colorAccentDark));
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    hideEmptyIcon.setBackgroundResource(R.drawable.layout_line_pink);
+                    hideEmptyIcon.setTextColor(getResources().getColor(R.color.colorAccent));
+                }
+                return false;
+            }
+        });
+
+        hideReport.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    hideReport.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    hideReport.setTextColor(getResources().getColor(R.color.black));
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    hideReport.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    hideReport.setTextColor(getResources().getColor(R.color.black));
+                }
+                return false;
+            }
+        });
 
         btn_reserv_d.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -3189,7 +3236,7 @@ public class MainActivity extends Activity {
                     btn_reserv_d.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                   // btn_reserv_d.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                    // btn_reserv_d.setBackgroundColor(Color.parseColor("#3c3c4a"));
                     btn_reserv_d.setBackgroundResource(R.drawable.grey_gradi_btn);  //todo: 20220223
                 }
                 return false;
@@ -3441,7 +3488,7 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                   // btn_emptyCar_ep.setBackgroundColor(Color.parseColor("#97833a"));
+                    // btn_emptyCar_ep.setBackgroundColor(Color.parseColor("#97833a"));
                     btn_emptyCar_ep.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
@@ -3471,11 +3518,11 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                   // btn_reserv_ep.setBackgroundColor(Color.parseColor("#97833a"));
+                    // btn_reserv_ep.setBackgroundColor(Color.parseColor("#97833a"));
                     btn_reserv_ep.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                   // btn_reserv_ep.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                    // btn_reserv_ep.setBackgroundColor(Color.parseColor("#3c3c4a"));
                     btn_reserv_ep.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
                 }
                 return false;
@@ -3512,12 +3559,19 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_close.setBackgroundResource(R.drawable.nbtn_exit_c);
+                    menu_close.setBackgroundResource(R.drawable.ic__cancel_24);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_close.setBackgroundResource(R.drawable.nbtn_exit);
+                    menu_close.setBackgroundResource(R.drawable.ic_cancel);
                 }
                 return false;
+            }
+        });
+
+        menu_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu.closeDrawer(drawerView);
             }
         });
 
@@ -3527,7 +3581,7 @@ public class MainActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 //                    btn_connBLE.setBackgroundResource(R.drawable.btn_bles_c);
-                      btn_connBLE.setBackgroundResource(R.drawable.bluetooth_clicked);
+                    btn_connBLE.setBackgroundResource(R.drawable.bluetooth_clicked);
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     if(AMBlestruct.mBTConnected) {
@@ -3692,10 +3746,12 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_endDrv.setBackgroundColor(Color.parseColor("#97833a"));
+                    menu_endDrv.setBackgroundResource(R.drawable.red_gradi_btn_down);
+                    menu_endDrv.setTextColor(getResources().getColor(R.color.black));
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_endDrv.setBackgroundColor(Color.parseColor("#ffc700"));
+                    menu_endDrv.setBackgroundResource(R.drawable.red_gradi_btn);
+                    menu_endDrv.setTextColor(getResources().getColor(R.color.white));
                 }
                 return false;
             }
@@ -3707,10 +3763,12 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    menu_endApp.setBackgroundColor(Color.parseColor("#DC143C"));
+                    menu_endApp.setBackgroundResource(R.drawable.unselected_btn);
+                    menu_endApp.setTextColor(getResources().getColor(R.color.black));
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    menu_endApp.setBackgroundColor(Color.parseColor("#800000"));
+                    menu_endApp.setBackgroundResource(R.drawable.grey_gradi_btn);
+                    menu_endApp.setTextColor(getResources().getColor(R.color.white));
                 }
                 return false;
             }
@@ -3960,18 +4018,32 @@ public class MainActivity extends Activity {
                 edit_password.setGravity(Gravity.CENTER);
                 sub_msg.setVisibility(View.VISIBLE);
 
-                final RadioButton btn_0 = (RadioButton) dialogView.findViewById(R.id.btn_0);
-                final RadioButton btn_1 = (RadioButton) dialogView.findViewById(R.id.btn_1);
-                final RadioButton btn_2 = (RadioButton) dialogView.findViewById(R.id.btn_2);
-                final RadioButton btn_3 = (RadioButton) dialogView.findViewById(R.id.btn_3);
-                final RadioButton btn_4 = (RadioButton) dialogView.findViewById(R.id.btn_4);
-                final RadioButton btn_5 = (RadioButton) dialogView.findViewById(R.id.btn_5);
-                final RadioButton btn_6 = (RadioButton) dialogView.findViewById(R.id.btn_6);
-                final RadioButton btn_7 = (RadioButton) dialogView.findViewById(R.id.btn_7);
-                final RadioButton btn_8 = (RadioButton) dialogView.findViewById(R.id.btn_8);
-                final RadioButton btn_9 = (RadioButton) dialogView.findViewById(R.id.btn_9);
-                final RadioButton btn_clear = (RadioButton) dialogView.findViewById(R.id.btn_clear);
-                final RadioButton btn_back = (RadioButton) dialogView.findViewById(R.id.btn_back);
+                btn_0 = (RadioButton) dialogView.findViewById(R.id.btn_0);
+                btn_1 = (RadioButton) dialogView.findViewById(R.id.btn_1);
+                btn_2 = (RadioButton) dialogView.findViewById(R.id.btn_2);
+                btn_3 = (RadioButton) dialogView.findViewById(R.id.btn_3);
+                btn_4 = (RadioButton) dialogView.findViewById(R.id.btn_4);
+                btn_5 = (RadioButton) dialogView.findViewById(R.id.btn_5);
+                btn_6 = (RadioButton) dialogView.findViewById(R.id.btn_6);
+                btn_7 = (RadioButton) dialogView.findViewById(R.id.btn_7);
+                btn_8 = (RadioButton) dialogView.findViewById(R.id.btn_8);
+                btn_9 = (RadioButton) dialogView.findViewById(R.id.btn_9);
+                btn_clear = (RadioButton) dialogView.findViewById(R.id.btn_clear);
+                btn_back = (RadioButton) dialogView.findViewById(R.id.btn_back);
+
+                btn_0.setOnTouchListener(mResetSettingTouchListener);
+                btn_1.setOnTouchListener(mResetSettingTouchListener);
+                btn_2.setOnTouchListener(mResetSettingTouchListener);
+                btn_3.setOnTouchListener(mResetSettingTouchListener);
+                btn_4.setOnTouchListener(mResetSettingTouchListener);
+                btn_5.setOnTouchListener(mResetSettingTouchListener);
+                btn_6.setOnTouchListener(mResetSettingTouchListener);
+                btn_7.setOnTouchListener(mResetSettingTouchListener);
+                btn_8.setOnTouchListener(mResetSettingTouchListener);
+                btn_9.setOnTouchListener(mResetSettingTouchListener);
+                btn_clear.setOnTouchListener(mResetSettingTouchListener);
+                btn_back.setOnTouchListener(mResetSettingTouchListener);
+
                 btn_0.setOnClickListener(mResetSettingListener);
                 btn_1.setOnClickListener(mResetSettingListener);
                 btn_2.setOnClickListener(mResetSettingListener);
@@ -3984,7 +4056,6 @@ public class MainActivity extends Activity {
                 btn_9.setOnClickListener(mResetSettingListener);
                 btn_back.setOnClickListener(mResetSettingListener);
                 btn_clear.setOnClickListener(mResetSettingListener);
-
 
                 //get current date
                 long now = System.currentTimeMillis();
@@ -4002,10 +4073,39 @@ public class MainActivity extends Activity {
                 msg.setTextSize(25);
                 msg.setText("환경설정 초기화");
 
+                cancelBtn.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            cancelBtn.setBackgroundResource(R.drawable.unselected_btn);
+                            cancelBtn.setTextColor(getResources().getColor(R.color.black));
+                        }
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            cancelBtn.setBackgroundResource(R.drawable.grey_gradi_btn);
+                            cancelBtn.setTextColor(getResources().getColor(R.color.white));
+                        }
+                        return false;
+                    }
+                });
+
                 cancelBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dlg.dismiss();
+                    }
+                });
+
+                okayBtn.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            okayBtn.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                            okayBtn.setTextColor(getResources().getColor(R.color.black));
+                        }
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            okayBtn.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                        }
+                        return false;
                     }
                 });
 
@@ -4613,7 +4713,7 @@ public class MainActivity extends Activity {
 
             } else {
 
-                    _start_service();
+                _start_service();
 
             }
 
@@ -4792,15 +4892,12 @@ public class MainActivity extends Activity {
         }
 ////////////////////
 
-        LayoutInflater inflater = getLayoutInflater();
-//        final View dialogView;
         final LinearLayout dialogView;
 
-        menu.closeDrawer(drawerView); //20211019
-//        dialogView = inflater.inflate(R.layout.dlg_res_payment, null);
+        menu.closeDrawer(drawerView);
         dialogView = (LinearLayout)View.inflate(this, R.layout.dlg_res_payment, null);
 
-        final TextView receipt_title = (TextView) dialogView.findViewById(R.id.receipt_title);
+        final TextView cash_receipt_title = (TextView) dialogView.findViewById(R.id.receipt_title);
         final ButtonFitText btn_pernum = (ButtonFitText) dialogView.findViewById(R.id.btn_telnum);
         btn_pernum.setSizeRate(0.6);
         final ButtonFitText btn_businum = (ButtonFitText) dialogView.findViewById(R.id.btn_businum);
@@ -4808,14 +4905,7 @@ public class MainActivity extends Activity {
         final ButtonFitText btn_cards = (ButtonFitText) dialogView.findViewById(R.id.btn_cardscan);
         btn_cards.setSizeRate(0.6);
         final ButtonFitText btn_complete = (ButtonFitText) dialogView.findViewById(R.id.btn_complete);
-        /**
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setView(dialogView);
-        builder.setCancelable(false);
-        builder.create();
 
-        PopupDlg = builder.show();
-        **/
         final Dialog dlg = new Dialog(MainActivity.this);
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -4826,40 +4916,34 @@ public class MainActivity extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        Log.d("navi2_display_size", width+", "+height);  // (navi_1: 1024, 600)   /    (navi_2: 1024, 538)
-
         if (Build.VERSION.SDK_INT <= 25){  //네비게이션 화면
             //textsize
-
             width = (int)(width * 0.6);
             height = (int)(height * 0.8);
         }else {
             //textsize
-
-
             width = (int)(width * 0.9);
             height = (int)(height * 0.7);
         }
-
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dlg.getWindow().getAttributes());
         lp.width = width;
-//        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = height;
         Window window = dlg.getWindow();
         window.setAttributes(lp);
-
         dlg.show();
 
+
+        //전화번호 버튼
         btn_pernum.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_pernum.setBackgroundColor(Color.parseColor("#97833a"));
+                    btn_pernum.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_pernum.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                    btn_pernum.setBackgroundResource(R.drawable.grey_gradi_btn);
                 }
                 return false;
             }
@@ -4871,8 +4955,7 @@ public class MainActivity extends Activity {
                 cashReceipt_ = 1;
 
                 dlg.dismiss();
-//                getReceiptInputDialog();  //todo: 2022-04-27
-                getReceiptInputDialog_new();  //todo: 2022-04-27
+                getReceiptInputDialog_new();
             }
         });
 
@@ -4881,10 +4964,10 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_businum.setBackgroundColor(Color.parseColor("#97833a"));
+                    btn_businum.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_businum.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                    btn_businum.setBackgroundResource(R.drawable.grey_gradi_btn);
                 }
                 return false;
             }
@@ -4894,10 +4977,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 cashReceipt_ = 2;
-
                 dlg.dismiss();
-//                getReceiptInputDialog();  //todo: 2022-04-27
-                getReceiptInputDialog_new();  //todo: 2022-04-27
+                getReceiptInputDialog_new();
             }
         });
 
@@ -4906,10 +4987,10 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_cards.setBackgroundColor(Color.parseColor("#97833a"));
+                    btn_cards.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_cards.setBackgroundColor(Color.parseColor("#3c3c4a"));
+                    btn_cards.setBackgroundResource(R.drawable.grey_gradi_btn);
                 }
                 return false;
             }
@@ -4919,10 +5000,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 cashReceipt_ = 3;
-
                 dlg.dismiss();
-//                getReceiptInputDialog();  //todo: 2022-04-27
-                getReceiptInputDialog_new();  //todo: 2022-04-27
+                getReceiptInputDialog_new();
             }
         });
 
@@ -4947,8 +5026,6 @@ public class MainActivity extends Activity {
             }
         });
     }
-
-
 
 
     // 가로세로 해상도 세팅 다이얼로그
@@ -5011,16 +5088,9 @@ public class MainActivity extends Activity {
 
         Log.d("ntype>", ntype+""); //ntype 1 수기요금, 2 추가요금.
 
-//20220303 tra..sh
         if (list.size() != 0)
             list.removeAll(list);
-
-//        btn_cancelpayment.setTextColor(Color.parseColor("#999999"));
-//        btn_cancelpayment.setBackgroundResource(R.drawable.unselected_btn);
-
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
-
         final LinearLayout dialogView;
         final DialogInterface PopupDlg;
         final int nfaretype = ntype;
@@ -5030,27 +5100,38 @@ public class MainActivity extends Activity {
         }else {
             dialogView = (LinearLayout)View.inflate(this, R.layout.dlg_inputfare, null);
         }
-
         final TextView title = (TextView) dialogView.findViewById(R.id.title);
         edit_user = (EditText) dialogView.findViewById(R.id.edit_user);  //수기결제/ 추가요금
         edit_password = (EditText) dialogView.findViewById(R.id.edit_user);
 
-
-//        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         imm.hideSoftInputFromWindow(edit_user.getWindowToken(), 0);
 
-        final RadioButton btn_0 = (RadioButton) dialogView.findViewById(R.id.btn_0);
-        final RadioButton btn_1 = (RadioButton) dialogView.findViewById(R.id.btn_1);
-        final RadioButton btn_2 = (RadioButton) dialogView.findViewById(R.id.btn_2);
-        final RadioButton btn_3 = (RadioButton) dialogView.findViewById(R.id.btn_3);
-        final RadioButton btn_4 = (RadioButton) dialogView.findViewById(R.id.btn_4);
-        final RadioButton btn_5 = (RadioButton) dialogView.findViewById(R.id.btn_5);
-        final RadioButton btn_6 = (RadioButton) dialogView.findViewById(R.id.btn_6);
-        final RadioButton btn_7 = (RadioButton) dialogView.findViewById(R.id.btn_7);
-        final RadioButton btn_8 = (RadioButton) dialogView.findViewById(R.id.btn_8);
-        final RadioButton btn_9 = (RadioButton) dialogView.findViewById(R.id.btn_9);
-        final RadioButton btn_clear = (RadioButton) dialogView.findViewById(R.id.btn_clear);
-        final RadioButton btn_back = (RadioButton) dialogView.findViewById(R.id.btn_back);
+        btn_0 = (RadioButton) dialogView.findViewById(R.id.btn_0);
+        btn_1 = (RadioButton) dialogView.findViewById(R.id.btn_1);
+        btn_2 = (RadioButton) dialogView.findViewById(R.id.btn_2);
+        btn_3 = (RadioButton) dialogView.findViewById(R.id.btn_3);
+        btn_4 = (RadioButton) dialogView.findViewById(R.id.btn_4);
+        btn_5 = (RadioButton) dialogView.findViewById(R.id.btn_5);
+        btn_6 = (RadioButton) dialogView.findViewById(R.id.btn_6);
+        btn_7 = (RadioButton) dialogView.findViewById(R.id.btn_7);
+        btn_8 = (RadioButton) dialogView.findViewById(R.id.btn_8);
+        btn_9 = (RadioButton) dialogView.findViewById(R.id.btn_9);
+        btn_clear = (RadioButton) dialogView.findViewById(R.id.btn_clear);
+        btn_back = (RadioButton) dialogView.findViewById(R.id.btn_back);
+
+        btn_0.setOnTouchListener(calculatorOnTouchLister);
+        btn_1.setOnTouchListener(calculatorOnTouchLister);
+        btn_2.setOnTouchListener(calculatorOnTouchLister);
+        btn_3.setOnTouchListener(calculatorOnTouchLister);
+        btn_4.setOnTouchListener(calculatorOnTouchLister);
+        btn_5.setOnTouchListener(calculatorOnTouchLister);
+        btn_6.setOnTouchListener(calculatorOnTouchLister);
+        btn_7.setOnTouchListener(calculatorOnTouchLister);
+        btn_8.setOnTouchListener(calculatorOnTouchLister);
+        btn_9.setOnTouchListener(calculatorOnTouchLister);
+        btn_clear.setOnTouchListener(calculatorOnTouchLister);
+        btn_back.setOnTouchListener(calculatorOnTouchLister);
+
         btn_0.setOnClickListener(mCalculatorListener);
         btn_1.setOnClickListener(mCalculatorListener);
         btn_2.setOnClickListener(mCalculatorListener);
@@ -5063,39 +5144,9 @@ public class MainActivity extends Activity {
         btn_9.setOnClickListener(mCalculatorListener);
         btn_back.setOnClickListener(mCalculatorListener);
         btn_clear.setOnClickListener(mCalculatorListener);
+
         final Button btn_ok = (Button) dialogView.findViewById(R.id.btn_ok);
-//        btn_ok.setOnClickListener(mCalculatorListener);
         final Button btn_cancel = (Button) dialogView.findViewById(R.id.btn_cancel);
-
-        /**
-        edit_user.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        edit_user.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-            {
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.HIDE_IMPLICIT_ONLY);
-                if(actionId == EditorInfo.IME_ACTION_DONE)
-                {
-                    hidenKeyboard(edit_user);
-                    String CuserNum = edit_user.getText().toString();
-                    int nmanulafare = 0;
-
-                    if (CuserNum.equals(null) || CuserNum.equals("") || Integer.parseInt(CuserNum) < 0) {
-                        nmanulafare = 0;
-                    } else {
-                        nmanulafare = Integer.parseInt(CuserNum);
-                    }
-
-                    if(nmanulafare % 10 > 0 && nmanulafare % 10 < 10 || nmanulafare > 500000) {
-                        edit_user.setTextColor(Color.parseColor("#ff0000"));
-                    }
-                    return false;
-                }
-                return false;
-            }
-        });
-        **/
-
         final Dialog dlg = new Dialog(MainActivity.this);
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -5136,27 +5187,51 @@ public class MainActivity extends Activity {
         // this는Activity의this//160919
         // 여기서 부터는 알림창의 속성 설정
 
+        btn_cancel.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_cancel.setBackgroundResource(R.drawable.unselected_btn);
+                    btn_cancel.setTextColor(getResources().getColor(R.color.black));
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btn_cancel.setBackgroundResource(R.drawable.grey_gradi_btn);
+                    btn_cancel.setTextColor(getResources().getColor(R.color.white));
+                }
+                return false;
+            }
+        });
+
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dlg.dismiss();
-                list.removeAll(list);  //todo: 2022-04-27
-                tv_pay_card.setVisibility(View.GONE);  //todo: 20220209
+                list.removeAll(list);
+                tv_pay_card.setVisibility(View.GONE);
             }
         });
 
-        //todo: 20220221
+        btn_ok.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_ok.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    btn_ok.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    btn_ok.setTextColor(getResources().getColor(R.color.black));
+                }
+                return false;
+            }
+        });
+
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
                 if (edit_user.getText().length() == 0){
                     Toast.makeText(context, "요금을 입력하세요", Toast.LENGTH_SHORT).show();
-//                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }else {
-//                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-
 
                     //버튼쪽
                     tv_title.setText("수기결제");
@@ -5168,19 +5243,10 @@ public class MainActivity extends Activity {
 
                     //결과쪽
                     pay_title.setVisibility(View.VISIBLE);
-//20220303 tra..sh                    tv_restotpayment_title.setVisibility(View.GONE);  //todo: 20220223
                     layout_pay_distance.setVisibility(View.GONE);
                     layout_pay_driving_payment.setVisibility(View.GONE);
                     layout_pay_call_payment.setVisibility(View.GONE);
                     layout_pay_add_payment.setVisibility(View.GONE);
-
-                    if (Build.VERSION.SDK_INT >= 26){
-//                        tv_restotpayment.setTextSize(3.0f * setting.gTextDenst);
-//                        tv_restotpayment.setTextSize(40);
-//                        tv_restotpayment_layout.Layout
-//                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tv_restotpayment_layout.getLayoutParams();
-//                        tv_restotpayment_layout.getLayoutParams()
-                    }
 
 
                     String CuserNum = "";
@@ -5223,17 +5289,14 @@ public class MainActivity extends Activity {
                         }
                     }catch (Exception e){}
 
-//                PopupDlg.dismiss();
                     dlg.dismiss();
                     btn_clear.performClick();
-//                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }
             }
         });
     }
-    //todo: 20220221 end...
 
-    //todo: 2022-04-27
+
     private View.OnClickListener mReceiptDlgListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -5350,7 +5413,124 @@ public class MainActivity extends Activity {
 
         }
     };
-    //todo: end
+
+    View.OnTouchListener calculatorOnTouchLister = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            switch (v.getId()) {
+                case R.id.btn_0:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_0.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_0.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                break;
+
+                case R.id.btn_1:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_1.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_1.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_2:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_2.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_2.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_3:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_3.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_3.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_4:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_4.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_4.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_5:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_5.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_5.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_6:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_6.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_6.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_7:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_7.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_7.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_8:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_8.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_8.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_9:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_9.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_9.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_clear:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_clear.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_clear.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_back:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_back.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_back.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+            }
+
+            return false;
+        }
+    };
 
     //수기결제 요금창 계산기 버튼
     private View.OnClickListener mCalculatorListener = new View.OnClickListener() {
@@ -5447,13 +5627,6 @@ public class MainActivity extends Activity {
                 }else {
                     nmanulafare = Integer.parseInt(calVal);
                 }
-//                if (nmanulafare % 10 > 0 && nmanulafare % 10 < 10 || nmanulafare > 500000){
-//                    edit_user.setTextColor(Color.parseColor("#ff0000"));
-//                    new Thread(new SoundThread(2)).start();
-//                    return;
-//                }else if (nmanulafare >= 100000){
-//                    new Thread(new SoundThread(1)).start();
-//                }
 
             }catch (Exception e){}
 
@@ -5461,9 +5634,124 @@ public class MainActivity extends Activity {
     };
 
 
+    private View.OnTouchListener mResetSettingTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
 
+            switch (v.getId()) {
+                case R.id.btn_0:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_0.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_0.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
 
-    //todo: 20221028
+                case R.id.btn_1:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_1.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_1.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_2:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_2.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_2.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_3:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_3.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_3.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_4:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_4.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_4.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_5:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_5.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_5.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_6:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_6.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_6.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_7:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_7.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_7.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_8:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_8.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_8.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_9:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_9.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_9.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_clear:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_clear.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_clear.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+
+                case R.id.btn_back:
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        btn_back.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        btn_back.setBackgroundResource(R.drawable.yellow_gradi_btn);
+                    }
+                    break;
+            }
+
+            return false;
+        }
+    };
+
     //환경설정 초기화
     private View.OnClickListener mResetSettingListener = new View.OnClickListener() {
         @Override
@@ -5579,14 +5867,13 @@ public class MainActivity extends Activity {
 
         }//onClick..
     };
-    //todo: 20221028 end..
 
-    //todo: 2022-04-27
+
+
     private void getReceiptInputDialog_new(){
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView;
 
-//20220425 tra..sh
         if (list.size() != 0)
             list.removeAll(list);
 
@@ -6205,7 +6492,7 @@ public class MainActivity extends Activity {
         }
     }
 
-//20210827
+    //20210827
     private boolean get_addpayment()
     {
         if(!edt_addpayment.getText().toString().equals("")) {
@@ -6242,7 +6529,7 @@ public class MainActivity extends Activity {
         }
     }
 
-//20210823
+    //20210823
 ////////////////////
     private void registerReceiver() {
 
@@ -6341,7 +6628,7 @@ public class MainActivity extends Activity {
 
                                 break;
 
-                                //20220105
+                            //20220105
                             case 51:
                                 if(m_Service != null)
 //                                    m_Service._set_by_otherapp(msg, state);
@@ -6488,7 +6775,7 @@ public class MainActivity extends Activity {
 
     }
 
-//20211229 20211216
+    //20211229 20211216
     private void do_CallPay_other()
     {
         if(Info.AREA_CODE.equals("파주"))
@@ -6502,7 +6789,7 @@ public class MainActivity extends Activity {
 
     }
 
-//20211229
+    //20211229
     private void do_CallPay_pay()
     {
         if(Info.AREA_CODE.equals("대전"))
@@ -6587,7 +6874,7 @@ public class MainActivity extends Activity {
             } else if(AMBlestruct.AMCardResult.msType.equals("06")) {
                 m_Service.m_timsdtg._sendPayDTGData("3");
             }
-        //현금영수증            else m_Service.m_timsdtg._sendPayDTGData("1"); /////////???
+            //현금영수증            else m_Service.m_timsdtg._sendPayDTGData("1"); /////////???
 
         }
         //빈차  DTG
@@ -6603,7 +6890,7 @@ public class MainActivity extends Activity {
             if(Info.g_nowKeyCode.equals(Info.g_cashKeyCode) == false)
                 Info.g_cashKeyCode = "00000000"; //초기화
 
-                save_state_pref(Info.g_nowKeyCode, 1, System.currentTimeMillis(), 0, 0, 0, 0, 0, 0, 0);
+            save_state_pref(Info.g_nowKeyCode, 1, System.currentTimeMillis(), 0, 0, 0, 0, 0, 0, 0);
         }
 
 
@@ -6657,7 +6944,7 @@ public class MainActivity extends Activity {
             m_Service.mbSuburb = false;
             btn_suburb.setText("시외 꺼짐");
             btn_suburb.setTextColor(Color.parseColor("#ffffff"));
-            btn_suburb.setBackgroundResource(R.drawable.layout_line_round_radius_dark);
+            btn_suburb.setBackgroundResource(R.drawable.layout_line_white);
             m_Service.drive_state(AMBlestruct.MeterState.EXTRASUBURBOFF);
 
             if(Info.REPORTREADY)
@@ -6668,7 +6955,7 @@ public class MainActivity extends Activity {
             Log.d("sub_check_auto", suburbUseAuto+"");
 
             Date time = new Date();
-            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSS"); //20220531
 //            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
 
             subConn = "Off, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
@@ -6684,7 +6971,7 @@ public class MainActivity extends Activity {
             Log.d("sub_check","in");
 
             Date time2 = new Date();
-            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmssSS"); //20220531
 //            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmss");
 
             subConn = "On, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
@@ -6756,7 +7043,7 @@ public class MainActivity extends Activity {
 
 
 
-//20210827
+    //20210827
     class SoundThread implements Runnable {
 
         int cmd = -1;
@@ -6849,4 +7136,4 @@ public class MainActivity extends Activity {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 /////////////////////////
- }
+}

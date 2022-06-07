@@ -313,12 +313,16 @@ public class TimsDtg {
                             _after_ResendTIMS_ok(ssecode[0], 1);
 
                             Thread.sleep(1000);
-//                            Log.d("TimsTIMS", "checktime2 " + ssecode[0]);
+    //                            Log.d("TimsTIMS", "checktime2 " + ssecode[0]);
                             continue;
                         }
 
                         if(_check_sending_TIMS(true, true) == true)
+                        {
+
+                            Thread.sleep(3000); //22020527
                             continue;
+                        }
 
                         bTimsSendFail = true; //재전송건있으면 먼저보내야함
 
@@ -331,8 +335,8 @@ public class TimsDtg {
                         catch (Exception e)
                         {
                             _after_ResendTIMS_ok(ssecode[0], 1);
+                            Thread.sleep(3000); //22020527
                             continue;
-
                         }
                         if(que.mSubType == 1) {
                             que.mData = Info.ReadTextFile(ssecode[0] + ".tms", "TIMS");
@@ -341,17 +345,17 @@ public class TimsDtg {
 
                             Info._displayLOG(Info.LOGDISPLAY, "TimsTIMS 재전송 영업정보size", que.mData.length() + " " + ssecode[0]);
 
-//                            Log.d("TimsTIMS2", "재전송 영업정보size "  + que.mData.length() + " " + que.mData);
+    //                            Log.d("TimsTIMS2", "재전송 영업정보size "  + que.mData.length() + " " + que.mData);
                         }
                         else {
                             que.mData = ssecode[4];
-//                            Log.d("TimsTIMS2", " "  + que.mData.length() + " " + que.mData);
+    //                            Log.d("TimsTIMS2", " "  + que.mData.length() + " " + que.mData);
                         }
                         que.mResend = true;
                         que.mdrvtime = ssecode[0];
                         add_TIMSQueue(que);
 
-                        Thread.sleep(5000);
+                        Thread.sleep(5000); //20220527
                     }
                     else
                     {
@@ -360,11 +364,12 @@ public class TimsDtg {
 
                     }
 
-//                    Log.d("TimsTIMS0", "check1 ");
+    //                    Log.d("TimsTIMS0", "check1 ");
 
                 } catch (InterruptedException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
+    //                    Log.d("TimsTIMS2", "false");
 
                     try {
 
@@ -389,7 +394,7 @@ public class TimsDtg {
                         ;
                     }
 
-//                    Log.d("TimsTIMS0", "check2 ");
+    //                    Log.d("TimsTIMS0", "check2 ");
                 }
 
                 if(bExit)
@@ -398,7 +403,6 @@ public class TimsDtg {
 
         }
     }
-
 
     class DtgResendThread implements Runnable { //20201112
 

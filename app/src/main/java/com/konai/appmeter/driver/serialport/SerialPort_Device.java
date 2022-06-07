@@ -331,7 +331,7 @@ public class SerialPort_Device extends Thread {// extends Thread
             if(m_nRunPort == 11000)
             {
 
-                if(true) //Info.TESTMODE)
+                if(false) //Info.TESTMODE)
                 {
                     final StringBuilder stringBuilder = new StringBuilder(bytesRead);
                     for (byte byteChar : bytetmp)
