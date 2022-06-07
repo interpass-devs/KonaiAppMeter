@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="40dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="환경설정"
+                    android:textSize="30dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+
+
+            <!-- 연결설정 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="연결 설정"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/yellow"/>
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="블루투스0"
+                    android:textSize="20dp"
+                    android:textColor="@color/yellow"/>
+            </LinearLayout>
+
+
+            <Switch
+                android:id="@+id/visibilitySwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:switchMinWidth="100dp"
+                android:switchPadding="20dp"
+                android:text="Text Visibility"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="블루투스"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="right"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="시리얼 (아이나비)"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="시리얼 (아트뷰)"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="시리얼 (아틀란)"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#4C3C04"/>
+
+
+
+
+
+
+            <!-- 해상도설정 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="해상도 설정"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/yellow"/>
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="가로0"
+                    android:textSize="20dp"
+                    android:textColor="@color/yellow"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="가로"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="세로"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#4C3C04"/>
+
+
+
+
+
+
+            <!-- 소속설정 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="소속 설정"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/yellow"/>
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="법인0"
+                    android:textSize="20dp"
+                    android:textColor="@color/yellow"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="개인"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <com.konai.appmeter.driver.util.FontFitTextView
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="법인"
+                    android:textSize="18dp"
+                    android:textColor="@color/yellow"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="bottom">
+            <com.konai.appmeter.driver.util.ButtonFitText
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="취소"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:background="@drawable/grey_gradi_btn"
+                android:layout_marginRight="10dp"/>
+            <com.konai.appmeter.driver.util.ButtonFitText
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="저장"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/yellow_gradi_btn"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

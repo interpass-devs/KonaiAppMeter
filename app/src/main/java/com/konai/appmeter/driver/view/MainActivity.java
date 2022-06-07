@@ -4972,7 +4972,7 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-
+//ㅇㄹㄴㄹ
         btn_businum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
