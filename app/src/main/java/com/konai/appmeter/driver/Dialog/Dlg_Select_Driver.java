@@ -50,12 +50,6 @@ public class Dlg_Select_Driver extends Dialog {
         setContentView(R.layout.dlg_select_driver);
         context = getContext();
 
-
-
-        //get driver member
-        helper = new SQLiteHelper(context);
-        sqlite = new SQLiteControl(helper);
-
         //me: 선택할 운전자 리스트..
         // DB open 또는 create
         RecyclerDriverSet();
@@ -78,7 +72,7 @@ public class Dlg_Select_Driver extends Dialog {
             driverAdapter.items.clear();
             driverAdapter.notifyDataSetChanged();
         }
-        String driverMemberList[] = sqlite.selectMemberList();
+        String driverMemberList[] = Info.sqlite.selectMemberList();
 
         for (int i=0; i<driverMemberList.length; i++){
             splt = driverMemberList[i].split("#");
@@ -103,20 +97,23 @@ public class Dlg_Select_Driver extends Dialog {
                     i.putExtra("identi_num", driverItem.get(post).driver_num);
                     context.startActivity(i);
                 }else if (type.equals("d")){ //delete 버튼
-                    sqlite.deleteMember(driverItem.get(post).driver_license);
+                    Info.sqlite.deleteMember(driverItem.get(post).driver_license);
                     driverAdapter.items.remove(post);
                     driverAdapter.notifyDataSetChanged();
                 }else {   //iteview 클릭
-                    dismiss();
+
                     Info.G_driver_name = driverItem.get(post).driver_name;
                     Info.G_driver_num = driverItem.get(post).driver_num;
                     // 수정
                     Info.G_license_num = driverItem.get(post).driver_license;
+
+                    dismiss();
                 }
             }
         });
 
     }
+
 }//Dlg_Select_Driver_Adapter..
 
 /* 다이얼로그 안에 리사이클러뷰 어댑터 생성.. */
@@ -126,8 +123,9 @@ class RecyclerDriverAdapter extends RecyclerView.Adapter{
     ArrayList<Driver_Item> items;
     String dbName;
     String dbLicenseName;
-    SQLiteHelper helper;
-    SQLiteControl sqlite;
+//20220607 tra..sh
+//    SQLiteHelper helper;
+//    SQLiteControl sqlite;
 
     public RecyclerDriverAdapter(Context context, ArrayList<Driver_Item> driver_items) {
         this.context = context;
@@ -178,9 +176,9 @@ class RecyclerDriverAdapter extends RecyclerView.Adapter{
             super(itemView);
 
             Log.d("dfasdf","Asdfasdf");
-
-            helper = new SQLiteHelper(context);
-            sqlite = new SQLiteControl(helper);
+//20220607 tra..sh
+//            helper = new SQLiteHelper(context);
+//            sqlite = new SQLiteControl(helper);
 
             tvDriverName = itemView.findViewById(R.id.tv_driver_name);
             tvDriverNum = itemView.findViewById(R.id.tv_driver_num);

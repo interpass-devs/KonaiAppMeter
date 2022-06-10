@@ -121,10 +121,7 @@ public class RecordDetailListActivity extends Activity {
         String drvCodeVal = intent.getStringExtra("drvCodeVal");
        // Log.d("drvCodeVal", drvCodeVal+"");
 
-        mSQLiteHelper = new SQLiteHelper(context);
-        sqlite = new SQLiteControl(mSQLiteHelper);
-
-        recordList = sqlite.selectedRecordDetail( drvCodeVal );
+        recordList = Info.sqlite.selectedRecordDetail( drvCodeVal );
 
         ArrayList<RecordVO> records = new ArrayList<>();
 

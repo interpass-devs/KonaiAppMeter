@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class SQLiteHelper extends SQLiteOpenHelper  {
 
     private static final String DB_RECORD = "DrvRecord.db";
-    private static final int DB_VERSION = 10;
+    private static final int DB_VERSION = 11;
 //릴리즈버전 7
     /**
      * 1. 날짜 YYMMDD

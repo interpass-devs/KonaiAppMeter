@@ -235,11 +235,13 @@ public class Info {
 
     public static void insert_totaldata()
     {
-        String totData = sqlite.getTotalKey();
-        //Log.e("total Date is", totData);
-        if (totData.equals("") || totData.equals("0")) {
-            sqlite.insertTotalData();
-        }
+        return;
+//20220607 tra..sh
+//        String totData = sqlite.getTotalKey();
+//        //Log.e("total Date is", totData);
+//        if (totData.equals("") || totData.equals("0")) {
+//            sqlite.insertTotalData();
+//        }
     }
 
     public static void insert_rundata(Location location, int runmode)
@@ -253,7 +255,7 @@ public class Info {
         } else
             sqlite.insert(Info.g_nowKeyCode, 0, 0, 0, 0, "", "", runmode);
 
-        Log.d("check_runmode", runmode+" " + sqlite._getLastDriveDate(Info.g_nowKeyCode));
+//20220607 tra..sh        Log.d("check_runmode", runmode+" " + sqlite._getLastDriveDate(Info.g_nowKeyCode));
 
     }
 
@@ -283,11 +285,11 @@ public class Info {
         if (location != null) {
 
             sqlite.setUpdateLocation(g_nowKeyCode, Payment, PayDiv, PayAdd, location.getLatitude() + "", location.getLongitude() + "", distance, seconds, 99);
-            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds, 0);
+//20220607 tra..sh            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds, 0);
 
         } else {
             sqlite.setUpdateLocation(g_nowKeyCode, Payment, PayDiv, PayAdd, "", "", distance, seconds, 99);
-            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds,0);
+//20220607 tra..sh            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds,0);
         }
 
 //20210611
@@ -302,11 +304,11 @@ public class Info {
         if (location != null) {
 
             sqlite.setUpdateLocation(g_nowKeyCode, Payment, PayDiv, PayAdd, location.getLatitude() + "", location.getLongitude() + "", distance, seconds, 99);
-            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds, 0);
+//20220607 tra..sh            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds, 0);
 
         } else {
             sqlite.setUpdateLocation(g_nowKeyCode, Payment, PayDiv, PayAdd, "", "", distance, seconds, 99);
-            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds,0);
+//20220607 tra..sh            sqlite.setUpdateTotalData(1, Payment + PayAdd, distance, seconds,0);
         }
 
         String tot_str = (Payment + PayAdd)+"";

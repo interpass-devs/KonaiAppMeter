@@ -26,6 +26,7 @@ import com.konai.appmeter.driver.DB.SQLiteControl;
 import com.konai.appmeter.driver.DB.SQLiteHelper;
 import com.konai.appmeter.driver.Dialog.Dlg_Num_Type;
 import com.konai.appmeter.driver.R;
+import com.konai.appmeter.driver.setting.Info;
 import com.konai.appmeter.driver.setting.setting;
 
 //import android.support.annotation.NonNull;
@@ -70,8 +71,7 @@ public class RegisterDriverActivity extends Activity {
         }
 
         context = this;
-        helper = new SQLiteHelper(context);
-        sqlite = new SQLiteControl(helper);
+
         driverName = findViewById(R.id.et_driver_name);
         driverLicenseNum = findViewById(R.id.et_driver_license_num);
         driverIdentiNum = findViewById(R.id.et_driver_identi_num);
@@ -259,7 +259,7 @@ public class RegisterDriverActivity extends Activity {
                     // 데이터 INSERT
                     if(driverLicenseNum.getText().toString().length() == 9){
 
-                        long reuslt = sqlite.insertMember(driverName.getText().toString(), driverLicenseNum.getText().toString(), driverIdentiNum.getText().toString() );
+                        long reuslt = Info.sqlite.insertMember(driverName.getText().toString(), driverLicenseNum.getText().toString(), driverIdentiNum.getText().toString() );
                         finish();
                         if(reuslt == -1 ){
                             Toast.makeText(context, "잘못된 정보가 입력되었습니다. 다시 등록 해주세요.", Toast.LENGTH_SHORT).show();
@@ -290,7 +290,7 @@ public class RegisterDriverActivity extends Activity {
                     // 데이터 INSERT
                     if(driverLicenseNum.getText().toString().length() == 9){
 
-                        sqlite.updateMember(driverName.getText().toString(), driverLicenseNum.getText().toString(),driver_num, driverIdentiNum.getText().toString() );
+                        Info.sqlite.updateMember(driverName.getText().toString(), driverLicenseNum.getText().toString(),driver_num, driverIdentiNum.getText().toString() );
                         finish();
 
                     }else{

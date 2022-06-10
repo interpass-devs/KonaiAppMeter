@@ -111,17 +111,14 @@ public class RecordListActivity extends Activity {
         Intent intent = getIntent();
         String sDate = intent.getStringExtra("SDATE");
 
-        mSQLiteHelper = new SQLiteHelper(this);
-        sqlite = new SQLiteControl(mSQLiteHelper);
-
         try{
 
             if(sDate.equals("t")) {   //me: 당일거래 일 경우
                 // tv_date_drvCnt.setText(transFormat.format(time) + " / 운행 : " + driveCount + " 회");
-                recordList = sqlite.selectToday();
+                recordList = Info.sqlite.selectToday();
             } else {                  //me: 종합거래 일 경우
                 // tv_date_drvCnt.setText(driveCount + " 회");    //todo: 숫자가 안맞음..
-                recordList = sqlite.select();
+                recordList = Info.sqlite.select();
             }
 
         }catch (Exception e){

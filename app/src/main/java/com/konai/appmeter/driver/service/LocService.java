@@ -2209,13 +2209,13 @@ a
             else if (msg.what == AMBlestruct.MeterState.BLELEDON) {
                 mCallback.serviceMeterState(AMBlestruct.MeterState.BLELEDON, 0);
 
-                m_timsdtg._sendDTGPowerON();
+//20220607 tra..sh                m_timsdtg._sendDTGPowerON();
 
             } else if (msg.what == AMBlestruct.MeterState.BLELEDOFF) {
 
                 mCallback.serviceMeterState(AMBlestruct.MeterState.BLELEDOFF, 0);
 
-                m_timsdtg._sendDTGPowerOFF();
+//20220607 tra..sh                m_timsdtg._sendDTGPowerOFF();
 
             } else if (msg.what == AMBlestruct.MeterState.BLE1SDATAOK) //20201215
             {

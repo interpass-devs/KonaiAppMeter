@@ -1,6 +1,7 @@
 package com.konai.appmeter.driver.DB;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -20,15 +21,15 @@ public class SQLiteControl {
     //생성자
     public SQLiteControl(SQLiteHelper _helper) {
         this.helper = _helper;
+
+        sqlite = helper.getWritableDatabase(); //20220607 tra..sh
     }
-
-
 
     /** 등록된 운전자 정보 쿼리 **/
     public String[] selectMemberList(){
 
-        sqlite = helper.getWritableDatabase();
-        helper.getReadableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
+//        helper.getReadableDatabase();
 
         Cursor c = sqlite.query(helper.MEMBER_TABLE_NAME, null, null, null, null, null, null, null);
 
@@ -38,6 +39,7 @@ public class SQLiteControl {
         String[] getData = new String[c.getCount()];
 
         int cntValue = 0;
+
 
         while (c.moveToNext()){
             String addData = "";
@@ -57,7 +59,7 @@ public class SQLiteControl {
             }
         }//while..
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         Log.d("77777", getData.toString());
 
@@ -67,14 +69,14 @@ public class SQLiteControl {
 
     public long insertMember(String drvName, String drvLicenseNum, String drvIdentiNum){
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(helper.mCOL_2, drvName );
         values.put(helper.mCOL_3, drvLicenseNum);
         values.put(helper.mCOL_4, drvIdentiNum);
 
         long result = sqlite.insert(helper.MEMBER_TABLE_NAME, null, values);
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         Log.d("insertMember", result+"");
 
@@ -83,19 +85,19 @@ public class SQLiteControl {
 
     public void updateMember(String drvName, String licenseNum, String original_licenseNum, String identiNum){
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(helper.mCOL_2, drvName );
         values.put(helper.mCOL_3, licenseNum);
         values.put(helper.mCOL_4, identiNum);
 
         sqlite.update(helper.MEMBER_TABLE_NAME, values, "licenseNum=?", new String[]{original_licenseNum});
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
 
     public void deleteMember(String licenseNum){
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(helper.mCOL_1, licenseNum );
 
@@ -109,7 +111,7 @@ public class SQLiteControl {
     public long insertConnStatus (String phoneNum, String carno, String logs, String logtime, String logtype, String log) {
 
         //get the data repository in write mode
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
 
         //create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -122,9 +124,9 @@ public class SQLiteControl {
 
         //insert the new row, returning the primary key value of the new row
         long result = sqlite.insert(helper.CONN_STATUS_TABLE_NAME, null, values);
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
-        Log.d("insertConnStatus", result+"");
+        Log.d("insertConnStatus", logs + result+"");
 
         return result;
     }
@@ -133,7 +135,7 @@ public class SQLiteControl {
     //3일전 데이터 삭제
     public void deleteConnStatus() {
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
 
         Date time = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -141,7 +143,7 @@ public class SQLiteControl {
         String logtime = sdf.format(time) + "";
 
         sqlite.delete(helper.CONN_STATUS_TABLE_NAME, "logtime<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{logtime});
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 //        return logtime;
     }
 
@@ -150,13 +152,13 @@ public class SQLiteControl {
     //3일치 데이터 fetch
     public String[] selectConnStatus() {
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
 
         String today = null;
         String today_3 = null;
 
         Date time = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); //20220607
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Calendar cal = Calendar.getInstance();
         cal.setTime(time);
@@ -169,13 +171,14 @@ public class SQLiteControl {
 //        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, null, null,null,null,null); //모든 데이터 fetch
 
         // 3일전 ~ 오늘
-        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, "logtime BETWEEN '" + today_3 + " 00:00:00' AND '" + today + " 23:59:59'", null, null, null, null);
+//20220607
+        Cursor cursor = sqlite.query(helper.CONN_STATUS_TABLE_NAME, null, "logtime BETWEEN '" + today_3 + " 000000' AND '" + today + " 235959'", null, null, null, null);
 
 
         String[] columnName = { helper.cCOL_2, helper.cCOL_3, helper.cCOL_4, helper.cCOL_5, helper.cCOL_6, helper.cCOL_7};
         String[] returnValue = new String[columnName.length]; //0~3
 
-//        Log.d("returnValue", returnValue.toString()+" 개");
+        Log.d("returnValue", returnValue.toString()+" 개");
         String[] getData = new String[cursor.getCount()];
 
         int cntValue = 0;
@@ -187,23 +190,23 @@ public class SQLiteControl {
             for (int i=0; i<returnValue.length; i++) {
 
                 if (i==5) {
-                  addData += "#" + cursor.getString(cursor.getColumnIndex(columnName[i]));
-                  getData[cntValue] = addData;
-                  cntValue++;
+                    addData += "#" + cursor.getString(cursor.getColumnIndex(columnName[i]));
+                    getData[cntValue] = addData;
+                    cntValue++;
                 }else if (i==0) {
                     addData += cursor.getString(cursor.getColumnIndex(columnName[i]));
                 }else {
                     addData += "#" + cursor.getString(cursor.getColumnIndex(columnName[i]));
                 }
                 returnValue[i] = cursor.getString(cursor.getColumnIndex(columnName[i]));
-//                Log.d("returnValue", returnValue[i]);
+                Log.d("returnValue", returnValue[i]);
 
             }//for
 
         }//while
 
         cursor.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return getData;
     }
@@ -221,7 +224,7 @@ public class SQLiteControl {
         if(Info.USEDBRUNDATA == false)
             return new String[1];
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         Cursor c = sqlite.query(helper.TABLE_NAME, null, null, null, null, null, helper.COL_1+" desc", null);
 
         String[] columnName = {helper.COL_1,helper.COL_2,helper.COL_3,helper.COL_4,helper.COL_5,
@@ -252,7 +255,7 @@ public class SQLiteControl {
             }
         }
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return getData;
     }
@@ -262,7 +265,7 @@ public class SQLiteControl {
         if(Info.USEDBRUNDATA == false)
             return new String[0];
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
 
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -299,7 +302,7 @@ public class SQLiteControl {
             }
         }
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
 //        Log.d("today_data!", getData[]);
 
@@ -311,7 +314,7 @@ public class SQLiteControl {
         if(Info.USEDBRUNDATA == false)
             return new String[1];
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
 
         Cursor c = sqlite.query(helper.TABLE_NAME, null, "drvCode = '" + drvCode + "'", null, null, null, null, null );
 
@@ -343,7 +346,7 @@ public class SQLiteControl {
             }//for..
         }//while..
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return getData;
     }
@@ -352,7 +355,7 @@ public class SQLiteControl {
     public String selectKey() {
         if(Info.USEDBRUNDATA == false)
             return "0";
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT IFNULL(MAX(drvCode), '0') FROM " + helper.TABLE_NAME;
         Cursor cursor = null;
         String data = "";
@@ -363,11 +366,12 @@ public class SQLiteControl {
                 data += cursor.getString(0);
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "0";
             e.printStackTrace();
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return data;
     }
@@ -383,7 +387,7 @@ public class SQLiteControl {
         String o_CoordsX = "";
         String o_CoordsY = "";
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String getCoordsX = "SELECT coordsX FROM " + helper.TABLE_NAME + " WHERE drvCode = '" + key +"'";
         String getCoordsY = "SELECT coordsY FROM " + helper.TABLE_NAME + " WHERE drvCode = '" + key +"'";
         Cursor cursor = null;
@@ -394,6 +398,7 @@ public class SQLiteControl {
             Log.d("X좌표", o_CoordsX);
             break;
         }
+        cursor.close(); //20220607
 
         cursor = sqlite.rawQuery(getCoordsY,null);
 
@@ -401,6 +406,7 @@ public class SQLiteControl {
             o_CoordsY += cursor.getString(0);
             break;
         }
+        cursor.close(); //20220607
 
         ContentValues value = new ContentValues();
 
@@ -434,14 +440,14 @@ public class SQLiteControl {
 
             sqlite.update(helper.TABLE_NAME, value, "drvCode=?", new String[]{key});
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     public void insert(String drvCode, int drvDivision, int drvPay, int drvPayDivision, int addPay, String coordsX, String coordsY, int nmode) {
         if(Info.USEDBRUNDATA == false)
             return ;
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -460,7 +466,7 @@ public class SQLiteControl {
 
         sqlite.insert(helper.TABLE_NAME, null, values);
 
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     /**  TOTAL TABLE QUERY **/
@@ -469,7 +475,7 @@ public class SQLiteControl {
         if(Info.USEDBRUNDATA == false)
             return;
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -487,13 +493,13 @@ public class SQLiteControl {
         values.put(helper.tCOL_11, 0);
 
         sqlite.insert(helper.TOTAL_TABLE_NAME, null, values);
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     public String getTotalKey() {
         if(Info.USEDBRUNDATA == false)
             return "0";
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String selectkey = "SELECT IFNULL(tDate, '0') FROM " + helper.TOTAL_TABLE_NAME + " WHERE tDate = '" + transFormat.format(time) + "'";
@@ -506,11 +512,12 @@ public class SQLiteControl {
                 data += cursor.getString(0);
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "0";
             e.printStackTrace();
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return data;
     }
@@ -521,7 +528,7 @@ public class SQLiteControl {
         if(Info.USEDBRUNDATA == false)
             return data;
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String selectkey = "SELECT " + helper.tCOL_3 + ", " + helper.tCOL_4 + ", " + helper.tCOL_6 + ", " + helper.tCOL_7 + ", " + helper.tCOL_5 + " FROM " + helper.TOTAL_TABLE_NAME + " WHERE tDate = '" + transFormat.format(time) + "'";
@@ -537,11 +544,12 @@ public class SQLiteControl {
                 data += "/" + cursor.getInt(4);
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "";
             e.printStackTrace();
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return data;
     }
@@ -550,7 +558,7 @@ public class SQLiteControl {
         String data = "0/0";
         if(Info.USEDBRUNDATA == false)
             return data;
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String cashCnt = "SELECT COUNT(" + helper.COL_4 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59' AND " + helper.COL_4 + " = 0";
@@ -567,6 +575,7 @@ public class SQLiteControl {
                 data += "/" + cursor.getInt(4);*/
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "";
             e.printStackTrace();
@@ -582,11 +591,12 @@ public class SQLiteControl {
                 data += "/" + cursor.getInt(4);*/
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "";
             e.printStackTrace();
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return data;
     }
@@ -595,7 +605,7 @@ public class SQLiteControl {
         String data = "0";
         if(Info.USEDBRUNDATA == false)
             return data;
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         Date time = new Date();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String drvCnt = "SELECT COUNT(" + helper.COL_1 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59'";
@@ -612,11 +622,12 @@ public class SQLiteControl {
                 data += "/" + cursor.getInt(4);*/
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "";
             e.printStackTrace();
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return data;
     }
@@ -627,7 +638,7 @@ public class SQLiteControl {
         String data = "0";
         if(Info.USEDBRUNDATA == false)
             return data;
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String totalDrvCnt = "SELECT COUNT(" + helper.COL_1 + ") FROM " + helper.TABLE_NAME;
         Cursor cursor = null;
 
@@ -637,11 +648,12 @@ public class SQLiteControl {
                 data += cursor.getInt(0);
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "";
             e.printStackTrace();
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return data;
     }
@@ -654,7 +666,7 @@ public class SQLiteControl {
         if(Info.USEDBRUNDATA == false)
             return new String[1];
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         Cursor c = sqlite.query(helper.TOTAL_TABLE_NAME, null, null, null, null, null, null, null);
 
         String[] columnName = {helper.tCOL_1,helper.tCOL_2,helper.tCOL_3,helper.tCOL_4,helper.tCOL_5,helper.tCOL_6,helper.tCOL_7,helper.tCOL_8,helper.tCOL_9,helper.tCOL_10,helper.tCOL_11};
@@ -684,7 +696,7 @@ public class SQLiteControl {
             }
         }
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return getData;
     }
@@ -709,7 +721,7 @@ public class SQLiteControl {
                 sdate = stmp;
         }
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
 
         String col_1;
         String col_2;
@@ -747,6 +759,7 @@ public class SQLiteControl {
             //Log.e("Get Total Datas!", oldDist + " / " + oldSec);
             break;
         }
+        cursor.close(); //20220607
 
         ContentValues value = new ContentValues();
 
@@ -777,6 +790,7 @@ public class SQLiteControl {
                 oldAfterPayCount = cursor.getInt(2);
                 break;
             }
+            cursor.close(); //20220607
 
             if(payment == CalFareBase.BASECOST || payment == CalFareBase.BASECOSTEXTRATIME) {
                 value.put(col_3, oldBasePayCount + 1);
@@ -790,9 +804,25 @@ public class SQLiteControl {
 
             sqlite.update(helper.TOTAL_TABLE_NAME, value, "tDate=?", new String[]{sdate});
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
     }
+
+    //todo: 20220608
+    //1개월 지난 운행기록 삭제
+    public void deleteDrvRecord() {
+
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String drvDate = sdf.format(d);
+//;
+        sqlite.delete(helper.TABLE_NAME, "sDate<strftime('%Y-%m-%d %H:%M:%S', datetime(?, '-1 months'))", new String[]{drvDate});
+//20220607 tra..sh        sqlite.close();
+
+    }
+    //todo: end
+
 
 
     public String _getLastDriveDate(String sKeycode)
@@ -801,7 +831,7 @@ public class SQLiteControl {
         if(Info.USEDBRUNDATA == false)
             return data;
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         String drvdate = "SELECT " + helper.COL_8 + " FROM " + helper.TABLE_NAME + " WHERE drvCode = '" + sKeycode + "'";
         //String drvCnt = "SELECT COUNT(" + helper.COL_1 + ") FROM " + helper.TABLE_NAME + " WHERE sDate BETWEEN '" + transFormat.format(time) + " 00:00:00' AND '" + transFormat.format(time) + " 23:59:59' AND " + helper.COL_4 + " AND " + helper.COM_12 + " = 1";
@@ -813,17 +843,18 @@ public class SQLiteControl {
                 data = cursor.getString(0);
                 break;
             }
+            cursor.close(); //20220607
         } catch(Exception e) {
             data = "";
             e.printStackTrace();
         }
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return data;
     }
 
     public void delete(String drvCode) {
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         sqlite.delete(helper.TABLE_NAME, "drvCode=?", new String[]{drvCode});
 
     }
@@ -831,7 +862,7 @@ public class SQLiteControl {
 /////////////////////////
     /**  TIMSDATA TABLE INSERT **/
     public String insertTimsdata(String url, String sdata, int event, int iok) {
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Date time = new Date();
         SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyyMMddHHmmssSS");
@@ -844,7 +875,7 @@ public class SQLiteControl {
 
         long n = 0;
         n = sqlite.insert(helper.TIMS_TABLE_NAME, null, values);
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
 //        Log.d("TimsTIMS3", "sqlindex " + drvdate + " " + event + " " + sdata.length());
 
@@ -854,7 +885,7 @@ public class SQLiteControl {
 
     /** TIMSDATA TABLE QUERY **/
     public String[] selectTimsResenddata() {
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT " + helper.TIMSCOL_1 + "," + helper.TIMSCOL_2 + "," + helper.TIMSCOL_3 + "," + helper.TIMSCOL_4 + "," + helper.TIMSCOL_5
                 + " FROM " + helper.TIMS_TABLE_NAME + " ORDER BY " + helper.TIMSCOL_1 + " ASC LIMIT 1";
         Cursor c = sqlite.rawQuery(selectkey, null);
@@ -876,13 +907,13 @@ public class SQLiteControl {
         }//while..
 
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return returnValue;
     }
 
     public String[] selectLastTimsdata(){
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT " + helper.TIMSCOL_1 + "," + helper.TIMSCOL_2 + "," + helper.TIMSCOL_3 + "," + helper.TIMSCOL_4 + "," + helper.TIMSCOL_5 +
                 " FROM " + helper.TIMS_TABLE_NAME + " ORDER BY " + helper.TIMSCOL_1 + " DESC LIMIT 1";
         Cursor c = sqlite.rawQuery(selectkey, null);
@@ -904,7 +935,7 @@ public class SQLiteControl {
             break;
         }//while..
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return returnValue;
     }
@@ -912,18 +943,18 @@ public class SQLiteControl {
     /** TIMSDATA TABLE UPDATE **/
     public void updateTimsdata(String drvdate){
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(helper.TIMSCOL_3, 1);
 
         sqlite.update(helper.TIMS_TABLE_NAME, values, "drvdate=?", new String[]{drvdate});
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     /** TIMSDATA TABLE CLEAR **/
     public void updateTimsdataClear(){
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         Date time = new Date();
@@ -934,7 +965,7 @@ public class SQLiteControl {
 
         sqlite.update(helper.TIMS_TABLE_NAME, values, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
 
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     /** TIMSDATA TABLE DELETE **/
@@ -943,22 +974,22 @@ public class SQLiteControl {
         Date time = new Date();
         SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
         String drvdate = stTransFormat.format(time) + "";
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         sqlite.delete(helper.TIMS_TABLE_NAME, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     /** TIMSDATA TABLE DELETE WITH DATE**/
     public void deleteTimsdata(String drvdate) {
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         sqlite.delete(helper.TIMS_TABLE_NAME, "drvdate = ?", new String[]{drvdate});
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 //////////////////////
 
     /**  DGTDATA TABLE INSERT **/
     public void insertDtgdata(String keycode, String sdata, int iok) {
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Date time = new Date();
         SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyyMMddHHmmssSS");
@@ -968,12 +999,12 @@ public class SQLiteControl {
         values.put(helper.DTGCOL_4, sdata);
 
         sqlite.insert(helper.DTG_TABLE_NAME, null, values);
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     /** DTGDATA TABLE QUERY **/
     public String[] selectDtgResenddata(){
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT " + helper.DTGCOL_1 + "," + helper.DTGCOL_2 + "," + helper.DTGCOL_3 + "," + helper.DTGCOL_4 + " FROM "
                 + helper.DTG_TABLE_NAME + " WHERE " + helper.DTGCOL_3 + " = 0 ORDER BY " + helper.DTGCOL_1 + " ASC LIMIT 1";
         Cursor c = sqlite.rawQuery(selectkey, null);
@@ -993,14 +1024,14 @@ public class SQLiteControl {
             break;
         }//while..
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
 //        Log.d("TimsDtg", returnValue[0] + " " + returnValue[1] + " " + returnValue[2]);
         return returnValue;
     }
 
     public String[] selectLastDtgdata(){
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT " + helper.DTGCOL_1 + "," + helper.DTGCOL_2 + "," + helper.DTGCOL_3 + "," + helper.DTGCOL_4 + " FROM "
                 + helper.DTG_TABLE_NAME + " ORDER BY " + helper.DTGCOL_1 + " DESC LIMIT 1";
         Cursor c = sqlite.rawQuery(selectkey, null);
@@ -1021,7 +1052,7 @@ public class SQLiteControl {
             break;
         }//while..
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
         return returnValue;
     }
@@ -1029,18 +1060,18 @@ public class SQLiteControl {
     /** DTGDATA TABLE UPDATE **/
     public void updateDtgdata(String drvdate){
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(helper.DTGCOL_3, 1);
 
         sqlite.update(helper.DTG_TABLE_NAME, values, "drvdate=?", new String[]{drvdate});
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     /** DTGDATA TABLE CLEAR **/
     public void updateDtgdataClear(){
 
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         Date time = new Date();
@@ -1051,7 +1082,7 @@ public class SQLiteControl {
 
         sqlite.update(helper.DTG_TABLE_NAME, values, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-3 days'))", new String[]{drvdate});
 
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     /** DTGDATA TABLE DELETE **/
@@ -1059,16 +1090,16 @@ public class SQLiteControl {
         Date time = new Date();
         SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
         String drvdate = stTransFormat.format(time) + "";
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         sqlite.delete(helper.DTG_TABLE_NAME, "drvdate<strftime('%Y%m%d%H%M%S', datetime(?, '-1 months'))", new String[]{drvdate});
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
     }
 
     public void selecttest(){
         Date time = new Date();
         SimpleDateFormat stTransFormat = new SimpleDateFormat("yyyy-MM-dd");
         String drvdate = stTransFormat.format(time) + "";
-        sqlite = helper.getWritableDatabase();
+//20220607 tra..sh        sqlite = helper.getWritableDatabase();
         String selectkey = "SELECT strftime('%Y%m%d%H%M%S', datetime('" + drvdate + "', '-1 days')) as strtime";
 //        String selectkey = "SELECT strftime('%Y%m%d%H%M%S', datetime(" + drvdate + ", '-1 days')) as strtime";
         Cursor c = sqlite.rawQuery(selectkey, null);
@@ -1084,7 +1115,7 @@ public class SQLiteControl {
             break;
         }//while..
         c.close();
-        sqlite.close();
+//20220607 tra..sh        sqlite.close();
 
 //        Log.d("TimsDtg", "-------" + sreturn + " " + drvdate);
 
@@ -1092,8 +1123,11 @@ public class SQLiteControl {
     }
 
     public void closeDB() {
-        sqlite.close();
-        helper.close();
+        if (sqlite != null && sqlite.isOpen())
+            sqlite.close();
+
+        if(helper != null)
+            helper.close();
     }
 
 }

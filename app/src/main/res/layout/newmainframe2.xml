@@ -334,8 +334,10 @@
 
 
 
+                <!-- //todo: 20220610 -->
+                <!-- todo: visibility : invisiable -> gone -->
                 <LinearLayout
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     android:id="@+id/payinglayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

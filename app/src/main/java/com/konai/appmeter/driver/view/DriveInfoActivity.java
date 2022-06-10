@@ -73,37 +73,38 @@ public class DriveInfoActivity extends Activity {
 
 //20220415 ver157        Info.init_SQLHelper(this);
 
-        String[] values = Info.sqlite.totSelect();
-
-        if(values.length > 1)
-        for(int i=0; i<values.length; i++) {
-
-            Log.e("getData_total", values.length + "");
-
-            Log.e("getData", values[i] + "");
-            String[] res = values[i].split("#");
-
-            tPayDrv = tPayDrv + Integer.parseInt(res[2]);
-            tEmptyDrv = tEmptyDrv + Integer.parseInt(res[3]);
-            tPayment = tPayment + Integer.parseInt(res[4]);
-            tPaySec = tPaySec + Integer.parseInt(res[5]);
-            tEmptySec = tEmptySec + Integer.parseInt(res[6]);
-            tBasePayCnt = tBasePayCnt + Integer.parseInt(res[7]);
-            tAfterPayCnt = tAfterPayCnt + Integer.parseInt(res[8]);
-            tExtraBPayCnt = tExtraBPayCnt + Integer.parseInt(res[9]);
-            tExtraAPayCnt = tExtraAPayCnt + Integer.parseInt(res[10]);
-        }
-
-        tv_totaldistance.setText((tPayDrv/1000) + " KM");
-        tv_totaldrvtime.setText((tEmptyDrv/1000) + " KM");
-        tv_totEmptyTime.setText((tEmptySec/60) + " 분");
-        tv_totDrvTime.setText((tPaySec/60) + " 분");
-        tv_tbasepaycnt.setText(tBasePayCnt + " 회");
-        tv_tafterpaycnt.setText(tAfterPayCnt + " 회");
-        tv_extrabasepaycnt.setText(tExtraBPayCnt + " 회");
-        tv_extraafterpaycnt.setText(tExtraAPayCnt + " 회");
-        tv_totalpayment.setText(tPayment + " 원");
-        tv_totDrvRatio.setText((String.format("%.2f", Float.parseFloat(tPayDrv + "")/(Float.parseFloat((tPayDrv + tEmptyDrv) + "")) * 100.0) + " %"));
+//20220607 tra..sh
+//        String[] values = Info.sqlite.totSelect();
+//
+//        if(values.length > 1)
+//        for(int i=0; i<values.length; i++) {
+//
+//            Log.e("getData_total", values.length + "");
+//
+//            Log.e("getData", values[i] + "");
+//            String[] res = values[i].split("#");
+//
+//            tPayDrv = tPayDrv + Integer.parseInt(res[2]);
+//            tEmptyDrv = tEmptyDrv + Integer.parseInt(res[3]);
+//            tPayment = tPayment + Integer.parseInt(res[4]);
+//            tPaySec = tPaySec + Integer.parseInt(res[5]);
+//            tEmptySec = tEmptySec + Integer.parseInt(res[6]);
+//            tBasePayCnt = tBasePayCnt + Integer.parseInt(res[7]);
+//            tAfterPayCnt = tAfterPayCnt + Integer.parseInt(res[8]);
+//            tExtraBPayCnt = tExtraBPayCnt + Integer.parseInt(res[9]);
+//            tExtraAPayCnt = tExtraAPayCnt + Integer.parseInt(res[10]);
+//        }
+//
+//        tv_totaldistance.setText((tPayDrv/1000) + " KM");
+//        tv_totaldrvtime.setText((tEmptyDrv/1000) + " KM");
+//        tv_totEmptyTime.setText((tEmptySec/60) + " 분");
+//        tv_totDrvTime.setText((tPaySec/60) + " 분");
+//        tv_tbasepaycnt.setText(tBasePayCnt + " 회");
+//        tv_tafterpaycnt.setText(tAfterPayCnt + " 회");
+//        tv_extrabasepaycnt.setText(tExtraBPayCnt + " 회");
+//        tv_extraafterpaycnt.setText(tExtraAPayCnt + " 회");
+//        tv_totalpayment.setText(tPayment + " 원");
+//        tv_totDrvRatio.setText((String.format("%.2f", Float.parseFloat(tPayDrv + "")/(Float.parseFloat((tPayDrv + tEmptyDrv) + "")) * 100.0) + " %"));
 
     }
 
@@ -138,36 +139,37 @@ public class DriveInfoActivity extends Activity {
 
 //20220415 ver157        Info.init_SQLHelper(this);
 
-        String[] values = Info.sqlite.totSelect();
-        if(values.length > 1)
-        for(int i=0; i<values.length; i++) {
-
-            Log.d("total_cnt", values.length+"");
-
-            Log.e("getData", values[i] + "");
-            String[] res = values[i].split("#");
-
-            tPayDrv = tPayDrv + Integer.parseInt(res[2]);
-            tEmptyDrv = tEmptyDrv + Integer.parseInt(res[3]);
-            tPayment = tPayment + Integer.parseInt(res[4]);
-            tPaySec = tPaySec + Integer.parseInt(res[5]);
-            tEmptySec = tEmptySec + Integer.parseInt(res[6]);
-            tBasePayCnt = tBasePayCnt + Integer.parseInt(res[7]);
-            tAfterPayCnt = tAfterPayCnt + Integer.parseInt(res[8]);
-            tExtraBPayCnt = tExtraBPayCnt + Integer.parseInt(res[9]);
-            tExtraAPayCnt = tExtraAPayCnt + Integer.parseInt(res[10]);
-        }
-
-        tv_totaldistance.setText((tPayDrv/1000) + " KM");
-        tv_totaldrvtime.setText((tEmptyDrv/1000) + " KM");
-        tv_totEmptyTime.setText((tEmptySec/60) + " 분");
-        tv_totDrvTime.setText((tPaySec/60) + " 분");
-        tv_tbasepaycnt.setText(tBasePayCnt + " 회");
-        tv_tafterpaycnt.setText(tAfterPayCnt + " 회");
-        tv_extrabasepaycnt.setText(tExtraBPayCnt + " 회");
-        tv_extraafterpaycnt.setText(tExtraAPayCnt + " 회");
-        tv_totalpayment.setText(tPayment + " 원");
-        tv_totDrvRatio.setText((String.format("%.2f", Float.parseFloat(tPayDrv + "")/(Float.parseFloat((tPayDrv + tEmptyDrv) + "")) * 100.0) + " %"));
+//20220607 tra..sh
+//        String[] values = Info.sqlite.totSelect();
+//        if(values.length > 1)
+//        for(int i=0; i<values.length; i++) {
+//
+//            Log.d("total_cnt", values.length+"");
+//
+//            Log.e("getData", values[i] + "");
+//            String[] res = values[i].split("#");
+//
+//            tPayDrv = tPayDrv + Integer.parseInt(res[2]);
+//            tEmptyDrv = tEmptyDrv + Integer.parseInt(res[3]);
+//            tPayment = tPayment + Integer.parseInt(res[4]);
+//            tPaySec = tPaySec + Integer.parseInt(res[5]);
+//            tEmptySec = tEmptySec + Integer.parseInt(res[6]);
+//            tBasePayCnt = tBasePayCnt + Integer.parseInt(res[7]);
+//            tAfterPayCnt = tAfterPayCnt + Integer.parseInt(res[8]);
+//            tExtraBPayCnt = tExtraBPayCnt + Integer.parseInt(res[9]);
+//            tExtraAPayCnt = tExtraAPayCnt + Integer.parseInt(res[10]);
+//        }
+//
+//        tv_totaldistance.setText((tPayDrv/1000) + " KM");
+//        tv_totaldrvtime.setText((tEmptyDrv/1000) + " KM");
+//        tv_totEmptyTime.setText((tEmptySec/60) + " 분");
+//        tv_totDrvTime.setText((tPaySec/60) + " 분");
+//        tv_tbasepaycnt.setText(tBasePayCnt + " 회");
+//        tv_tafterpaycnt.setText(tAfterPayCnt + " 회");
+//        tv_extrabasepaycnt.setText(tExtraBPayCnt + " 회");
+//        tv_extraafterpaycnt.setText(tExtraAPayCnt + " 회");
+//        tv_totalpayment.setText(tPayment + " 원");
+//        tv_totDrvRatio.setText((String.format("%.2f", Float.parseFloat(tPayDrv + "")/(Float.parseFloat((tPayDrv + tEmptyDrv) + "")) * 100.0) + " %"));
 
 //		Log.i("TAg", "---------- screenWidthDp : " + newConfig.screenWidthDp + ", screenHeightDp : " + newConfig.screenHeightDp);
 

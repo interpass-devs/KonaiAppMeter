@@ -446,7 +446,7 @@ public class MemberCertActivity extends Activity {
         inpt_certino.setEnabled(false);
         btn_ok.setEnabled(false);
         btn_ok.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
-        Info.init_SQLHelper(this);
+        Info.init_SQLHelper(getApplicationContext()); ////20220607 tra..sh
 
         TelephonyManager systemService = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -493,7 +493,7 @@ public class MemberCertActivity extends Activity {
         //true 하면 강제 로그인됌
         if (false) //m_bSkipLogin)
         {
-            setting.phoneNumber = "01036610720";
+            setting.phoneNumber = "01036610720"; //"01235917710"; //"01036610720";
         }
 //        Toast.makeText(MemberCertActivity.this, "" + setting.phoneNumber, Toast.LENGTH_SHORT).show();
 
@@ -672,12 +672,12 @@ public class MemberCertActivity extends Activity {
                         }
                     } catch (Exception e) {}
 
-                    totData = Info.sqlite.getTotalKey();
-                    if (totData.equals("") || totData.equals("0")) {
-                        Info.sqlite.insertTotalData();
-                    }
+//20220607 tra..sh                    totData = Info.sqlite.getTotalKey();
+//                    if (totData.equals("") || totData.equals("0")) {
+//                        Info.sqlite.insertTotalData();
+//                    }
+//
 
-//                    update_centerapk(2);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     Log.d(logtag + "_lead_main", "to main activity");
 //                    intent.putExtra("errorLogParams", (Serializable) sendParams);

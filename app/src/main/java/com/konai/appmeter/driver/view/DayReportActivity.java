@@ -50,22 +50,23 @@ public class DayReportActivity extends Activity {
         initializecontents(setting.gOrient);
 
 //20220415 ver157        Info.init_SQLHelper(this);
-        String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
-        String driveCount = Info.sqlite.todayDriveCount();
-
-        if(dayDrvRecordData.length > 1 && dayDrvRecordData[1].equals("null") == false)
-        {
-            tv_TRDistance.setText((String.format("%.2f", (Double.parseDouble(dayDrvRecordData[0]) + Double.parseDouble(dayDrvRecordData[1])) / 1000)) + "km");
-            tv_TRDirectPayCnt.setText(driveCount + " 건");
-            tv_TRTotalPayCnt.setText(driveCount + " 건");
-            tv_TRTotalPay.setText(dayDrvRecordData[4] + "원");
-        }
-        String[] payDiv = Info.sqlite.todayPaymentCount().split("/");
-
-        if(payDiv.length > 1) {
-            tv_TRCashPay.setText(payDiv[0] + " 건");
-            tv_TRCardPay.setText(payDiv[1] + " 건");
-        }
+//20220607 tra..sh
+//        String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
+//        String driveCount = Info.sqlite.todayDriveCount();
+//
+//        if(dayDrvRecordData.length > 1 && dayDrvRecordData[1].equals("null") == false)
+//        {
+//            tv_TRDistance.setText((String.format("%.2f", (Double.parseDouble(dayDrvRecordData[0]) + Double.parseDouble(dayDrvRecordData[1])) / 1000)) + "km");
+//            tv_TRDirectPayCnt.setText(driveCount + " 건");
+//            tv_TRTotalPayCnt.setText(driveCount + " 건");
+//            tv_TRTotalPay.setText(dayDrvRecordData[4] + "원");
+//        }
+//        String[] payDiv = Info.sqlite.todayPaymentCount().split("/");
+//
+//        if(payDiv.length > 1) {
+//            tv_TRCashPay.setText(payDiv[0] + " 건");
+//            tv_TRCardPay.setText(payDiv[1] + " 건");
+//        }
     }
 
     @Override
@@ -98,22 +99,23 @@ public class DayReportActivity extends Activity {
         }
 
 //20220415 ver157        Info.init_SQLHelper(this);
-        String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
-        String driveCount = Info.sqlite.todayDriveCount();
-
-        if(dayDrvRecordData.length > 1 && dayDrvRecordData[1].equals("null") == false)
-        {
-            tv_TRDistance.setText((String.format("%.2f", (Double.parseDouble(dayDrvRecordData[0]) + Double.parseDouble(dayDrvRecordData[1])) / 1000)) + "km");
-            tv_TRDirectPayCnt.setText(driveCount + " 건");
-            tv_TRTotalPayCnt.setText(driveCount + " 건");
-            tv_TRTotalPay.setText(dayDrvRecordData[4] + "원");
-        }
-        String[] payDiv = Info.sqlite.todayPaymentCount().split("/");
-
-        if(payDiv.length > 1) {
-            tv_TRCashPay.setText(payDiv[0] + " 건");
-            tv_TRCardPay.setText(payDiv[1] + " 건");
-        }
+//20220607 tra..sh
+//        String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
+//        String driveCount = Info.sqlite.todayDriveCount();
+//
+//        if(dayDrvRecordData.length > 1 && dayDrvRecordData[1].equals("null") == false)
+//        {
+//            tv_TRDistance.setText((String.format("%.2f", (Double.parseDouble(dayDrvRecordData[0]) + Double.parseDouble(dayDrvRecordData[1])) / 1000)) + "km");
+//            tv_TRDirectPayCnt.setText(driveCount + " 건");
+//            tv_TRTotalPayCnt.setText(driveCount + " 건");
+//            tv_TRTotalPay.setText(dayDrvRecordData[4] + "원");
+//        }
+//        String[] payDiv = Info.sqlite.todayPaymentCount().split("/");
+//
+//        if(payDiv.length > 1) {
+//            tv_TRCashPay.setText(payDiv[0] + " 건");
+//            tv_TRCardPay.setText(payDiv[1] + " 건");
+//        }
 
 //		Log.i("TAg", "---------- screenWidthDp : " + newConfig.screenWidthDp + ", screenHeightDp : " + newConfig.screenHeightDp);
     }

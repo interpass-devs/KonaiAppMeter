@@ -82,10 +82,11 @@ public class TimsDtg {
     {
         mService = service;
 
-        ///todo: 2022-05-20
-        TimsSendThread = new Thread(new n_TIMS_Thread());  //팀스 쓰레드에.. -> 6번(연결상태) 케이스 만들어주기
-        TimsSendThread.start();
-        //todo: end
+//20220607 tra..sh
+//        ///todo: 2022-05-20
+//        TimsSendThread = new Thread(new n_TIMS_Thread());  //팀스 쓰레드에.. -> 6번(연결상태) 케이스 만들어주기
+//        TimsSendThread.start();
+//        //todo: end
 
 
         if(Info.TIMSUSE) {
@@ -415,6 +416,8 @@ public class TimsDtg {
                 Info.sqlite.deleteDtgdata();
                 Info.sqlite.updateDtgdataClear();
                 Info.sqlite.deleteConnStatus();
+                //todo: 20220608
+                Info.sqlite.deleteDrvRecord();
 
             } catch (InterruptedException e1) {
                 // TODO Auto-generated catch block
@@ -717,6 +720,7 @@ public class TimsDtg {
                                         } else {
 
                                             Info._displayLOG(Info.LOGDISPLAY, " 차량번호인증실패 " + connres, "TIMS RECEIVE(GET)-");
+                                            Info.TIMSUSE = false; //20220607 tra..sh
                                             mService.mCallback.serviceMessage(98, "차량번호인증실패");
                                         }
 
@@ -758,6 +762,7 @@ public class TimsDtg {
                                         } else {
 
                                             Info._displayLOG(Info.LOGDISPLAY, " 운전자격인증실패 " + connres, "TIMS RECEIVE(GET)-");
+                                            Info.TIMSUSE = false; //20220607 tra..sh
                                             mService.mCallback.serviceMessage(97, "운전자격인증실패");
                                         }
 
@@ -928,8 +933,6 @@ public class TimsDtg {
         });
     }
 
-
-
     //me: 인터패스 서버로 가는 타코 쓰레드
     class DTG_NetworkThread implements Runnable {
         public void run() {
@@ -937,14 +940,14 @@ public class TimsDtg {
             DTGQueue que = null;
             URL url = null;
 
-            Log.d("kkkkkkkk-11", mSendDTGQ.remainingCapacity()+"");  //5
+//            Log.d("kkkkkkkk-11", mSendDTGQ.remainingCapacity()+"");  //5
 
             while (!Thread.currentThread().isInterrupted()) {
                 try {
 
                         if (mSendDTGQ.remainingCapacity() < 5) {
 
-                            Log.d("kkkkkkkk-2", mSendDTGQ.remainingCapacity()+"");
+//                            Log.d("kkkkkkkk-2", mSendDTGQ.remainingCapacity()+"");
 
                             que = mSendDTGQ.take();
 
@@ -1307,7 +1310,7 @@ public class TimsDtg {
 
                     infoObj.put("logs", logArray);  //하위 -> 상위에 붙이기
 
-//                    Log.d("finalObj_highObj", infoObj.toString());
+                    Log.d("finalObj_highObj", infoObj.toString());
 
                     DTGQueue que = new DTGQueue();
 
@@ -1626,21 +1629,24 @@ public class TimsDtg {
     public void _sendTIMSConnStatus() {
 //        if (Info.TIMSUSE == false)
 //            return;
-        SQLiteHelper helper = new SQLiteHelper(mService.getBaseContext());
-        SQLiteControl sqlite = new SQLiteControl(helper);
+
         String[] splt;
 
         List<TIMS_UnitVO> conn_params  = new ArrayList<>();
         TIMS_UnitVO unit;
 
         //1. 저장된 데이터 DB에서 뽑아오기..
-        String connList[] = sqlite.selectConnStatus();
+        String connList[] = Info.sqlite.selectConnStatus();
+
+        Log.d("connList_size", connList.length+"");
 
         if (connList.length > 0) {
 
             for ( int i=0; i<connList.length; i++ ) {
 
                 splt = connList[i].split("#"); //한줄 당 # 을 기준으로 split
+
+                Log.d("connList_splt", splt+"");
 
                 unit = new TIMS_UnitVO();  //unit 객체를 계속 생성하지 않으면 connList[] 데이터 한줄만 들어감.
 
@@ -1651,14 +1657,19 @@ public class TimsDtg {
 
                 //3. 전송할 connList 데이터 add
                 conn_params.add(i, unit);
+
+                Log.d("connList_conn_params", conn_params+"");
             }//for
+
         }
+
+        Log.d("connList_3", conn_params+"");
 
         //4. tims 전송데이터 보내기
         SendTIMS_Data(6, 0, conn_params, "");
 
         //5. 데이터 전체 삭제 -> 다음에 insert 할 데이터의 중복을 막기위한 것.
-        sqlite.deleteConnStatus();
+        Info.sqlite.deleteConnStatus();
     }
 
     //블루투스 & 시경계데이터 - DTG
@@ -1783,39 +1794,40 @@ public class TimsDtg {
                 break;
             case 2:  //앱미터 시동
 
-                String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
-
-                String driveCount = Info.sqlite.todayDriveCount();
-                DTG_PARAMS = "info_dtti=" + dtti +
-                        "&pairing_type=" + subParam[0] +
-                        "&car_num=" + CARNUM +
-                        "&driver_id=" + DRIVERID +
-                        "&dtg_model=" + subParam[1] +
-                        "&car_x=" + lXpos +
-                        "&car_y=" + lYpos +
-                        "&base_rate=" + CalFareBase.BASECOST +
-                        "&base_dist=" + CalFareBase.BASEDRVDIST +
-                        "&after_rate=" + CalFareBase.DISTCOST +
-                        "&after_dist=" + CalFareBase.INTERVAL_DIST +
-                        "&time_rate=" + CalFareBase.mNightTimerate +
-                        "&time_fare=" + CalFareBase.TIMECOST +
-                        "&time_fare_speed=" + CalFareBase.TIMECOST_LIMITHOUR +
-                        "&start_extra_time=" + "00:00" +
-                        "&end_extra_time=" + "04:00" +
-                        "&city_extra_rate=" + CalFareBase.mSuburbrate +
-                        "&call_fare=" + "0" +
-                        "&call_extra_rate=" + "0" +
-                        "&spec_extra_rate=" + CalFareBase.mComplexrate +
-                        "&range_extra_dist=" + "0" + //구간할증구간 이동거리
-                        "&range_extra_rate=" + CalFareBase.mComplexrate +
-                        "&cut_off_fare=" + "2" + // 요금절사 - 0:안함 1:1원단위 2:10원단위
-                        "&today_dist=" + (Integer.parseInt(dayDrvRecordData[0]) + Integer.parseInt(dayDrvRecordData[1])) +
-                        "&bincha_dist=" + Integer.parseInt(dayDrvRecordData[1]) +
-                        "&juhaeng_dist=" + Integer.parseInt(dayDrvRecordData[0]) +
-                        "&juhaengcount=" + driveCount +
-                        "&worktime=" + (Integer.parseInt(dayDrvRecordData[2]) + Integer.parseInt(dayDrvRecordData[3])) +
-                        "&money=" + dayDrvRecordData[4];
-                DTG_PATH = "PairingInfoAPI?" + DTG_PARAMS;
+//20220607 tra..sh
+//                String[] dayDrvRecordData = Info.sqlite.todayTotSelect().split("/");
+//
+//                String driveCount = Info.sqlite.todayDriveCount();
+//                DTG_PARAMS = "info_dtti=" + dtti +
+//                        "&pairing_type=" + subParam[0] +
+//                        "&car_num=" + CARNUM +
+//                        "&driver_id=" + DRIVERID +
+//                        "&dtg_model=" + subParam[1] +
+//                        "&car_x=" + lXpos +
+//                        "&car_y=" + lYpos +
+//                        "&base_rate=" + CalFareBase.BASECOST +
+//                        "&base_dist=" + CalFareBase.BASEDRVDIST +
+//                        "&after_rate=" + CalFareBase.DISTCOST +
+//                        "&after_dist=" + CalFareBase.INTERVAL_DIST +
+//                        "&time_rate=" + CalFareBase.mNightTimerate +
+//                        "&time_fare=" + CalFareBase.TIMECOST +
+//                        "&time_fare_speed=" + CalFareBase.TIMECOST_LIMITHOUR +
+//                        "&start_extra_time=" + "00:00" +
+//                        "&end_extra_time=" + "04:00" +
+//                        "&city_extra_rate=" + CalFareBase.mSuburbrate +
+//                        "&call_fare=" + "0" +
+//                        "&call_extra_rate=" + "0" +
+//                        "&spec_extra_rate=" + CalFareBase.mComplexrate +
+//                        "&range_extra_dist=" + "0" + //구간할증구간 이동거리
+//                        "&range_extra_rate=" + CalFareBase.mComplexrate +
+//                        "&cut_off_fare=" + "2" + // 요금절사 - 0:안함 1:1원단위 2:10원단위
+//                        "&today_dist=" + (Integer.parseInt(dayDrvRecordData[0]) + Integer.parseInt(dayDrvRecordData[1])) +
+//                        "&bincha_dist=" + Integer.parseInt(dayDrvRecordData[1]) +
+//                        "&juhaeng_dist=" + Integer.parseInt(dayDrvRecordData[0]) +
+//                        "&juhaengcount=" + driveCount +
+//                        "&worktime=" + (Integer.parseInt(dayDrvRecordData[2]) + Integer.parseInt(dayDrvRecordData[3])) +
+//                        "&money=" + dayDrvRecordData[4];
+//                DTG_PATH = "PairingInfoAPI?" + DTG_PARAMS;
                 break;
             case 3:   //버튼 이벤트
 //                if (subParam[0].equals("05")) break;

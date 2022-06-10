@@ -123,6 +123,7 @@ public class MainActivity extends Activity {
                         btn_clear,
                         btn_back;
 
+
     String logtag = "logtag_";
     Context context;
     SharedPreferences pref;
@@ -657,7 +658,7 @@ public class MainActivity extends Activity {
 //20220531
                 Date time = new Date();
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSS");
-                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf1.format(time), "블루투스", bleConn);
+                Info.sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log bleon", sdf1.format(time), "블루투스", bleConn);
 /////////////
 
                 if (Info.ERRORLOG == true) {
@@ -670,13 +671,18 @@ public class MainActivity extends Activity {
 
                 bleConn = "Off, " + Info.CAR_SPEED+" km";
 //220531
-                Date time = new Date();
-                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSS");
-                sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log ble", sdf1.format(time), "블루투스", bleConn);
+
+//                if(AMBlestruct.mBTConnected) {
+                    Date time = new Date();
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSS");
+                    Info.sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log bleoff", sdf1.format(time), "블루투스", bleConn);
+
 //////////////
-                if (Info.ERRORLOG == true) {
-                    m_Service.m_timsdtg._sendTIMSConnStatus();
-                }
+                    if (Info.ERRORLOG == true) {
+                        m_Service.m_timsdtg._sendTIMSConnStatus();
+                    }
+//                }
+
 //
                 displayHandler.sendEmptyMessage(51);
 
@@ -754,7 +760,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void serviceLbsControllEvent(int nType, int nLastState) {
-            Log.e("LbsContollEvt", nType + "/" + nLastState);
+            Log.e("LbsContollEvt", nLastState + "/" + nType);
 
 //            nType 1 빈차 2 주행 3 호출
             switch (nLastState) {
@@ -766,14 +772,14 @@ public class MainActivity extends Activity {
                     } else if(nType == 3) {*/
 
                     switch (nType) {
-
                         case 1:
                             if (reservUse) {
-                                btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
+                                btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
                                 m_Service.update_BLEmeterstate("41");
                                 reservUse = false;
 
                                 setCallpay(0);
+
                             }
                             break;
 
@@ -787,8 +793,8 @@ public class MainActivity extends Activity {
                                 btn_reserv_e.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
                                 reservUse = true;
 
-//                               setCallpay(1000);
-                                do_CallPay_other();
+//20211216                                setCallpay(1000);
+                                do_CallPay_other(); //20211229
                             }
                             m_Service.update_BLEmeterstate("40");
                             break;
@@ -799,7 +805,7 @@ public class MainActivity extends Activity {
                 case 2:
                     switch (nType) {
                         case 1:
-                            reservUse = false;
+//                                reservUse = false;
 //                                setCallpay(0);
 //                                btn_emptyCar_e.performClick();
                             Log.d("bar_btn_nType", nType+"");
@@ -813,7 +819,6 @@ public class MainActivity extends Activity {
                             //todo: end
 
                             break;
-
                         case 2:
                             break;
                         case 3:
@@ -830,7 +835,7 @@ public class MainActivity extends Activity {
                 case 3:
                     switch (nType) {
                         case 1:
-                            btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn);
+                            btn_reserv_e.setBackgroundResource(R.drawable.grey_gradi_btn); //todo: 20220223
                             m_Service.update_BLEmeterstate("41");
                             reservUse = false;
                             setCallpay(0);
@@ -1205,6 +1210,9 @@ public class MainActivity extends Activity {
 //                    Intent intent = new Intent(setting.APPMETER_FMRUN);
 //                    sendBroadcast(intent);
 //end
+//20220607 tra..sh
+        m_Service.m_timsdtg._sendTIMSCertVehicles();
+        m_Service.m_timsdtg._sendTIMSCertDriver();
 
                     {
 
@@ -1648,8 +1656,9 @@ public class MainActivity extends Activity {
 
         context = this;
 
-        helper = new SQLiteHelper(context);
-        sqlite = new SQLiteControl(helper);
+//20220607 tra..sh
+//        helper = new SQLiteHelper(context);
+//        sqlite = new SQLiteControl(helper);
 
         //현재날짜 구하기
         date = new Date();
@@ -1861,12 +1870,12 @@ public class MainActivity extends Activity {
             case 1:
                 if (m_Service != null)
                     m_Service.set_payviewstate(false);
-
-                String todayCnt = Info.sqlite.todayDriveCount();
-                Log.d("today_cnt", todayCnt);  //당일 총 거래횟수 나옴. (결제취소 된 것 까지나옴)
-
-                String totalCnt = Info.sqlite.totalDriveCount();
-                Log.d("total_cnt", totalCnt);
+//20220607 tra..sh
+//                String todayCnt = Info.sqlite.todayDriveCount();
+//                Log.d("today_cnt", todayCnt);  //당일 총 거래횟수 나옴. (결제취소 된 것 까지나옴)
+//
+//                String totalCnt = Info.sqlite.totalDriveCount();
+//                Log.d("total_cnt", totalCnt);
 
                 tv_todayTotalDist.setText((String.format("%.2f", mtddistanceB / 1000.0)) + " km");
                 tv_todayTotalDrvCnt.setText(mtcnt + " 회");
@@ -1884,7 +1893,7 @@ public class MainActivity extends Activity {
                 driveFrame2.setVisibility(View.INVISIBLE);
                 paymentFrame1.setVisibility(View.INVISIBLE);
                 paymentFrame2.setVisibility(View.INVISIBLE);
-                payingFrame1.setVisibility(View.INVISIBLE);
+                payingFrame1.setVisibility(View.GONE);  //todo: 20220610
                 payingFrame2.setVisibility(View.INVISIBLE);
                 endFrame1.setVisibility(View.INVISIBLE);
                 endFrame2.setVisibility(View.INVISIBLE);
@@ -1913,7 +1922,7 @@ public class MainActivity extends Activity {
                 driveFrame2.setVisibility(View.VISIBLE);
                 paymentFrame1.setVisibility(View.INVISIBLE);
                 paymentFrame2.setVisibility(View.INVISIBLE);
-                payingFrame1.setVisibility(View.INVISIBLE);
+                payingFrame1.setVisibility(View.GONE); //todo: 20220610
                 payingFrame2.setVisibility(View.INVISIBLE);
                 endFrame1.setVisibility(View.INVISIBLE);
                 endFrame2.setVisibility(View.INVISIBLE);
@@ -1937,7 +1946,7 @@ public class MainActivity extends Activity {
                 driveFrame2.setVisibility(View.INVISIBLE);
                 paymentFrame1.setVisibility(View.VISIBLE);
                 paymentFrame2.setVisibility(View.VISIBLE);
-                payingFrame1.setVisibility(View.INVISIBLE);
+                payingFrame1.setVisibility(View.GONE); //todo: 20220610
                 payingFrame2.setVisibility(View.INVISIBLE);
                 endFrame1.setVisibility(View.INVISIBLE);
                 endFrame2.setVisibility(View.INVISIBLE);
@@ -1969,7 +1978,7 @@ public class MainActivity extends Activity {
                 driveFrame2.setVisibility(View.INVISIBLE);
                 paymentFrame1.setVisibility(View.INVISIBLE);
                 paymentFrame2.setVisibility(View.INVISIBLE);
-                payingFrame1.setVisibility(View.VISIBLE);
+                payingFrame1.setVisibility(View.GONE); //todo: 20220610 (visible -> gone)
                 payingFrame2.setVisibility(View.VISIBLE);
                 endFrame1.setVisibility(View.INVISIBLE);
                 endFrame2.setVisibility(View.INVISIBLE);
@@ -2009,7 +2018,7 @@ public class MainActivity extends Activity {
                 driveFrame2.setVisibility(View.INVISIBLE);
                 paymentFrame1.setVisibility(View.INVISIBLE);
                 paymentFrame2.setVisibility(View.INVISIBLE);
-                payingFrame1.setVisibility(View.INVISIBLE);
+                payingFrame1.setVisibility(View.GONE);  //todo: 20220610
                 payingFrame2.setVisibility(View.INVISIBLE);
                 endFrame1.setVisibility(View.VISIBLE);
                 endFrame2.setVisibility(View.VISIBLE);
@@ -2039,7 +2048,7 @@ public class MainActivity extends Activity {
                 driveFrame2.setVisibility(View.INVISIBLE);
                 paymentFrame1.setVisibility(View.INVISIBLE);
                 paymentFrame2.setVisibility(View.INVISIBLE);
-                payingFrame1.setVisibility(View.INVISIBLE);
+                payingFrame1.setVisibility(View.GONE);  //todo: 20220610
                 payingFrame2.setVisibility(View.INVISIBLE);
                 endFrame1.setVisibility(View.VISIBLE);
                 endFrame2.setVisibility(View.VISIBLE);
@@ -2942,6 +2951,13 @@ public class MainActivity extends Activity {
 
         if(second != null)
             second.cancel();
+
+//20220607 tra..sh
+        if(Info.sqlite != null) {
+            Info.sqlite.closeDB();
+
+            Info.sqlite = null;
+        }
 
         unregisterReceiver();
 
@@ -4892,12 +4908,15 @@ public class MainActivity extends Activity {
         }
 ////////////////////
 
+        LayoutInflater inflater = getLayoutInflater();
+//        final View dialogView;
         final LinearLayout dialogView;
 
-        menu.closeDrawer(drawerView);
+        menu.closeDrawer(drawerView); //20211019
+//        dialogView = inflater.inflate(R.layout.dlg_res_payment, null);
         dialogView = (LinearLayout)View.inflate(this, R.layout.dlg_res_payment, null);
 
-        final TextView cash_receipt_title = (TextView) dialogView.findViewById(R.id.receipt_title);
+        final TextView receipt_title = (TextView) dialogView.findViewById(R.id.receipt_title);
         final ButtonFitText btn_pernum = (ButtonFitText) dialogView.findViewById(R.id.btn_telnum);
         btn_pernum.setSizeRate(0.6);
         final ButtonFitText btn_businum = (ButtonFitText) dialogView.findViewById(R.id.btn_businum);
@@ -4905,7 +4924,14 @@ public class MainActivity extends Activity {
         final ButtonFitText btn_cards = (ButtonFitText) dialogView.findViewById(R.id.btn_cardscan);
         btn_cards.setSizeRate(0.6);
         final ButtonFitText btn_complete = (ButtonFitText) dialogView.findViewById(R.id.btn_complete);
+        /**
+         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+         builder.setView(dialogView);
+         builder.setCancelable(false);
+         builder.create();
 
+         PopupDlg = builder.show();
+         **/
         final Dialog dlg = new Dialog(MainActivity.this);
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -4916,34 +4942,40 @@ public class MainActivity extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
+        Log.d("navi2_display_size", width+", "+height);  // (navi_1: 1024, 600)   /    (navi_2: 1024, 538)
+
         if (Build.VERSION.SDK_INT <= 25){  //네비게이션 화면
             //textsize
+
             width = (int)(width * 0.6);
             height = (int)(height * 0.8);
         }else {
             //textsize
+
+
             width = (int)(width * 0.9);
             height = (int)(height * 0.7);
         }
+
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dlg.getWindow().getAttributes());
         lp.width = width;
+//        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = height;
         Window window = dlg.getWindow();
         window.setAttributes(lp);
+
         dlg.show();
 
-
-        //전화번호 버튼
         btn_pernum.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_pernum.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    btn_pernum.setBackgroundColor(Color.parseColor("#97833a"));
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_pernum.setBackgroundResource(R.drawable.grey_gradi_btn);
+                    btn_pernum.setBackgroundColor(Color.parseColor("#3c3c4a"));
                 }
                 return false;
             }
@@ -4955,7 +4987,8 @@ public class MainActivity extends Activity {
                 cashReceipt_ = 1;
 
                 dlg.dismiss();
-                getReceiptInputDialog_new();
+//                getReceiptInputDialog();  //todo: 2022-04-27
+                getReceiptInputDialog_new();  //todo: 2022-04-27
             }
         });
 
@@ -4964,22 +4997,23 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_businum.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    btn_businum.setBackgroundColor(Color.parseColor("#97833a"));
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_businum.setBackgroundResource(R.drawable.grey_gradi_btn);
+                    btn_businum.setBackgroundColor(Color.parseColor("#3c3c4a"));
                 }
                 return false;
             }
         });
-//ㅇㄹㄴㄹ
-        //깃헙테스트  //깃헙테스트2222
+
         btn_businum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cashReceipt_ = 2;
+
                 dlg.dismiss();
-                getReceiptInputDialog_new();
+//                getReceiptInputDialog();  //todo: 2022-04-27
+                getReceiptInputDialog_new();  //todo: 2022-04-27
             }
         });
 
@@ -4988,10 +5022,10 @@ public class MainActivity extends Activity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
 
                 if (arg1.getAction() == MotionEvent.ACTION_DOWN) {
-                    btn_cards.setBackgroundResource(R.drawable.selected_btn_touched_yellow);
+                    btn_cards.setBackgroundColor(Color.parseColor("#97833a"));
                 }
                 if (arg1.getAction() == MotionEvent.ACTION_UP) {
-                    btn_cards.setBackgroundResource(R.drawable.grey_gradi_btn);
+                    btn_cards.setBackgroundColor(Color.parseColor("#3c3c4a"));
                 }
                 return false;
             }
@@ -5001,8 +5035,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 cashReceipt_ = 3;
+
                 dlg.dismiss();
-                getReceiptInputDialog_new();
+//                getReceiptInputDialog();  //todo: 2022-04-27
+                getReceiptInputDialog_new();  //todo: 2022-04-27
             }
         });
 
@@ -5027,6 +5063,8 @@ public class MainActivity extends Activity {
             }
         });
     }
+
+
 
 
     // 가로세로 해상도 세팅 다이얼로그
@@ -5868,13 +5906,14 @@ public class MainActivity extends Activity {
 
         }//onClick..
     };
+    //todo: 20221028 end..
 
-
-
+    //todo: 2022-04-27
     private void getReceiptInputDialog_new(){
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView;
 
+//20220425 tra..sh
         if (list.size() != 0)
             list.removeAll(list);
 
@@ -6372,7 +6411,7 @@ public class MainActivity extends Activity {
         if(m_Service.mbDrivestart)
             return;
 
-        Info.sqlite.setUpdateTotalData(0, 0, (int)memptydistance, memptyseconds, 0);
+//20220607 tra..sh        Info.sqlite.setUpdateTotalData(0, 0, (int)memptydistance, memptyseconds, 0);
         Info.makeDriveCode();
 
         Info.insert_rundata(mlocation, 2); //drive
@@ -6396,8 +6435,9 @@ public class MainActivity extends Activity {
 
         Info.APPMETERRUNSTOP = 0;
 
-        m_Service.m_timsdtg._sendTIMSCertVehicles();
-        m_Service.m_timsdtg._sendTIMSCertDriver();
+//20220607 tra..sh
+//        m_Service.m_timsdtg._sendTIMSCertVehicles();
+//        m_Service.m_timsdtg._sendTIMSCertDriver();
 
         if(Suburbs.mSuburbOK == true) {
 
@@ -6960,7 +7000,7 @@ public class MainActivity extends Activity {
 //            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
 
             subConn = "Off, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
-            sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf1.format(time), "시외", subConn);
+            Info.sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf1.format(time), "시외", subConn);
 
             if (Info.ERRORLOG == true) {
                 m_Service.m_timsdtg._sendTIMSConnStatus();
@@ -6976,7 +7016,7 @@ public class MainActivity extends Activity {
 //            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmss");
 
             subConn = "On, Auto: "+suburbUseAuto+", gps: "+Info.mGps;
-            sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf2.format(time2), "시외", subConn);
+            Info.sqlite.insertConnStatus(AMBlestruct.AMLicense.phonenumber, AMBlestruct.AMLicense.taxinumber, "log sub", sdf2.format(time2), "시외", subConn);
 
             if (Info.ERRORLOG == true) {
                 m_Service.m_timsdtg._sendTIMSConnStatus();
@@ -7016,7 +7056,7 @@ public class MainActivity extends Activity {
         List<TIMS_UnitVO> params = new ArrayList<>();
         TIMS_UnitVO unit = null;
 
-        String connList[] = sqlite.selectConnStatus();
+        String connList[] = Info.sqlite.selectConnStatus();
 
         if (connList.length > 0) {
 

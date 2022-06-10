@@ -110,15 +110,12 @@ public class PayListActivity extends Activity {
         Intent intent = getIntent();
         String sDate = intent.getStringExtra("SDATE");
 
-        mSQLiteHelper = new SQLiteHelper(this);
-        sqlite = new SQLiteControl(mSQLiteHelper);
-
         if(sDate != null && sDate.equals("t")) {
             tv_date_drvCnt.setText(transFormat.format(time) + " / 운행 : " + driveCount + " 회");
-            recordList = sqlite.selectToday();
+            recordList = Info.sqlite.selectToday();
         } else {
             tv_date_drvCnt.setText(driveCount + " 회");
-            recordList = sqlite.select();
+            recordList = Info.sqlite.select();
         }
         ArrayList<RecordVO> records = new ArrayList<>();
         copyRec = new ArrayList<>();
